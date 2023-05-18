@@ -37,8 +37,7 @@ import com.example.tasky.ui.theme.TaskyTheme
 @Composable
 fun LoginScreen() {
     Scaffold(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         containerColor = Black,
 
         ) {
@@ -50,7 +49,7 @@ fun LoginScreen() {
         ) {
             Text(
                 modifier = Modifier.padding(top = 46.dp),
-                text = stringResource(R.string.login_greetings),
+                text = stringResource(R.string.welcome_back),
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
@@ -92,7 +91,7 @@ fun LoginScreen() {
                         )
                     ) {
                         Text(
-                            text = stringResource(R.string.login_main_button),
+                            text = stringResource(R.string.log_in),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -100,7 +99,7 @@ fun LoginScreen() {
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         modifier = Modifier.padding(bottom = 60.dp),
-                        text = stringResource(R.string.login_sign_up),
+                        text = stringResource(R.string.dont_have_an_account),
                         color = LightGray,
                         fontSize = 14.sp
                     )
