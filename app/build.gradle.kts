@@ -9,6 +9,8 @@ android {
     namespace = "com.example.tasky"
     compileSdk = 33
 
+    android.buildFeatures.buildConfig = true
+
     defaultConfig {
         applicationId = "com.example.tasky"
         minSdk = 24
@@ -29,6 +31,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", "\"https://tasky.pl-coding.com/\"")
+        }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://tasky.pl-coding.com/\"")
         }
     }
     compileOptions {
@@ -65,6 +71,12 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:2.46.1")
     kapt("com.google.dagger:hilt-compiler:2.46.1")
+
+    // Retrofit
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     // Unit Test
     testImplementation("junit:junit:4.13.2")
