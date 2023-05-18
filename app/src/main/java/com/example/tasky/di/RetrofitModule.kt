@@ -1,6 +1,8 @@
 package com.example.tasky.di
 
+import com.example.tasky.BuildConfig
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
@@ -14,6 +16,7 @@ import javax.inject.Singleton
 class RetrofitModule {
 
     @Singleton
+    @Provides
     fun providesOkHttpClient() =
         OkHttpClient
             .Builder()
@@ -25,10 +28,11 @@ class RetrofitModule {
 
 
     @Singleton
+    @Provides
     fun providesRetrofit(client: OkHttpClient) =
         Retrofit
             .Builder()
-            .baseUrl("https://tasky.pl-coding.com/")
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

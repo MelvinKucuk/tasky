@@ -9,6 +9,8 @@ android {
     namespace = "com.example.tasky"
     compileSdk = 33
 
+    android.buildFeatures.buildConfig = true
+
     defaultConfig {
         applicationId = "com.example.tasky"
         minSdk = 24
@@ -29,6 +31,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", "\"https://tasky.pl-coding.com/\"")
+        }
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://tasky.pl-coding.com/\"")
         }
     }
     compileOptions {
