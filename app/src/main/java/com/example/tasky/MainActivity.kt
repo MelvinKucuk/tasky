@@ -22,7 +22,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginScreen()
+                    LoginScreen(
+                        isValid = false,
+                        isLoading = false,
+                        onEmailValueChanged = {},
+                        onLoginClicked = { _, _ -> },
+                        onSignUpClicked = {}
+                    )
                 }
             }
         }
