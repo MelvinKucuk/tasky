@@ -13,10 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,12 +21,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction.Companion
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
 import com.example.tasky.login.components.ButtonWithLoader
+import com.example.tasky.login.components.PasswordTaskyTextField
 import com.example.tasky.login.components.TaskyTextField
+import com.example.tasky.login.domain.LoginEvent
+import com.example.tasky.login.domain.LoginState
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.LightBlue
 import com.example.tasky.ui.theme.LightGray
@@ -38,14 +38,12 @@ import com.example.tasky.ui.theme.TaskyTheme
 
 @Composable
 fun LoginScreen(
-    isValid: Boolean,
-    isLoading: Boolean,
-    onEmailValueChanged: (String) -> Unit,
-    onLoginClicked: (String, String) -> Unit,
-    onSignUpClicked: () -> Unit
+    modifier: Modifier = Modifier,
+    loginState: LoginState,
+    onLoginEvent: (LoginEvent) -> Unit
 ) {
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         containerColor = Black,
 
         ) {
@@ -84,28 +82,28 @@ fun LoginScreen(
                 ) {
                     Spacer(modifier = Modifier.size(50.dp))
 
-                    var email by remember { mutableStateOf("") }
-
                     TaskyTextField(
+                        value = loginState.emailValue,
                         imeAction = Companion.Next,
-                        isValid = isValid
-                    ) {
-                        email = it
-                        onEmailValueChanged(email)
+                        isValidEmail = loginState.isValidEmail
+                    ) { emailValue ->
+                        onLoginEvent(LoginEvent.OnEmailValueChanged(emailValue))
                     }
                     Spacer(modifier = Modifier.size(16.dp))
 
-                    var password by remember { mutableStateOf("") }
-
-                    TaskyTextField(
-                        isPassword = true,
+                    PasswordTaskyTextField(
+                        value = loginState.passwordValue,
+                        showPassword = loginState.showPassword,
                         keyboardType = KeyboardType.Password,
-                    ) {
-                        password = it
+                        onShowPasswordChange = { showPassword ->
+                            onLoginEvent(LoginEvent.OnShowPasswordValueChanged(showPassword))
+                        }
+                    ) { passwordValue ->
+                        onLoginEvent(LoginEvent.OnPasswordValueChanged(passwordValue))
                     }
                     Spacer(modifier = Modifier.size(25.dp))
-                    ButtonWithLoader(isLoading = isLoading) {
-                        onLoginClicked(email, password)
+                    ButtonWithLoader(isLoading = loginState.isLoading) {
+                        onLoginEvent(LoginEvent.OnLoginClicked)
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Row(
@@ -117,7 +115,7 @@ fun LoginScreen(
                                 end = 10.dp
                             )
                             .clickable {
-                                onSignUpClicked()
+                                onLoginEvent(LoginEvent.OnSignUpClicked)
                             }
                     ) {
                         Text(
@@ -143,11 +141,14 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     TaskyTheme {
         LoginScreen(
-            isValid = false,
-            onEmailValueChanged = {},
-            isLoading = false,
-            onLoginClicked = { _, _ -> },
-            onSignUpClicked = {}
+            loginState = LoginState(
+                isValidEmail = false,
+                isLoading = false,
+                emailValue = TextFieldValue(),
+                passwordValue = TextFieldValue(),
+                showPassword = false
+            ),
+            onLoginEvent = {}
         )
     }
 }

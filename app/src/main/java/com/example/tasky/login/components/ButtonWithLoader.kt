@@ -19,11 +19,12 @@ import com.example.tasky.ui.theme.Black
 
 @Composable
 fun ButtonWithLoader(
+    modifier: Modifier = Modifier,
     isLoading: Boolean = false,
     onClick: () -> Unit,
 ) {
     Button(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(55.dp)
             .padding(horizontal = 16.dp),

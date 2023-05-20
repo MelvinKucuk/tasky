@@ -13,10 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -38,21 +34,64 @@ import com.example.tasky.ui.theme.Red
 
 @Composable
 fun TaskyTextField(
-    isPassword: Boolean = false,
-    isValid: Boolean = false,
+    modifier: Modifier = Modifier,
+    value: TextFieldValue,
+    isValidEmail: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
-    onValueChange: (String) -> Unit
+    onValueChange: (TextFieldValue) -> Unit,
 ) {
-    var value by remember { mutableStateOf(TextFieldValue()) }
+    BaseTaskyTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        isValidEmail = isValidEmail,
+        keyboardType = keyboardType,
+        imeAction = imeAction
+    )
+}
 
-    var showPassword by remember { mutableStateOf(false) }
+@Composable
+fun PasswordTaskyTextField(
+    modifier: Modifier = Modifier,
+    value: TextFieldValue,
+    showPassword: Boolean = false,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Done,
+    onShowPasswordChange: (Boolean) -> Unit = {},
+    onValueChange: (TextFieldValue) -> Unit,
+) {
+    BaseTaskyTextField(
+        modifier = modifier,
+        value = value,
+        isPassword = true,
+        showPassword = showPassword,
+        onValueChange = onValueChange,
+        keyboardType = keyboardType,
+        imeAction = imeAction,
+        onShowPasswordChange = onShowPasswordChange
+    )
+}
 
+@Composable
+private fun BaseTaskyTextField(
+    modifier: Modifier = Modifier,
+    value: TextFieldValue,
+    isPassword: Boolean = false,
+    isValidEmail: Boolean = false,
+    showPassword: Boolean = false,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.Done,
+    onValueChange: (TextFieldValue) -> Unit,
+    onShowPasswordChange: (Boolean) -> Unit = {}
+) {
     OutlinedTextField(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         value = value,
         onValueChange = {
-            value = it
-            onValueChange(value.text)
+            onValueChange(value)
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
@@ -71,18 +110,15 @@ fun TaskyTextField(
             focusedLeadingIconColor = Gray,
             focusedContainerColor = LightGray2,
             focusedIndicatorColor = LightBlue2,
-            focusedTrailingIconColor = if (isValid) Green else Gray2,
+            focusedTrailingIconColor = if (isValidEmail) Green else Gray2,
             unfocusedContainerColor = LightGray2,
             unfocusedIndicatorColor = Color.Transparent,
-            unfocusedTrailingIconColor = if (isValid) Green else Gray2,
+            unfocusedTrailingIconColor = if (isValidEmail) Green else Gray2,
             cursorColor = DarkGray
         ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
         trailingIcon = {
             when {
-                isPassword -> IconButton(onClick = { showPassword = !showPassword }) {
+                isPassword -> IconButton(onClick = { onShowPasswordChange(!showPassword) }) {
                     Icon(
                         imageVector = if (showPassword)
                             Icons.Filled.Visibility
@@ -95,7 +131,7 @@ fun TaskyTextField(
                     )
                 }
 
-                isValid -> Icon(
+                isValidEmail -> Icon(
                     painter = painterResource(id = R.drawable.ic_valid),
                     contentDescription = stringResource(R.string.success_icon)
                 )
