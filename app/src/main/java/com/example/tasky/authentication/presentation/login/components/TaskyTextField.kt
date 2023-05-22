@@ -1,4 +1,4 @@
-package com.example.tasky.login.components
+package com.example.tasky.authentication.presentation.login.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,8 +34,8 @@ import com.example.tasky.ui.theme.Red
 
 @Composable
 fun TaskyTextField(
-    modifier: Modifier = Modifier,
     value: TextFieldValue,
+    modifier: Modifier = Modifier,
     isValidEmail: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
@@ -52,9 +52,9 @@ fun TaskyTextField(
 }
 
 @Composable
-fun PasswordTaskyTextField(
-    modifier: Modifier = Modifier,
+fun TaskyPasswordTextField(
     value: TextFieldValue,
+    modifier: Modifier = Modifier,
     showPassword: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
@@ -75,8 +75,8 @@ fun PasswordTaskyTextField(
 
 @Composable
 private fun BaseTaskyTextField(
-    modifier: Modifier = Modifier,
     value: TextFieldValue,
+    modifier: Modifier = Modifier,
     isPassword: Boolean = false,
     isValidEmail: Boolean = false,
     showPassword: Boolean = false,
@@ -117,29 +117,44 @@ private fun BaseTaskyTextField(
             cursorColor = DarkGray
         ),
         trailingIcon = {
-            when {
-                isPassword -> IconButton(onClick = { onShowPasswordChange(!showPassword) }) {
-                    Icon(
-                        imageVector = if (showPassword)
-                            Icons.Filled.Visibility
-                        else
-                            Icons.Filled.VisibilityOff,
-                        contentDescription = if (showPassword)
-                            stringResource(R.string.show_password)
-                        else
-                            stringResource(R.string.hide_password)
-                    )
-                }
-
-                isValidEmail -> Icon(
-                    painter = painterResource(id = R.drawable.ic_valid),
-                    contentDescription = stringResource(R.string.success_icon)
-                )
-            }
+            TextFieldTrailingIcon(
+                isPassword = isPassword,
+                onShowPasswordChange = onShowPasswordChange,
+                showPassword = showPassword,
+                isValidEmail = isValidEmail
+            )
         },
-        visualTransformation = if (isPassword.not() || showPassword)
+        visualTransformation = if (!isPassword || showPassword)
             VisualTransformation.None
         else
             PasswordVisualTransformation()
     )
+}
+
+@Composable
+private fun TextFieldTrailingIcon(
+    isPassword: Boolean,
+    onShowPasswordChange: (Boolean) -> Unit,
+    showPassword: Boolean,
+    isValidEmail: Boolean
+) {
+    when {
+        isPassword -> IconButton(onClick = { onShowPasswordChange(!showPassword) }) {
+            Icon(
+                imageVector = if (showPassword)
+                    Icons.Filled.Visibility
+                else
+                    Icons.Filled.VisibilityOff,
+                contentDescription = if (showPassword)
+                    stringResource(R.string.show_password)
+                else
+                    stringResource(R.string.hide_password)
+            )
+        }
+
+        isValidEmail -> Icon(
+            painter = painterResource(id = R.drawable.ic_valid),
+            contentDescription = stringResource(R.string.success_icon)
+        )
+    }
 }

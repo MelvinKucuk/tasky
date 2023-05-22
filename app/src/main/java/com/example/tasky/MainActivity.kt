@@ -9,10 +9,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.tasky.login.domain.LoginState
-import com.example.tasky.login.presentation.LoginScreen
+import com.example.tasky.authentication.presentation.login.LoginScreen
+import com.example.tasky.authentication.presentation.login.viewmodel.LoginState
 import com.example.tasky.ui.theme.TaskyTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,13 +24,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     LoginScreen(
-                        loginState = LoginState(
-                            isValidEmail = false,
-                            isLoading = false,
-                            emailValue = TextFieldValue(),
-                            passwordValue = TextFieldValue(),
-                            showPassword = false
-                        ),
+                        loginState = LoginState(),
                         onLoginEvent = {}
                     )
                 }

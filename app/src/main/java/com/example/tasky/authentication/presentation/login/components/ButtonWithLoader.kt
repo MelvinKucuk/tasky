@@ -1,4 +1,4 @@
-package com.example.tasky.login.components
+package com.example.tasky.authentication.presentation.login.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,7 +20,7 @@ import com.example.tasky.ui.theme.Black
 @Composable
 fun ButtonWithLoader(
     modifier: Modifier = Modifier,
-    isLoading: Boolean = false,
+    isLoading: Boolean,
     onClick: () -> Unit,
 ) {
     Button(
