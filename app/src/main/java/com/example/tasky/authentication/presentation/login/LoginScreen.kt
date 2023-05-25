@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction.Companion
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,7 +43,6 @@ fun LoginScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Black,
-
         ) {
         Column(
             Modifier
@@ -82,23 +80,23 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.size(50.dp))
 
                     TaskyTextField(
-                        value = TextFieldValue(loginState.emailValue),
+                        value = loginState.emailValue,
                         imeAction = Companion.Next,
                         isValidEmail = loginState.isValidEmail
                     ) { emailValue ->
-                        onLoginEvent(LoginEvent.OnEmailValueChanged(emailValue.text))
+                        onLoginEvent(LoginEvent.OnEmailValueChanged(emailValue))
                     }
                     Spacer(modifier = Modifier.size(16.dp))
 
                     TaskyPasswordTextField(
-                        value = TextFieldValue(loginState.passwordValue),
+                        value = loginState.passwordValue,
                         showPassword = loginState.showPassword,
                         keyboardType = KeyboardType.Password,
                         onShowPasswordChange = { showPassword ->
                             onLoginEvent(LoginEvent.OnShowPasswordValueChanged(showPassword))
                         }
                     ) { passwordValue ->
-                        onLoginEvent(LoginEvent.OnPasswordValueChanged(passwordValue.text))
+                        onLoginEvent(LoginEvent.OnPasswordValueChanged(passwordValue))
                     }
                     Spacer(modifier = Modifier.size(25.dp))
                     ButtonWithLoader(isLoading = loginState.isLoading) {
