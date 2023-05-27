@@ -30,21 +30,58 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LaunchedEffect(key1 = loginViewModel.state.errorMessage) {
-                        if (loginViewModel.state.errorMessage.isNotEmpty()) {
-                            Toast.makeText(
-                                this@MainActivity,
-                                loginViewModel.state.errorMessage,
-                                Toast.LENGTH_LONG
-                            ).show()
-                            loginViewModel.errorShown()
-                        }
-                    }
+                    ObserveError()
+                    ObserveLogin()
+                    ObserveSignUp()
                     LoginScreen(
                         loginState = loginViewModel.state,
                         onLoginEvent = loginViewModel::onEvent
                     )
                 }
+            }
+        }
+    }
+
+    @Composable
+    private fun ObserveError() {
+        LaunchedEffect(key1 = loginViewModel.state.errorMessage) {
+            if (loginViewModel.state.errorMessage.isNotEmpty()) {
+                Toast.makeText(
+                    this@MainActivity,
+                    loginViewModel.state.errorMessage,
+                    Toast.LENGTH_LONG
+                ).show()
+                loginViewModel.errorShown()
+            }
+        }
+    }
+
+    @Composable
+    private fun ObserveLogin() {
+        LaunchedEffect(key1 = loginViewModel.state.onLoginSucceed) {
+            if (loginViewModel.state.onLoginSucceed) {
+                //TODO change to real implementation
+                Toast.makeText(
+                    this@MainActivity,
+                    "Login succeed",
+                    Toast.LENGTH_LONG
+                ).show()
+                loginViewModel.loginNavigated()
+            }
+        }
+    }
+
+    @Composable
+    private fun ObserveSignUp() {
+        LaunchedEffect(key1 = loginViewModel.state.navigateToSignUp) {
+            if (loginViewModel.state.navigateToSignUp) {
+                //TODO change to real implementation
+                Toast.makeText(
+                    this@MainActivity,
+                    "Navigate to SignUp",
+                    Toast.LENGTH_LONG
+                ).show()
+                loginViewModel.signUpNavigated()
             }
         }
     }

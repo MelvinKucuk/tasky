@@ -53,7 +53,7 @@ class LoginViewModel @Inject constructor(
                     state = when (result) {
                         is Resource.Success -> {
                             state.copy(
-                                errorMessage = result.data.fullName,
+                                onLoginSucceed = true,
                                 isLoading = false
                             )
                         }
@@ -70,13 +70,21 @@ class LoginViewModel @Inject constructor(
             }
 
             LoginEvent.OnSignUpClicked -> {
-                state = state.copy(isLoading = false)
+                state = state.copy(navigateToSignUp = true)
             }
         }
     }
 
     fun errorShown() {
         state = state.copy(errorMessage = "")
+    }
+
+    fun loginNavigated() {
+        state = state.copy(onLoginSucceed = false)
+    }
+
+    fun signUpNavigated() {
+        state = state.copy(navigateToSignUp = false)
     }
 
 }
@@ -87,7 +95,9 @@ data class LoginState(
     val emailValue: String = "",
     val passwordValue: String = "",
     val showPassword: Boolean = false,
-    val errorMessage: String = ""
+    val errorMessage: String = "",
+    val onLoginSucceed: Boolean = false,
+    val navigateToSignUp: Boolean = false
 )
 
 sealed class LoginEvent {
