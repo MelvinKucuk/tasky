@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.tasky.authentication.presentation.login.LoginScreen
+import com.example.tasky.authentication.presentation.login.viewmodel.LoginEvent
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginViewModel
 import com.example.tasky.ui.theme.TaskyTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     loginViewModel.state.errorMessage,
                     Toast.LENGTH_LONG
                 ).show()
-                loginViewModel.errorShown()
+                loginViewModel.onEvent(LoginEvent.ErrorShown)
             }
         }
     }
@@ -66,7 +67,7 @@ class MainActivity : ComponentActivity() {
                     "Login succeed",
                     Toast.LENGTH_LONG
                 ).show()
-                loginViewModel.loginNavigated()
+                loginViewModel.onEvent(LoginEvent.LoginNavigated)
             }
         }
     }
@@ -81,7 +82,7 @@ class MainActivity : ComponentActivity() {
                     "Navigate to SignUp",
                     Toast.LENGTH_LONG
                 ).show()
-                loginViewModel.signUpNavigated()
+                loginViewModel.onEvent(LoginEvent.SignUpNavigated)
             }
         }
     }
