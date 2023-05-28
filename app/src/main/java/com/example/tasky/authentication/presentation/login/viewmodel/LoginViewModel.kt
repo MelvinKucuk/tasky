@@ -5,23 +5,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tasky.authentication.data.remote.LoginRepository
+import com.example.tasky.authentication.domain.AuthenticationRepository
 import com.example.tasky.authentication.domain.usecase.LoginUseCase
 import com.example.tasky.core.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
-    private val loginRepository: LoginRepository
+    private val authenticationRepository: AuthenticationRepository
 ) : ViewModel() {
     var state by mutableStateOf(LoginState())
         private set
-
-    private var loginJob: Job? = null
 
     fun onEvent(event: LoginEvent) {
         when (event) {
@@ -44,11 +41,14 @@ class LoginViewModel @Inject constructor(
                     return
                 }
 
-                if (loginJob != null) return
+                if (state.isLoading) return
 
                 state = state.copy(isLoading = true)
-                loginJob = viewModelScope.launch {
-                    val result = loginRepository.login(state.emailValue, state.passwordValue)
+                viewModelScope.launch {
+                    val result = authenticationRepository.login(
+                        email = state.emailValue,
+                        password = state.passwordValue
+                    )
 
                     state = when (result) {
                         is Resource.Success -> {
@@ -65,28 +65,18 @@ class LoginViewModel @Inject constructor(
                             )
                         }
                     }
-                    loginJob = null
                 }
             }
 
             LoginEvent.OnSignUpClicked -> {
                 state = state.copy(navigateToSignUp = true)
             }
+
+            LoginEvent.ErrorShown -> state = state.copy(errorMessage = null)
+            LoginEvent.LoginNavigated -> state = state.copy(onLoginSucceed = null)
+            LoginEvent.SignUpNavigated -> state = state.copy(navigateToSignUp = null)
         }
     }
-
-    fun errorShown() {
-        state = state.copy(errorMessage = "")
-    }
-
-    fun loginNavigated() {
-        state = state.copy(onLoginSucceed = false)
-    }
-
-    fun signUpNavigated() {
-        state = state.copy(navigateToSignUp = false)
-    }
-
 }
 
 data class LoginState(
@@ -95,9 +85,9 @@ data class LoginState(
     val emailValue: String = "",
     val passwordValue: String = "",
     val showPassword: Boolean = false,
-    val errorMessage: String = "",
-    val onLoginSucceed: Boolean = false,
-    val navigateToSignUp: Boolean = false
+    val errorMessage: String? = null,
+    val onLoginSucceed: Boolean? = true,
+    val navigateToSignUp: Boolean? = true
 )
 
 sealed class LoginEvent {
@@ -106,4 +96,7 @@ sealed class LoginEvent {
     data class OnShowPasswordValueChanged(val showPassword: Boolean) : LoginEvent()
     object OnLoginClicked : LoginEvent()
     object OnSignUpClicked : LoginEvent()
+    object ErrorShown : LoginEvent()
+    object LoginNavigated : LoginEvent()
+    object SignUpNavigated : LoginEvent()
 }

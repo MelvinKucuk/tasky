@@ -1,8 +1,8 @@
 package com.example.tasky.authentication.di
 
-import com.example.tasky.authentication.data.remote.LoginRepository
-import com.example.tasky.authentication.data.remote.LoginRepositoryImpl
+import com.example.tasky.authentication.data.remote.AuthenticationRepositoryImpl
 import com.example.tasky.authentication.data.remote.LoginService
+import com.example.tasky.authentication.domain.AuthenticationRepository
 import com.example.tasky.authentication.domain.EmailValidator
 import com.example.tasky.authentication.domain.EmailValidatorImpl
 import com.example.tasky.authentication.domain.usecase.ValidateEmailUseCase
@@ -36,5 +36,5 @@ abstract class AuthenticationModuleBinds {
     abstract fun bindsEmailValidator(emailValidatorImpl: EmailValidatorImpl): EmailValidator
 
     @Binds
-    abstract fun bindsLoginRepository(loginRepositoryImpl: LoginRepositoryImpl): LoginRepository
+    abstract fun bindsAuthenticationRepository(authenticationRepositoryImpl: AuthenticationRepositoryImpl): AuthenticationRepository
 }

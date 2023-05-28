@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ObserveError() {
         LaunchedEffect(key1 = loginViewModel.state.errorMessage) {
-            if (loginViewModel.state.errorMessage.isNotEmpty()) {
+            if (loginViewModel.state.errorMessage != null) {
                 Toast.makeText(
                     this@MainActivity,
                     loginViewModel.state.errorMessage,
@@ -59,7 +59,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ObserveLogin() {
         LaunchedEffect(key1 = loginViewModel.state.onLoginSucceed) {
-            if (loginViewModel.state.onLoginSucceed) {
+            if (loginViewModel.state.onLoginSucceed == true) {
                 //TODO change to real implementation
                 Toast.makeText(
                     this@MainActivity,
@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun ObserveSignUp() {
         LaunchedEffect(key1 = loginViewModel.state.navigateToSignUp) {
-            if (loginViewModel.state.navigateToSignUp) {
+            if (loginViewModel.state.navigateToSignUp == true) {
                 //TODO change to real implementation
                 Toast.makeText(
                     this@MainActivity,

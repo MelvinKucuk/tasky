@@ -1,16 +1,13 @@
 package com.example.tasky.authentication.data.remote
 
+import com.example.tasky.authentication.domain.AuthenticationRepository
 import com.example.tasky.core.data.Resource
-import com.example.tasky.core.data.remote.BaseRepository
+import com.example.tasky.core.data.remote.safeApiCall
 import javax.inject.Inject
 
-interface LoginRepository {
-    suspend fun login(email: String, password: String): Resource<LoginResponse>
-}
-
-class LoginRepositoryImpl @Inject constructor(
+class AuthenticationRepositoryImpl @Inject constructor(
     private val loginService: LoginService
-) : LoginRepository, BaseRepository() {
+) : AuthenticationRepository {
 
     override suspend fun login(email: String, password: String): Resource<LoginResponse> {
         return safeApiCall {
