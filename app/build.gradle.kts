@@ -1,9 +1,13 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
 }
+
+val key: String = gradleLocalProperties(rootDir).getProperty("apiKey")
 
 android {
     namespace = "com.example.tasky"
@@ -34,11 +38,11 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "BASE_URL", "\"https://tasky.pl-coding.com/\"")
-            buildConfigField("String", "API_KEY", "\"2362653145754dc68d3dcba130e673c3\"")
+            buildConfigField("String", "API_KEY", key)
         }
         debug {
             buildConfigField("String", "BASE_URL", "\"https://tasky.pl-coding.com/\"")
-            buildConfigField("String", "API_KEY", "\"2362653145754dc68d3dcba130e673c3\"")
+            buildConfigField("String", "API_KEY", key)
         }
     }
     compileOptions {
