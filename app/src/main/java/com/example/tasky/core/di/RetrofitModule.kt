@@ -1,6 +1,7 @@
 package com.example.tasky.core.di
 
 import com.example.tasky.BuildConfig
+import com.example.tasky.core.data.remote.interceptor.JWTInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -19,7 +20,7 @@ class RetrofitModule {
 
     @Singleton
     @Provides
-    fun providesOkHttpClient(): OkHttpClient =
+    fun providesOkHttpClient(jwtInterceptor: JWTInterceptor): OkHttpClient =
         OkHttpClient
             .Builder()
             .addInterceptor(
@@ -34,6 +35,7 @@ class RetrofitModule {
                     .build()
                 it.proceed(request)
             }
+            .addInterceptor(jwtInterceptor)
             .build()
 
 

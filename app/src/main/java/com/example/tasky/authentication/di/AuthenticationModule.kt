@@ -1,10 +1,12 @@
 package com.example.tasky.authentication.di
 
 import com.example.tasky.authentication.data.EmailValidatorImpl
+import com.example.tasky.authentication.data.local.UserCacheImpl
 import com.example.tasky.authentication.data.remote.AuthenticationRepositoryImpl
 import com.example.tasky.authentication.data.remote.LoginService
 import com.example.tasky.authentication.domain.AuthenticationRepository
 import com.example.tasky.authentication.domain.EmailValidator
+import com.example.tasky.authentication.domain.UserCache
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -32,4 +34,7 @@ abstract class AuthenticationModuleBinds {
 
     @Binds
     abstract fun bindsAuthenticationRepository(authenticationRepositoryImpl: AuthenticationRepositoryImpl): AuthenticationRepository
+
+    @Binds
+    abstract fun bindsUserCache(userCacheImpl: UserCacheImpl): UserCache
 }
