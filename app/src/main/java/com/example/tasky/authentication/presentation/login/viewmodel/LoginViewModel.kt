@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tasky.authentication.data.EmailValidator
 import com.example.tasky.authentication.domain.AuthenticationRepository
-import com.example.tasky.authentication.domain.usecase.LoginUseCase
 import com.example.tasky.core.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginUseCase: LoginUseCase,
+    private val emailValidator: EmailValidator,
     private val authenticationRepository: AuthenticationRepository
 ) : ViewModel() {
     var state by mutableStateOf(LoginState())
@@ -23,7 +23,7 @@ class LoginViewModel @Inject constructor(
     fun onEvent(event: LoginEvent) {
         when (event) {
             is LoginEvent.OnEmailValueChanged -> {
-                val isValid = loginUseCase.validateEmailUseCase(event.emailValue)
+                val isValid = emailValidator.validateEmail(event.emailValue)
                 state = state.copy(isValidEmail = isValid, emailValue = event.emailValue)
             }
 
