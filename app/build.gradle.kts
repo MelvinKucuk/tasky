@@ -28,6 +28,7 @@ android {
         }
 
         buildConfigField("String", "BASE_URL", "\"https://tasky.pl-coding.com/\"")
+        buildConfigField("String", "API_KEY", key)
     }
 
     buildTypes {
@@ -37,12 +38,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "BASE_URL", "\"https://tasky.pl-coding.com/\"")
-            buildConfigField("String", "API_KEY", key)
-        }
-        debug {
-            buildConfigField("String", "BASE_URL", "\"https://tasky.pl-coding.com/\"")
-            buildConfigField("String", "API_KEY", key)
         }
     }
     compileOptions {
@@ -93,6 +88,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk-android:1.13.5")
     testImplementation("io.mockk:mockk-agent:1.13.5")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
 
     // Instrumented Test
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

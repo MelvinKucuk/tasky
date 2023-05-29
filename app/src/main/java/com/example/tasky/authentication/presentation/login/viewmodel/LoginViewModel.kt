@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tasky.authentication.data.EmailValidator
 import com.example.tasky.authentication.domain.AuthenticationRepository
+import com.example.tasky.authentication.domain.EmailValidator
 import com.example.tasky.core.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -86,8 +86,8 @@ data class LoginState(
     val passwordValue: String = "",
     val showPassword: Boolean = false,
     val errorMessage: String? = null,
-    val onLoginSucceed: Boolean? = true,
-    val navigateToSignUp: Boolean? = true
+    val onLoginSucceed: Boolean? = null,
+    val navigateToSignUp: Boolean? = null
 )
 
 sealed class LoginEvent {
