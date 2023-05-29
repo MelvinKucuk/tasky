@@ -13,12 +13,8 @@ class JWTInterceptor @Inject constructor(
         val token = userCache.getUser()?.token
         val request = chain.request().newBuilder()
         token?.let {
-            request.addHeader(authorization, "Bearer $it")
+            request.addHeader("Authorization", "Bearer $it")
         }
         return chain.proceed(request.build())
-    }
-
-    companion object {
-        private const val authorization = "Authorization"
     }
 }
