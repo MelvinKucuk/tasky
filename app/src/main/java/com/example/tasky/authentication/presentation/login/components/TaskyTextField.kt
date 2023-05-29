@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.tasky.R
@@ -34,12 +33,12 @@ import com.example.tasky.ui.theme.Red
 
 @Composable
 fun TaskyTextField(
-    value: TextFieldValue,
+    value: String,
     modifier: Modifier = Modifier,
     isValidEmail: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
-    onValueChange: (TextFieldValue) -> Unit,
+    onValueChange: (String) -> Unit,
 ) {
     BaseTaskyTextField(
         modifier = modifier,
@@ -53,13 +52,13 @@ fun TaskyTextField(
 
 @Composable
 fun TaskyPasswordTextField(
-    value: TextFieldValue,
+    value: String,
     modifier: Modifier = Modifier,
     showPassword: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
     onShowPasswordChange: (Boolean) -> Unit = {},
-    onValueChange: (TextFieldValue) -> Unit,
+    onValueChange: (String) -> Unit,
 ) {
     BaseTaskyTextField(
         modifier = modifier,
@@ -75,14 +74,14 @@ fun TaskyPasswordTextField(
 
 @Composable
 private fun BaseTaskyTextField(
-    value: TextFieldValue,
+    value: String,
     modifier: Modifier = Modifier,
     isPassword: Boolean = false,
     isValidEmail: Boolean = false,
     showPassword: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
-    onValueChange: (TextFieldValue) -> Unit,
+    onValueChange: (String) -> Unit,
     onShowPasswordChange: (Boolean) -> Unit = {}
 ) {
     OutlinedTextField(
@@ -91,7 +90,7 @@ private fun BaseTaskyTextField(
             .padding(horizontal = 16.dp),
         value = value,
         onValueChange = {
-            onValueChange(value)
+            onValueChange(it)
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = keyboardType,
