@@ -1,4 +1,4 @@
-package com.example.tasky.authentication.presentation.login.components
+package com.example.tasky.authentication.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,12 +23,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.tasky.R
 import com.example.tasky.ui.theme.DarkGray
 import com.example.tasky.ui.theme.Gray
 import com.example.tasky.ui.theme.Gray2
 import com.example.tasky.ui.theme.Green
 import com.example.tasky.ui.theme.LightBlue2
+import com.example.tasky.ui.theme.LightGray
 import com.example.tasky.ui.theme.LightGray2
 import com.example.tasky.ui.theme.Red
 
@@ -35,7 +38,8 @@ import com.example.tasky.ui.theme.Red
 fun TaskyTextField(
     value: String,
     modifier: Modifier = Modifier,
-    isValidEmail: Boolean = false,
+    placeholder: String? = null,
+    isValid: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
     onValueChange: (String) -> Unit,
@@ -43,8 +47,9 @@ fun TaskyTextField(
     BaseTaskyTextField(
         modifier = modifier,
         value = value,
+        placeholder = placeholder,
         onValueChange = onValueChange,
-        isValidEmail = isValidEmail,
+        isValid = isValid,
         keyboardType = keyboardType,
         imeAction = imeAction
     )
@@ -54,6 +59,7 @@ fun TaskyTextField(
 fun TaskyPasswordTextField(
     value: String,
     modifier: Modifier = Modifier,
+    placeholder: String? = null,
     showPassword: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
@@ -63,6 +69,7 @@ fun TaskyPasswordTextField(
     BaseTaskyTextField(
         modifier = modifier,
         value = value,
+        placeholder = placeholder,
         isPassword = true,
         showPassword = showPassword,
         onValueChange = onValueChange,
@@ -76,8 +83,9 @@ fun TaskyPasswordTextField(
 private fun BaseTaskyTextField(
     value: String,
     modifier: Modifier = Modifier,
+    placeholder: String? = null,
     isPassword: Boolean = false,
-    isValidEmail: Boolean = false,
+    isValid: Boolean = false,
     showPassword: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
@@ -89,6 +97,15 @@ private fun BaseTaskyTextField(
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         value = value,
+        placeholder = {
+            if (placeholder != null) {
+                Text(
+                    text = placeholder,
+                    color = LightGray,
+                    fontSize = 16.sp
+                )
+            }
+        },
         onValueChange = {
             onValueChange(it)
         },
@@ -109,10 +126,10 @@ private fun BaseTaskyTextField(
             focusedLeadingIconColor = Gray,
             focusedContainerColor = LightGray2,
             focusedIndicatorColor = LightBlue2,
-            focusedTrailingIconColor = if (isValidEmail) Green else Gray2,
+            focusedTrailingIconColor = if (isValid) Green else Gray2,
             unfocusedContainerColor = LightGray2,
             unfocusedIndicatorColor = Color.Transparent,
-            unfocusedTrailingIconColor = if (isValidEmail) Green else Gray2,
+            unfocusedTrailingIconColor = if (isValid) Green else Gray2,
             cursorColor = DarkGray
         ),
         trailingIcon = {
@@ -120,7 +137,7 @@ private fun BaseTaskyTextField(
                 isPassword = isPassword,
                 onShowPasswordChange = onShowPasswordChange,
                 showPassword = showPassword,
-                isValidEmail = isValidEmail
+                isValid = isValid
             )
         },
         visualTransformation = if (!isPassword || showPassword)
@@ -135,7 +152,7 @@ private fun TextFieldTrailingIcon(
     isPassword: Boolean,
     onShowPasswordChange: (Boolean) -> Unit,
     showPassword: Boolean,
-    isValidEmail: Boolean
+    isValid: Boolean
 ) {
     when {
         isPassword -> IconButton(onClick = { onShowPasswordChange(!showPassword) }) {
@@ -151,7 +168,7 @@ private fun TextFieldTrailingIcon(
             )
         }
 
-        isValidEmail -> Icon(
+        isValid -> Icon(
             painter = painterResource(id = R.drawable.ic_valid),
             contentDescription = stringResource(R.string.success_icon)
         )
