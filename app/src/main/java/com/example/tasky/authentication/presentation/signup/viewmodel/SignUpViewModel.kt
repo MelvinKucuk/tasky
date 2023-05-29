@@ -4,13 +4,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.tasky.authentication.domain.AuthenticationRepository
 import com.example.tasky.authentication.domain.FormValidator
+import com.example.tasky.core.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val formValidator: FormValidator
+    private val formValidator: FormValidator,
+    private val authenticationRepository: AuthenticationRepository,
 ) : ViewModel() {
 
     var state by mutableStateOf(SignUpState())
@@ -59,17 +64,38 @@ class SignUpViewModel @Inject constructor(
                         return
                     }
 
+                    state = state.copy(isLoading = true)
 
-                    state = state.copy(
-                        onSignUpSucceed = true,
-                        isLoading = false
-                    )
+                    viewModelScope.launch {
+                        val result = authenticationRepository.registerUser(
+                            fullName = state.nameValue,
+                            email = state.emailValue,
+                            password = state.passwordValue
+                        )
+
+                        state = when (result) {
+                            is Resource.Success -> {
+                                state.copy(
+                                    onSignUpSucceed = true,
+                                    isLoading = false
+                                )
+                            }
+
+                            is Resource.Error -> {
+                                state.copy(
+                                    errorMessage = result.errorMessage,
+                                    isLoading = false
+                                )
+                            }
+                        }
+                    }
                 }
             }
 
+            SignUpEvent.OnBackClicked -> state = state.copy(navigateBack = true)
             SignUpEvent.BackNavigated -> state = state.copy(navigateBack = null)
             SignUpEvent.ErrorShown -> state = state.copy(errorMessage = null)
-            SignUpEvent.OnBackClicked -> state = state.copy(navigateBack = null)
+            SignUpEvent.SignUpNavigated -> state = state.copy(onSignUpSucceed = null)
         }
     }
 }
@@ -96,4 +122,5 @@ sealed class SignUpEvent {
     object OnBackClicked : SignUpEvent()
     object ErrorShown : SignUpEvent()
     object BackNavigated : SignUpEvent()
+    object SignUpNavigated : SignUpEvent()
 }

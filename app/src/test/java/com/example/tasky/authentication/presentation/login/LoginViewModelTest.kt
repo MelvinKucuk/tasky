@@ -1,7 +1,7 @@
 package com.example.tasky.authentication.presentation.login
 
 import com.example.tasky.MainCoroutineRule
-import com.example.tasky.authentication.data.remote.LoginResponse
+import com.example.tasky.authentication.data.remote.login.LoginResponse
 import com.example.tasky.authentication.domain.AuthenticationRepository
 import com.example.tasky.authentication.domain.EmailValidator
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginEvent
