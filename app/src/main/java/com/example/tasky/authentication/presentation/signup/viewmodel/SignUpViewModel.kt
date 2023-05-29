@@ -4,11 +4,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.tasky.authentication.domain.FormValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor() : ViewModel() {
+class SignUpViewModel @Inject constructor(
+    private val formValidator: FormValidator
+) : ViewModel() {
 
     var state by mutableStateOf(SignUpState())
         private set
@@ -16,11 +19,19 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
     fun onEvent(event: SignUpEvent) {
         when (event) {
             is SignUpEvent.OnEmailValueChanged -> {
-                state = state.copy(emailValue = event.emailValue)
+                val isValid = formValidator.emailValidator.validateEmail(event.emailValue)
+                state = state.copy(
+                    emailValue = event.emailValue,
+                    isValidEmail = isValid
+                )
             }
 
             is SignUpEvent.OnNameValueChanged -> {
-                state = state.copy(nameValue = event.nameValue)
+                val isValid = formValidator.nameValidator.validateName(event.nameValue)
+                state = state.copy(
+                    nameValue = event.nameValue,
+                    isValidName = isValid
+                )
             }
 
             is SignUpEvent.OnPasswordValueChanged -> {
@@ -32,8 +43,28 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
             }
 
             SignUpEvent.OnSignUpClicked -> {
-                // TODO
-                state = state.copy(onSignUpSucceed = true)
+                if (!state.isLoading) {
+                    if (!state.isValidName) {
+                        state = state.copy(errorMessage = "Invalid name")
+                        return
+                    }
+
+                    if (!state.isValidEmail) {
+                        state = state.copy(errorMessage = "Invalid email")
+                        return
+                    }
+
+                    if (!formValidator.passwordValidator.validatePassword(state.passwordValue)) {
+                        state = state.copy(errorMessage = "Invalid password")
+                        return
+                    }
+
+
+                    state = state.copy(
+                        onSignUpSucceed = true,
+                        isLoading = false
+                    )
+                }
             }
 
             SignUpEvent.BackNavigated -> state = state.copy(navigateBack = null)
