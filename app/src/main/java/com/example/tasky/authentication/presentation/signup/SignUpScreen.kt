@@ -83,8 +83,8 @@ fun SignUpScreen(
                         placeholder = stringResource(R.string.name),
                         imeAction = ImeAction.Next,
                         isValid = signUpState.isValidName
-                    ) { emailValue ->
-                        onSignUpEvent(SignUpEvent.OnNameValueChanged(emailValue))
+                    ) { nameValue ->
+                        onSignUpEvent(SignUpEvent.OnNameValueChanged(nameValue))
                     }
                     Spacer(modifier = Modifier.size(16.dp))
 

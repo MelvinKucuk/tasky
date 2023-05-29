@@ -18,8 +18,8 @@ import com.example.tasky.ui.theme.Black
 @Composable
 fun ButtonWithLoader(
     text: String,
-    modifier: Modifier = Modifier,
     isLoading: Boolean,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
 ) {
     Button(

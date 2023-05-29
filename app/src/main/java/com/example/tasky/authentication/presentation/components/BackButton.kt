@@ -20,10 +20,13 @@ import com.example.tasky.R
 import com.example.tasky.ui.theme.Black
 
 @Composable
-fun BackButton(onClick: () -> Unit) {
+fun BackButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     val roundedCornerShape = RoundedCornerShape(15.dp)
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(56.dp)
             .background(
                 color = Black,
