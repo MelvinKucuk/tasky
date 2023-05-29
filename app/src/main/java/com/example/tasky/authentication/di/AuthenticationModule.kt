@@ -1,5 +1,6 @@
 package com.example.tasky.authentication.di
 
+import com.example.tasky.authentication.data.EmailValidatorImpl
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
@@ -7,6 +8,7 @@ import com.example.tasky.authentication.data.local.UserCacheImpl
 import com.example.tasky.authentication.data.remote.AuthenticationRepositoryImpl
 import com.example.tasky.authentication.data.remote.LoginService
 import com.example.tasky.authentication.domain.AuthenticationRepository
+import com.example.tasky.authentication.domain.EmailValidator
 import com.example.tasky.authentication.domain.UserCache
 import dagger.Binds
 import dagger.Module
@@ -34,6 +36,9 @@ class AuthenticationModule {
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class AuthenticationModuleBinds {
+
+    @Binds
+    abstract fun bindsEmailValidator(emailValidatorImpl: EmailValidatorImpl): EmailValidator
 
     @Binds
     abstract fun bindsAuthenticationRepository(authenticationRepositoryImpl: AuthenticationRepositoryImpl): AuthenticationRepository
