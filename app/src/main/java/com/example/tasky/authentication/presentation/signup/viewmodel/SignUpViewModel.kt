@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tasky.authentication.domain.AuthenticationRepository
-import com.example.tasky.authentication.domain.FormValidator
+import com.example.tasky.authentication.domain.SignUpFormValidator
 import com.example.tasky.core.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val formValidator: FormValidator,
+    private val formValidator: SignUpFormValidator,
     private val authenticationRepository: AuthenticationRepository,
 ) : ViewModel() {
 
@@ -24,7 +24,7 @@ class SignUpViewModel @Inject constructor(
     fun onEvent(event: SignUpEvent) {
         when (event) {
             is SignUpEvent.OnEmailValueChanged -> {
-                val isValid = formValidator.emailValidator.validateEmail(event.emailValue)
+                val isValid = formValidator.emailValidator(event.emailValue)
                 state = state.copy(
                     emailValue = event.emailValue,
                     isValidEmail = isValid
@@ -32,7 +32,7 @@ class SignUpViewModel @Inject constructor(
             }
 
             is SignUpEvent.OnNameValueChanged -> {
-                val isValid = formValidator.nameValidator.validateName(event.nameValue)
+                val isValid = formValidator.nameValidator(event.nameValue)
                 state = state.copy(
                     nameValue = event.nameValue,
                     isValidName = isValid
@@ -59,7 +59,7 @@ class SignUpViewModel @Inject constructor(
                         return
                     }
 
-                    if (!formValidator.passwordValidator.validatePassword(state.passwordValue)) {
+                    if (!formValidator.passwordValidator(state.passwordValue)) {
                         state = state.copy(errorMessage = "Invalid password")
                         return
                     }

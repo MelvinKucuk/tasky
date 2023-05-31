@@ -31,14 +31,29 @@ import com.example.tasky.authentication.presentation.components.TaskyPasswordTex
 import com.example.tasky.authentication.presentation.components.TaskyTextField
 import com.example.tasky.authentication.presentation.signup.viewmodel.SignUpEvent
 import com.example.tasky.authentication.presentation.signup.viewmodel.SignUpState
+import com.example.tasky.core.util.ObserveBoolean
+import com.example.tasky.core.util.ObserveError
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.TaskyTheme
 
 @Composable
 fun SignUpScreen(
     signUpState: SignUpState,
-    onSignUpEvent: (SignUpEvent) -> Unit
+    onSignUpEvent: (SignUpEvent) -> Unit,
+    onNavigation: (SignUpNavigation) -> Unit
 ) {
+    ObserveError(signUpState.errorMessage) {
+        onSignUpEvent(SignUpEvent.ErrorShown)
+    }
+    ObserveBoolean(signUpState.navigateBack) {
+        onNavigation(SignUpNavigation.Back)
+        onSignUpEvent(SignUpEvent.BackNavigated)
+    }
+    ObserveBoolean(signUpState.onSignUpSucceed) {
+        onNavigation(SignUpNavigation.Back)
+        onSignUpEvent(SignUpEvent.SignUpNavigated)
+    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Black,
@@ -133,10 +148,15 @@ fun SignUpScreen(
     }
 }
 
+sealed class SignUpNavigation {
+    object Back : SignUpNavigation()
+    object Login : SignUpNavigation()
+}
+
 @Preview
 @Composable
 fun SignUpScreenPreview() {
     TaskyTheme {
-        SignUpScreen(SignUpState()) {}
+        SignUpScreen(SignUpState(), onSignUpEvent = {}) {}
     }
 }

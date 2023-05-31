@@ -15,7 +15,7 @@ class NameValidatorTest {
 
     @Test
     fun `validate that it fails when the name has less than 4 characters`() {
-        val result = nameValidator.validateName("pep")
+        val result = nameValidator("pep")
 
         assertFalse(result)
     }
@@ -23,14 +23,14 @@ class NameValidatorTest {
     @Test
     fun `validate that it fails when the name has more than 50 characters`() {
         val result =
-            nameValidator.validateName("pepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepe")
+            nameValidator("pepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepepe")
 
         assertFalse(result)
     }
 
     @Test
     fun `validate that it succeed when the name has is in between 4 and 50 characters`() {
-        val result = nameValidator.validateName("Juancito Perez")
+        val result = nameValidator("Juancito Perez")
 
         assert(result)
     }

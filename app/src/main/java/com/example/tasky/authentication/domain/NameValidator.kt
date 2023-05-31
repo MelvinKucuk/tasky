@@ -4,6 +4,6 @@ import javax.inject.Inject
 
 class NameValidator @Inject constructor() {
 
-    fun validateName(name: String) =
+    operator fun invoke(name: String) =
         name.length in (4..50)
 }
