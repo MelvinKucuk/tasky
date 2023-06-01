@@ -30,8 +30,6 @@ import com.example.tasky.authentication.presentation.components.TaskyPasswordTex
 import com.example.tasky.authentication.presentation.components.TaskyTextField
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginEvent
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginState
-import com.example.tasky.core.util.ObserveBoolean
-import com.example.tasky.core.util.ObserveError
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.LightBlue
 import com.example.tasky.ui.theme.LightGray
@@ -40,21 +38,8 @@ import com.example.tasky.ui.theme.TaskyTheme
 @Composable
 fun LoginScreen(
     loginState: LoginState,
-    onLoginEvent: (LoginEvent) -> Unit,
-    onNavigation: (LoginNavigation) -> Unit
+    onLoginEvent: (LoginEvent) -> Unit
 ) {
-    ObserveError(loginState.errorMessage) {
-        onLoginEvent(LoginEvent.ErrorShown)
-    }
-    ObserveBoolean(loginState.onLoginSucceed) {
-        onLoginEvent(LoginEvent.LoginNavigated)
-        onNavigation(LoginNavigation.Agenda)
-    }
-    ObserveBoolean(loginState.navigateToSignUp) {
-        onLoginEvent(LoginEvent.SignUpNavigated)
-        onNavigation(LoginNavigation.SignUp)
-    }
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Black,
@@ -153,11 +138,6 @@ fun LoginScreen(
     }
 }
 
-sealed class LoginNavigation {
-    object SignUp : LoginNavigation()
-    object Agenda : LoginNavigation()
-}
-
 @Preview
 @Composable
 fun LoginScreenPreview() {
@@ -165,6 +145,6 @@ fun LoginScreenPreview() {
         LoginScreen(
             loginState = LoginState(),
             onLoginEvent = {}
-        ) {}
+        )
     }
 }

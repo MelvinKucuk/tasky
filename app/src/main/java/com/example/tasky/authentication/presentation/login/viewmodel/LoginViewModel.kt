@@ -42,7 +42,10 @@ class LoginViewModel @Inject constructor(
                 }
 
                 if (!formValidator.passwordValidator(state.passwordValue)) {
-                    state = state.copy(errorMessage = "Invalid password")
+                    state = state.copy(
+                        errorMessage = "Invalid password. It must be at least " +
+                                "9 characters long, have 1 lower case, 1 upper case, and 1 number"
+                    )
                     return
                 }
 

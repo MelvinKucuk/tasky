@@ -1,4 +1,4 @@
-package com.example.tasky.core
+package com.example.tasky
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,7 +8,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.tasky.authentication.presentation.login.LoginScreen
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginState
-import com.example.tasky.core.navigation.TaskyNavigation
 import com.example.tasky.ui.theme.TaskyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
