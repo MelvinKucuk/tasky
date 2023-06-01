@@ -48,48 +48,48 @@ class SignUpViewModel @Inject constructor(
             }
 
             SignUpEvent.OnSignUpClicked -> {
-                if (!state.isLoading) {
-                    if (!state.isValidName) {
-                        state = state.copy(errorMessage = "Invalid name")
-                        return
-                    }
+                if (state.isLoading) return
 
-                    if (!state.isValidEmail) {
-                        state = state.copy(errorMessage = "Invalid email")
-                        return
-                    }
+                if (!state.isValidName) {
+                    state = state.copy(errorMessage = "Invalid name")
+                    return
+                }
 
-                    if (!formValidator.passwordValidator(state.passwordValue)) {
-                        state = state.copy(
-                            errorMessage = "Invalid password. It must be at least " +
-                                    "9 characters long, have 1 lower case, 1 upper case, and 1 number"
-                        )
-                        return
-                    }
+                if (!state.isValidEmail) {
+                    state = state.copy(errorMessage = "Invalid email")
+                    return
+                }
 
-                    state = state.copy(isLoading = true)
+                if (!formValidator.passwordValidator(state.passwordValue)) {
+                    state = state.copy(
+                        errorMessage = "Invalid password. It must be at least " +
+                                "9 characters long, have 1 lower case, 1 upper case, and 1 number"
+                    )
+                    return
+                }
 
-                    viewModelScope.launch {
-                        val result = authenticationRepository.registerUser(
-                            fullName = state.nameValue,
-                            email = state.emailValue,
-                            password = state.passwordValue
-                        )
+                state = state.copy(isLoading = true)
 
-                        state = when (result) {
-                            is Resource.Success -> {
-                                state.copy(
-                                    onSignUpSucceed = true,
-                                    isLoading = false
-                                )
-                            }
+                viewModelScope.launch {
+                    val result = authenticationRepository.registerUser(
+                        fullName = state.nameValue,
+                        email = state.emailValue,
+                        password = state.passwordValue
+                    )
 
-                            is Resource.Error -> {
-                                state.copy(
-                                    errorMessage = result.errorMessage,
-                                    isLoading = false
-                                )
-                            }
+                    state = when (result) {
+                        is Resource.Success -> {
+                            state.copy(
+                                onSignUpSucceed = true,
+                                isLoading = false
+                            )
+                        }
+
+                        is Resource.Error -> {
+                            state.copy(
+                                errorMessage = result.errorMessage,
+                                isLoading = false
+                            )
                         }
                     }
                 }
