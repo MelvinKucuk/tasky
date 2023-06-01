@@ -43,7 +43,7 @@ fun LoginScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = Black,
-        ) {
+    ) {
         Column(
             Modifier
                 .fillMaxSize()

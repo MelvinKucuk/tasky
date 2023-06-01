@@ -1,4 +1,4 @@
-package com.example.tasky.authentication.data.remote
+package com.example.tasky.authentication.data.remote.login
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

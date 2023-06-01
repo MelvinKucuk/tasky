@@ -133,10 +133,15 @@ fun SignUpScreen(
     }
 }
 
+sealed class SignUpNavigation {
+    object Back : SignUpNavigation()
+    object Login : SignUpNavigation()
+}
+
 @Preview
 @Composable
 fun SignUpScreenPreview() {
     TaskyTheme {
-        SignUpScreen(SignUpState()) {}
+        SignUpScreen(SignUpState(), onSignUpEvent = {})
     }
 }

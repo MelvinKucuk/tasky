@@ -4,11 +4,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.tasky.authentication.domain.AuthenticationRepository
+import com.example.tasky.authentication.domain.SignUpFormValidator
+import com.example.tasky.core.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignUpViewModel @Inject constructor() : ViewModel() {
+class SignUpViewModel @Inject constructor(
+    private val formValidator: SignUpFormValidator,
+    private val authenticationRepository: AuthenticationRepository,
+) : ViewModel() {
 
     var state by mutableStateOf(SignUpState())
         private set
@@ -16,11 +24,19 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
     fun onEvent(event: SignUpEvent) {
         when (event) {
             is SignUpEvent.OnEmailValueChanged -> {
-                state = state.copy(emailValue = event.emailValue)
+                val isValid = formValidator.emailValidator(event.emailValue)
+                state = state.copy(
+                    emailValue = event.emailValue,
+                    isValidEmail = isValid
+                )
             }
 
             is SignUpEvent.OnNameValueChanged -> {
-                state = state.copy(nameValue = event.nameValue)
+                val isValid = formValidator.nameValidator(event.nameValue)
+                state = state.copy(
+                    nameValue = event.nameValue,
+                    isValidName = isValid
+                )
             }
 
             is SignUpEvent.OnPasswordValueChanged -> {
@@ -32,13 +48,57 @@ class SignUpViewModel @Inject constructor() : ViewModel() {
             }
 
             SignUpEvent.OnSignUpClicked -> {
-                // TODO
-                state = state.copy(onSignUpSucceed = true)
+                if (state.isLoading) return
+
+                if (!state.isValidName) {
+                    state = state.copy(errorMessage = "Invalid name")
+                    return
+                }
+
+                if (!state.isValidEmail) {
+                    state = state.copy(errorMessage = "Invalid email")
+                    return
+                }
+
+                if (!formValidator.passwordValidator(state.passwordValue)) {
+                    state = state.copy(
+                        errorMessage = "Invalid password. It must be at least " +
+                                "9 characters long, have 1 lower case, 1 upper case, and 1 number"
+                    )
+                    return
+                }
+
+                state = state.copy(isLoading = true)
+
+                viewModelScope.launch {
+                    val result = authenticationRepository.registerUser(
+                        fullName = state.nameValue,
+                        email = state.emailValue,
+                        password = state.passwordValue
+                    )
+
+                    state = when (result) {
+                        is Resource.Success -> {
+                            state.copy(
+                                onSignUpSucceed = true,
+                                isLoading = false
+                            )
+                        }
+
+                        is Resource.Error -> {
+                            state.copy(
+                                errorMessage = result.errorMessage,
+                                isLoading = false
+                            )
+                        }
+                    }
+                }
             }
 
+            SignUpEvent.OnBackClicked -> state = state.copy(navigateBack = true)
             SignUpEvent.BackNavigated -> state = state.copy(navigateBack = null)
             SignUpEvent.ErrorShown -> state = state.copy(errorMessage = null)
-            SignUpEvent.OnBackClicked -> state = state.copy(navigateBack = null)
+            SignUpEvent.SignUpNavigated -> state = state.copy(onSignUpSucceed = null)
         }
     }
 }
@@ -65,4 +125,5 @@ sealed class SignUpEvent {
     object OnBackClicked : SignUpEvent()
     object ErrorShown : SignUpEvent()
     object BackNavigated : SignUpEvent()
+    object SignUpNavigated : SignUpEvent()
 }
