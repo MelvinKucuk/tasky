@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.example.tasky.agenda.presentation.model.Agenda
 import com.example.tasky.agenda.presentation.model.Day
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,5 +19,6 @@ class AgendaViewModel @Inject constructor() : ViewModel() {
 data class AgendaState(
     val selectedMonth: String = "",
     val userInitials: String = "",
-    val days: List<Day> = listOf()
+    val days: List<Day> = listOf(),
+    val agendaItems: List<Agenda> = listOf()
 )

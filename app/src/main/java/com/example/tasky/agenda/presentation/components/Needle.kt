@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tasky.ui.theme.Black
 
@@ -18,7 +19,12 @@ fun Needle(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 14.dp, end = 8.dp),
+            .padding(
+                start = 14.dp,
+                end = 8.dp,
+                top = 2.dp,
+                bottom = 2.dp
+            ),
         contentAlignment = Alignment.CenterStart
     ) {
         Box(
@@ -36,4 +42,10 @@ fun Needle(modifier: Modifier = Modifier) {
                 .background(color = Black)
         )
     }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFF)
+@Composable
+fun NeedlePreview() {
+    Needle()
 }

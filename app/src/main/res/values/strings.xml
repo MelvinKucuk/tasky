@@ -15,4 +15,7 @@
     <string name="back_icon">back icon</string>
     <string name="account_created">Account created!</string>
     <string name="dropdown_arrow">dropdown arrow</string>
+    <string name="today">Today</string>
+    <string name="agenda_item_check">agenda item check</string>
+    <string name="agenda_item_more_options">agenda item more options</string>
 </resources>

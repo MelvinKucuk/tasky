@@ -82,6 +82,7 @@ fun DayPillSelectedPreview() {
             Day(
                 letter = "S",
                 number = "5",
+                isSelected = true
             )
         )
     }
