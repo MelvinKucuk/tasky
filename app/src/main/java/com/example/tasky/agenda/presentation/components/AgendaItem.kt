@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -118,25 +119,26 @@ fun AgendaItem(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                if (isTask) {
-                    Column {
-                        Spacer(modifier = Modifier.size(5.dp))
-                        Icon(
-                            modifier = Modifier
-                                .size(20.dp)
-                                .toggleable(value = isDone) { isDone ->
-                                    onDoneClicked(isDone)
-                                },
-                            imageVector =
-                            if (isDone)
-                                Icons.Outlined.CheckCircle
-                            else
-                                Icons.Outlined.Circle,
-                            contentDescription = stringResource(
-                                R.string.agenda_item_check
-                            ),
-                        )
-                    }
+                Column {
+                    Spacer(modifier = Modifier.size(5.dp))
+                    Icon(
+                        modifier = Modifier
+                            .size(20.dp)
+                            .then(
+                                if (isTask) {
+                                    Modifier.toggleable(value = isDone) { isDone ->
+                                        onDoneClicked(isDone)
+                                    }
+                                } else Modifier),
+                        imageVector =
+                        if (isDone)
+                            Icons.Outlined.CheckCircle
+                        else
+                            Icons.Outlined.Circle,
+                        contentDescription = stringResource(
+                            R.string.agenda_item_check
+                        ),
+                    )
                 }
                 Column(
                     modifier = Modifier
@@ -158,6 +160,8 @@ fun AgendaItem(
                     Text(
                         text = description,
                         fontSize = 14.sp,
+                        maxLines = 4,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 Column {
@@ -213,7 +217,7 @@ fun AgendaItemBigDescriptionPreview() {
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-fun AgendaItemDonePreview() {
+fun AgendaItemTaskDonePreview() {
     AgendaItem(
         title = "Project X",
         description = "Just work",
@@ -226,12 +230,11 @@ fun AgendaItemDonePreview() {
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
 @Composable
-fun AgendaItemTaskPreview() {
+fun AgendaItemTaskNotDonePreview() {
     AgendaItem(
         title = "Project X",
         description = "Just work",
         date = "Mar 5, 10:00",
-        isDone = true,
         isTask = true,
         onDoneClicked = {}
     ) {}

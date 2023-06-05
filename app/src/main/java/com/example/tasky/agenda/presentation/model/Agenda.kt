@@ -1,19 +1,19 @@
 package com.example.tasky.agenda.presentation.model
 
 sealed class Agenda {
-    class Event(
+    data class Event(
         val title: String = "",
         val description: String = "",
         val date: String = "",
     ) : Agenda()
 
-    class Reminder(
+    data class Reminder(
         val title: String = "",
         val description: String = "",
         val date: String = "",
     ) : Agenda()
 
-    class Task(
+    data class Task(
         val title: String = "",
         val description: String = "",
         val date: String = "",
