@@ -33,10 +33,68 @@ import com.example.tasky.agenda.presentation.model.Agenda
 import com.example.tasky.ui.theme.Green
 
 @Composable
-fun AgendaItem(
-    agendaItem: Agenda.AgendaUI,
+fun EventItem(
+    event: Agenda.Event,
     onDoneClicked: (Boolean) -> Unit,
+    onMoreOptionsClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AgendaItem(
+        title = event.title,
+        description = event.description,
+        date = event.date,
+        onDoneClicked = onDoneClicked,
+        onMoreOptionsClicked = onMoreOptionsClicked,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun ReminderItem(
+    reminder: Agenda.Reminder,
+    onDoneClicked: (Boolean) -> Unit,
+    onMoreOptionsClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AgendaItem(
+        title = reminder.title,
+        description = reminder.description,
+        date = reminder.date,
+        onDoneClicked = onDoneClicked,
+        onMoreOptionsClicked = onMoreOptionsClicked,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun TaskItem(
+    task: Agenda.Task,
+    onDoneClicked: (Boolean) -> Unit,
+    onMoreOptionsClicked: () -> Unit,
     modifier: Modifier = Modifier,
+    isDone: Boolean = false,
+) {
+    AgendaItem(
+        title = task.title,
+        description = task.description,
+        date = task.date,
+        onDoneClicked = onDoneClicked,
+        onMoreOptionsClicked = onMoreOptionsClicked,
+        isTask = true,
+        isDone = isDone,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun AgendaItem(
+    title: String,
+    description: String,
+    date: String,
+    modifier: Modifier = Modifier,
+    isTask: Boolean = false,
+    isDone: Boolean = false,
+    onDoneClicked: (Boolean) -> Unit,
     onMoreOptionsClicked: () -> Unit
 ) {
     Card(
@@ -60,23 +118,25 @@ fun AgendaItem(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Column {
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Icon(
-                        modifier = Modifier
-                            .size(20.dp)
-                            .toggleable(value = agendaItem.isDone) { isDone ->
-                                onDoneClicked(isDone)
-                            },
-                        imageVector =
-                        if (agendaItem.isDone)
-                            Icons.Outlined.CheckCircle
-                        else
-                            Icons.Outlined.Circle,
-                        contentDescription = stringResource(
-                            R.string.agenda_item_check
-                        ),
-                    )
+                if (isTask) {
+                    Column {
+                        Spacer(modifier = Modifier.size(5.dp))
+                        Icon(
+                            modifier = Modifier
+                                .size(20.dp)
+                                .toggleable(value = isDone) { isDone ->
+                                    onDoneClicked(isDone)
+                                },
+                            imageVector =
+                            if (isDone)
+                                Icons.Outlined.CheckCircle
+                            else
+                                Icons.Outlined.Circle,
+                            contentDescription = stringResource(
+                                R.string.agenda_item_check
+                            ),
+                        )
+                    }
                 }
                 Column(
                     modifier = Modifier
@@ -84,11 +144,11 @@ fun AgendaItem(
                         .weight(1f)
                 ) {
                     Text(
-                        text = agendaItem.title,
+                        text = title,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         textDecoration =
-                        if (agendaItem.isDone)
+                        if (isDone)
                             TextDecoration.LineThrough
                         else null
                     )
@@ -96,7 +156,7 @@ fun AgendaItem(
                     Spacer(modifier = Modifier.height(15.dp))
 
                     Text(
-                        text = agendaItem.description,
+                        text = description,
                         fontSize = 14.sp,
                     )
                 }
@@ -120,7 +180,7 @@ fun AgendaItem(
                 modifier = Modifier
                     .align(Alignment.End)
                     .padding(top = 7.dp),
-                text = "Mar 5, 10:30 - Mar 5, 11:00",
+                text = date,
                 fontSize = 14.sp
             )
         }
@@ -131,12 +191,10 @@ fun AgendaItem(
 @Composable
 fun AgendaItemPreview() {
     AgendaItem(
-        Agenda.AgendaUI(
-            title = "Project X",
-            description = "Just work",
-            date = "Mar 5, 10:00",
-            isDone = false
-        ),
+        title = "Project X",
+        description = "Just work",
+        date = "Mar 5, 10:00",
+        isDone = false,
         onDoneClicked = {}
     ) {}
 }
@@ -145,12 +203,10 @@ fun AgendaItemPreview() {
 @Composable
 fun AgendaItemBigDescriptionPreview() {
     AgendaItem(
-        Agenda.AgendaUI(
-            title = "Project X",
-            description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus leo et dolor ultrices, id vestibulum lectus lobortis. Nulla hendrerit ex vitae dui finibus porta. Vestibulum sit amet feugiat justo, fermentum finibus elit. Duis quis molestie lectus, at dapibus magna. Maecenas sagittis justo quis leo imperdiet, commodo cursus lacus aliquam.",
-            date = "Mar 5, 10:00",
-            isDone = false
-        ),
+        title = "Project X",
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus leo et dolor ultrices, id vestibulum lectus lobortis. Nulla hendrerit ex vitae dui finibus porta. Vestibulum sit amet feugiat justo, fermentum finibus elit. Duis quis molestie lectus, at dapibus magna. Maecenas sagittis justo quis leo imperdiet, commodo cursus lacus aliquam.",
+        date = "Mar 5, 10:00",
+        isDone = false,
         onDoneClicked = {}
     ) {}
 }
@@ -159,12 +215,24 @@ fun AgendaItemBigDescriptionPreview() {
 @Composable
 fun AgendaItemDonePreview() {
     AgendaItem(
-        Agenda.AgendaUI(
-            title = "Project X",
-            description = "Just work",
-            date = "Mar 5, 10:00",
-            isDone = true
-        ),
+        title = "Project X",
+        description = "Just work",
+        date = "Mar 5, 10:00",
+        isDone = true,
+        isTask = true,
+        onDoneClicked = {}
+    ) {}
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFF)
+@Composable
+fun AgendaItemTaskPreview() {
+    AgendaItem(
+        title = "Project X",
+        description = "Just work",
+        date = "Mar 5, 10:00",
+        isDone = true,
+        isTask = true,
         onDoneClicked = {}
     ) {}
 }

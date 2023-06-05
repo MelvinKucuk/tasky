@@ -32,11 +32,8 @@ fun DayPill(
     Box(
         modifier = modifier
             .size(width = 40.dp, height = 60.dp)
-            .background(
-                color = if (day.isSelected) Orange else White,
-                shape = CircleShape
-            )
             .clip(CircleShape)
+            .background(color = if (day.isSelected) Orange else White)
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
