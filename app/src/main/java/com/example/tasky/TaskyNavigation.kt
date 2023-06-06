@@ -7,7 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.tasky.agenda.presentation.AgendaScreen
-import com.example.tasky.agenda.presentation.viewmodel.AgendaState
+import com.example.tasky.agenda.presentation.viewmodel.AgendaViewModel
+import com.example.tasky.authentication.presentation.login.LoginScreen
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginEvent
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginViewModel
 import com.example.tasky.authentication.presentation.signup.SignUpScreen
@@ -40,11 +41,10 @@ fun TaskyNavigation(navController: NavHostController) {
                     navController.navigate(TaskyRoutes.SignUpScreen.route)
                 }
             }
-            AgendaScreen(state = AgendaState())
-            /*LoginScreen(
+            LoginScreen(
                 loginState = viewModel.state,
                 onLoginEvent = viewModel::onEvent
-            )*/
+            )
         }
 
         composable(TaskyRoutes.SignUpScreen.route) {
@@ -69,6 +69,12 @@ fun TaskyNavigation(navController: NavHostController) {
                 signUpState = viewModel.state,
                 onSignUpEvent = viewModel::onEvent
             )
+        }
+
+        composable(TaskyRoutes.AgendaScreen.route) {
+            val viewModel: AgendaViewModel = hiltViewModel()
+
+            AgendaScreen(state = viewModel.state)
         }
     }
 }
