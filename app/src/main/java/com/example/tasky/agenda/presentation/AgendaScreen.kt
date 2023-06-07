@@ -31,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
+import com.example.tasky.agenda.domain.model.Agenda
+import com.example.tasky.agenda.domain.model.Day
 import com.example.tasky.agenda.presentation.components.DayPill
 import com.example.tasky.agenda.presentation.components.EventItem
 import com.example.tasky.agenda.presentation.components.MonthButton
@@ -38,8 +40,6 @@ import com.example.tasky.agenda.presentation.components.Needle
 import com.example.tasky.agenda.presentation.components.ProfileButton
 import com.example.tasky.agenda.presentation.components.ReminderItem
 import com.example.tasky.agenda.presentation.components.TaskItem
-import com.example.tasky.agenda.presentation.model.Agenda
-import com.example.tasky.agenda.presentation.model.Day
 import com.example.tasky.agenda.presentation.viewmodel.AgendaState
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.TaskyTheme

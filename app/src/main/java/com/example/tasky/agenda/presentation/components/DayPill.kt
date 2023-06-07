@@ -18,9 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.tasky.agenda.presentation.model.Day
+import com.example.tasky.agenda.domain.model.Day
 import com.example.tasky.ui.theme.DarkGray
-import com.example.tasky.ui.theme.Gray2
+import com.example.tasky.ui.theme.Gray
 import com.example.tasky.ui.theme.Orange
 import com.example.tasky.ui.theme.TaskyTheme
 
@@ -43,7 +43,7 @@ fun DayPill(
                 modifier = Modifier.padding(top = 12.dp),
                 text = day.letter,
                 fontSize = 11.sp,
-                color = if (day.isSelected) DarkGray else Gray2,
+                color = if (day.isSelected) DarkGray else Gray,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.weight(1f))

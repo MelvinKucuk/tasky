@@ -1,4 +1,4 @@
-package com.example.tasky.agenda.presentation.model
+package com.example.tasky.agenda.domain.model
 
 data class Day(
     val letter: String,

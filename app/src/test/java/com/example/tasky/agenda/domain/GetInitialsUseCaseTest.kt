@@ -14,6 +14,15 @@ class GetInitialsUseCaseTest {
     }
 
     @Test
+    fun `check empty result when input is empty`() {
+        val givenName = ""
+
+        val result = getInitials(givenName)
+
+        assertEquals("", result)
+    }
+
+    @Test
     fun `check initials when there is only a name and no surname`() {
         val givenName = "Melvin"
 

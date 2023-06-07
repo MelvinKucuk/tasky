@@ -30,8 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
-import com.example.tasky.agenda.presentation.model.Agenda
+import com.example.tasky.agenda.domain.model.Agenda
+import com.example.tasky.ui.theme.DarkGreen
+import com.example.tasky.ui.theme.Gray
 import com.example.tasky.ui.theme.Green
+import com.example.tasky.ui.theme.LightGreen
 
 @Composable
 fun EventItem(
@@ -46,6 +49,7 @@ fun EventItem(
         date = event.date,
         onDoneClicked = onDoneClicked,
         onMoreOptionsClicked = onMoreOptionsClicked,
+        containerColor = LightGreen,
         modifier = modifier
     )
 }
@@ -63,6 +67,7 @@ fun ReminderItem(
         date = reminder.date,
         onDoneClicked = onDoneClicked,
         onMoreOptionsClicked = onMoreOptionsClicked,
+        containerColor = Gray,
         modifier = modifier
     )
 }
@@ -83,6 +88,7 @@ fun TaskItem(
         onMoreOptionsClicked = onMoreOptionsClicked,
         isTask = true,
         isDone = isDone,
+        containerColor = DarkGreen,
         modifier = modifier
     )
 }
@@ -93,6 +99,7 @@ fun AgendaItem(
     description: String,
     date: String,
     modifier: Modifier = Modifier,
+    containerColor: Color = Green,
     isTask: Boolean = false,
     isDone: Boolean = false,
     onDoneClicked: (Boolean) -> Unit,
@@ -103,7 +110,7 @@ fun AgendaItem(
             .fillMaxWidth()
             .padding(start = 14.dp, end = 8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Green,
+            containerColor = containerColor,
             contentColor = Color.White
         )
     ) {

@@ -8,8 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.DateGenerator
 import com.example.tasky.agenda.domain.GetInitialsUseCase
-import com.example.tasky.agenda.presentation.model.Agenda
-import com.example.tasky.agenda.presentation.model.Day
+import com.example.tasky.agenda.domain.model.Agenda
+import com.example.tasky.agenda.domain.model.Day
+import com.example.tasky.authentication.domain.UserCache
 import com.example.tasky.core.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class AgendaViewModel @Inject constructor(
     dateGenerator: DateGenerator,
     getInitials: GetInitialsUseCase,
+    userCache: UserCache,
     private val agendaRepository: AgendaRepository,
 ) : ViewModel() {
 
@@ -28,7 +30,7 @@ class AgendaViewModel @Inject constructor(
     init {
         state = state.copy(
             days = dateGenerator.getWeek(),
-            userInitials = getInitials(),
+            userInitials = getInitials(userCache.getUser()?.fullName),
             selectedMonth = dateGenerator.getMonth()
         )
         viewModelScope.launch {

@@ -1,14 +1,11 @@
 package com.example.tasky.agenda.domain
 
-import com.example.tasky.authentication.domain.UserCache
 import javax.inject.Inject
 
-class GetInitialsUseCase @Inject constructor(
-    private val userCache: UserCache
-) {
+class GetInitialsUseCase @Inject constructor() {
 
-    operator fun invoke(): String {
-        val name = userCache.getUser()?.fullName ?: return ""
+    operator fun invoke(name: String?): String {
+        if (name.isNullOrEmpty()) return ""
         val names = name.split(" ")
         val initials = names.map {
             if (names.size == 1) {

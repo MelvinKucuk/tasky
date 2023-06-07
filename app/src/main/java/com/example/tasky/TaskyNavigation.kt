@@ -20,7 +20,7 @@ import com.example.tasky.core.util.makeToast
 
 @Composable
 fun TaskyNavigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = TaskyRoutes.LoginScreen.route) {
+    NavHost(navController = navController, startDestination = TaskyRoutes.AgendaScreen.route) {
         composable(TaskyRoutes.LoginScreen.route) {
             val viewModel: LoginViewModel = hiltViewModel()
 
