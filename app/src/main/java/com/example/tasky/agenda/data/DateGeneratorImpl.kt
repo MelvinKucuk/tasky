@@ -1,7 +1,8 @@
 package com.example.tasky.agenda.data
 
 import com.example.tasky.agenda.domain.DateGenerator
-import com.example.tasky.agenda.presentation.model.Day
+import com.example.tasky.agenda.domain.model.Day
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Calendar.DAY_OF_MONTH
 import java.util.Locale
@@ -9,8 +10,9 @@ import javax.inject.Inject
 
 class DateGeneratorImpl @Inject constructor() : DateGenerator {
 
-    override fun getWeek(): List<Day> {
+    override fun getWeek(date: LocalDate): List<Day> {
         val calendar = Calendar.getInstance()
+        calendar.set(date.year, date.month.ordinal, date.dayOfMonth)
         val daysOfWeek = mutableListOf<Day>()
 
         for (i in 1..7) {
