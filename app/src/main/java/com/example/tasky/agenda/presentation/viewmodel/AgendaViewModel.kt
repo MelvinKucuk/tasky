@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.DateGenerator
 import com.example.tasky.agenda.domain.GetInitialsUseCase
-import com.example.tasky.agenda.domain.model.Agenda
+import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.Day
 import com.example.tasky.authentication.domain.UserCache
 import com.example.tasky.core.data.Resource
@@ -49,5 +49,5 @@ data class AgendaState(
     val selectedMonth: String = "",
     val userInitials: String = "",
     val days: List<Day> = listOf(),
-    val agendaItems: List<Agenda> = listOf()
+    val agendaItems: List<AgendaItem> = listOf()
 )

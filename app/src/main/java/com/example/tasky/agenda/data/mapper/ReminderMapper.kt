@@ -1,10 +1,10 @@
 package com.example.tasky.agenda.data.mapper
 
 import com.example.tasky.agenda.data.remote.model.ReminderResponse
-import com.example.tasky.agenda.domain.model.Agenda
+import com.example.tasky.agenda.domain.model.AgendaItem
 
 fun ReminderResponse.toDomain() =
-    Agenda.Reminder(
+    AgendaItem.Reminder(
         id = id,
         title = title,
         description = description,

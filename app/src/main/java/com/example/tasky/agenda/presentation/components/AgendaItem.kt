@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
-import com.example.tasky.agenda.domain.model.Agenda
+import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.ui.theme.DarkGreen
 import com.example.tasky.ui.theme.Gray
 import com.example.tasky.ui.theme.Green
@@ -38,7 +38,7 @@ import com.example.tasky.ui.theme.LightGreen
 
 @Composable
 fun EventItem(
-    event: Agenda.Event,
+    event: AgendaItem.Event,
     onDoneClicked: (Boolean) -> Unit,
     onMoreOptionsClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -56,7 +56,7 @@ fun EventItem(
 
 @Composable
 fun ReminderItem(
-    reminder: Agenda.Reminder,
+    reminder: AgendaItem.Reminder,
     onDoneClicked: (Boolean) -> Unit,
     onMoreOptionsClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -74,7 +74,7 @@ fun ReminderItem(
 
 @Composable
 fun TaskItem(
-    task: Agenda.Task,
+    task: AgendaItem.Task,
     onDoneClicked: (Boolean) -> Unit,
     onMoreOptionsClicked: () -> Unit,
     modifier: Modifier = Modifier,

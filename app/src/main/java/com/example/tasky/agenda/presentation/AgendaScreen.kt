@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
-import com.example.tasky.agenda.domain.model.Agenda
+import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.Day
 import com.example.tasky.agenda.presentation.components.DayPill
 import com.example.tasky.agenda.presentation.components.EventItem
@@ -118,7 +118,7 @@ fun AgendaScreen(
                         LazyColumn(contentPadding = PaddingValues(bottom = 12.dp)) {
                             itemsIndexed(state.agendaItems) { index, item ->
                                 when (item) {
-                                    is Agenda.Event -> {
+                                    is AgendaItem.Event -> {
                                         EventItem(
                                             event = item,
                                             onDoneClicked = {},
@@ -127,7 +127,7 @@ fun AgendaScreen(
                                         AddSpacer(state, index)
                                     }
 
-                                    is Agenda.Reminder -> {
+                                    is AgendaItem.Reminder -> {
                                         ReminderItem(
                                             reminder = item,
                                             onDoneClicked = {},
@@ -136,7 +136,7 @@ fun AgendaScreen(
                                         AddSpacer(state, index)
                                     }
 
-                                    is Agenda.Task -> {
+                                    is AgendaItem.Task -> {
                                         TaskItem(
                                             task = item,
                                             onDoneClicked = {},
@@ -145,7 +145,7 @@ fun AgendaScreen(
                                         AddSpacer(state, index)
                                     }
 
-                                    is Agenda.Needle -> Needle()
+                                    is AgendaItem.Needle -> Needle()
                                 }
                             }
                         }
@@ -179,7 +179,7 @@ private fun AddSpacer(
     val isLastIndex = state.agendaItems.lastIndex == index
     val shouldShowSpacer = when {
         isLastIndex -> false
-        !isLastIndex && state.agendaItems[index + 1] is Agenda.Needle -> false
+        !isLastIndex && state.agendaItems[index + 1] is AgendaItem.Needle -> false
         else -> true
     }
 
@@ -200,19 +200,19 @@ fun AgendaScreenPreview() {
                     Day("S", it.toString(), it == 1)
                 },
                 listOf(
-                    Agenda.Event(
+                    AgendaItem.Event(
                         title = "Project X",
                         description = "Just work",
                         date = "Mar 5, 10:00",
                     ),
-                    Agenda.Needle,
-                    Agenda.Task(
+                    AgendaItem.Needle,
+                    AgendaItem.Task(
                         title = "Project X",
                         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus leo et dolor ultrices, id vestibulum lectus lobortis. Nulla hendrerit ex vitae dui finibus porta. Vestibulum sit amet feugiat justo, fermentum finibus elit. Duis quis molestie lectus, at dapibus magna. Maecenas sagittis justo quis leo imperdiet, commodo cursus lacus aliquam.",
                         date = "Mar 5, 10:00",
                         isDone = false
                     ),
-                    Agenda.Reminder(
+                    AgendaItem.Reminder(
                         title = "Project X",
                         description = "Just work",
                         date = "Mar 5, 10:00",

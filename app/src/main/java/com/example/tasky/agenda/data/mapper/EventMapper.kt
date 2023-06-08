@@ -1,10 +1,10 @@
 package com.example.tasky.agenda.data.mapper
 
 import com.example.tasky.agenda.data.remote.model.EventResponse
-import com.example.tasky.agenda.domain.model.Agenda
+import com.example.tasky.agenda.domain.model.AgendaItem
 
 fun EventResponse.toDomain() =
-    Agenda.Event(
+    AgendaItem.Event(
         id = id,
         title = title,
         description = description,

@@ -1,15 +1,14 @@
-package com.example.tasky.agenda.data.util
+package com.example.tasky.agenda.data.mapper
 
-import com.example.tasky.agenda.data.mapper.toDomain
 import com.example.tasky.agenda.data.remote.model.AgendaResponse
-import com.example.tasky.agenda.domain.model.Agenda
+import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.core.data.Resource
 
-fun Resource<AgendaResponse>.mapToAgenda(): Resource<List<Agenda>> {
+fun Resource<AgendaResponse>.toAgenda(): Resource<List<AgendaItem>> {
     when (this) {
         is Resource.Error -> return Resource.Error(this.errorMessage)
         is Resource.Success -> {
-            var agendaList: List<Agenda> = mutableListOf()
+            var agendaList: List<AgendaItem> = mutableListOf()
 
             agendaList = agendaList + this.data.events.map {
                 it.toDomain()

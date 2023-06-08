@@ -1,6 +1,6 @@
 package com.example.tasky.agenda.domain.model
 
-sealed class Agenda {
+sealed class AgendaItem {
     data class Event(
         val id: String = "",
         val title: String = "",
@@ -13,7 +13,7 @@ sealed class Agenda {
         val attendees: List<Attendee> = listOf(),
         val photos: List<Photo> = listOf(),
         val date: String = ""
-    ) : Agenda()
+    ) : AgendaItem()
 
     data class Reminder(
         val id: String = "",
@@ -22,7 +22,7 @@ sealed class Agenda {
         val time: Long = 0L,
         val remindAt: Long = 0L,
         val date: String = ""
-    ) : Agenda()
+    ) : AgendaItem()
 
     data class Task(
         val id: String = "",
@@ -32,7 +32,7 @@ sealed class Agenda {
         val remindAt: Long = 0L,
         val isDone: Boolean = false,
         val date: String = ""
-    ) : Agenda()
+    ) : AgendaItem()
 
-    object Needle : Agenda()
+    object Needle : AgendaItem()
 }
