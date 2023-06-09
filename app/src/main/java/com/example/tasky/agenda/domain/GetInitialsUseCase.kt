@@ -1,8 +1,6 @@
 package com.example.tasky.agenda.domain
 
-import javax.inject.Inject
-
-class GetInitialsUseCase @Inject constructor() {
+object GetInitialsUseCase {
 
     operator fun invoke(name: String?): String {
         if (name.isNullOrEmpty()) return ""

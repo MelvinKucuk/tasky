@@ -1,35 +1,46 @@
 package com.example.tasky.agenda.domain.model
 
-sealed class AgendaItem {
+sealed class AgendaItem(
+    open val id: String = "",
+    open val title: String = "",
+    open val description: String = "",
+    open val time: Long = 0L,
+    open val remindAt: Long = 0L,
+) {
     data class Event(
-        val id: String = "",
-        val title: String = "",
-        val description: String = "",
+        override val id: String = "",
+        override val title: String = "",
+        override val description: String = "",
         val from: Long = 0L,
         val to: Long = 0L,
-        val remindAt: Long = 0L,
+        override val remindAt: Long = 0L,
         val host: String = "",
         val isUserEventCreator: Boolean = false,
         val attendees: List<Attendee> = listOf(),
         val photos: List<Photo> = listOf(),
         val date: String = ""
-    ) : AgendaItem()
+    ) : AgendaItem(
+        id, title, description, from
+    ) {
+        override val time: Long
+            get() = from
+    }
 
     data class Reminder(
-        val id: String = "",
-        val title: String = "",
-        val description: String = "",
-        val time: Long = 0L,
-        val remindAt: Long = 0L,
+        override val id: String = "",
+        override val title: String = "",
+        override val description: String = "",
+        override val time: Long = 0L,
+        override val remindAt: Long = 0L,
         val date: String = ""
     ) : AgendaItem()
 
     data class Task(
-        val id: String = "",
-        val title: String = "",
-        val description: String = "",
-        val time: Long = 0L,
-        val remindAt: Long = 0L,
+        override val id: String = "",
+        override val title: String = "",
+        override val description: String = "",
+        override val time: Long = 0L,
+        override val remindAt: Long = 0L,
         val isDone: Boolean = false,
         val date: String = ""
     ) : AgendaItem()

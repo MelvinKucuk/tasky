@@ -19,7 +19,6 @@ import javax.inject.Inject
 @HiltViewModel
 class AgendaViewModel @Inject constructor(
     dateGenerator: DateGenerator,
-    getInitials: GetInitialsUseCase,
     userCache: UserCache,
     private val agendaRepository: AgendaRepository,
 ) : ViewModel() {
@@ -30,7 +29,7 @@ class AgendaViewModel @Inject constructor(
     init {
         state = state.copy(
             days = dateGenerator.getWeek(),
-            userInitials = getInitials(userCache.getUser()?.fullName),
+            userInitials = GetInitialsUseCase(userCache.getUser()?.fullName),
             selectedMonth = dateGenerator.getMonth()
         )
         viewModelScope.launch {
