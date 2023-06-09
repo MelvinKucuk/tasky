@@ -3,7 +3,7 @@ package com.example.tasky.authentication.presentation.login
 import com.example.tasky.MainCoroutineRule
 import com.example.tasky.authentication.data.remote.login.LoginResponse
 import com.example.tasky.authentication.domain.AuthenticationRepository
-import com.example.tasky.authentication.domain.EmailValidator
+import com.example.tasky.authentication.domain.LoginFormValidator
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginEvent
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginState
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginViewModel
@@ -25,22 +25,22 @@ class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
 
-    private val emailValidator: EmailValidator = mockk()
+    private val formValidator: LoginFormValidator = mockk()
 
     private val loginRepository: AuthenticationRepository = mockk()
 
     @Before
     fun setUp() {
         viewModel = LoginViewModel(
-            emailValidator = emailValidator,
+            formValidator = formValidator,
             authenticationRepository = loginRepository
         )
-        every { emailValidator.validateEmail(any()) } returns true
+        every { formValidator.emailValidator(any()) } returns true
     }
 
     @Test
     fun `update state on email value change and email is not valid`() {
-        every { emailValidator.validateEmail(any()) } returns false
+        every { formValidator.emailValidator(any()) } returns false
 
         val givenEmailValue = "juan"
 
@@ -60,7 +60,7 @@ class LoginViewModelTest {
 
     @Test
     fun `update state on email value change and email is valid`() {
-        every { emailValidator.validateEmail(any()) } returns true
+        every { formValidator.emailValidator(any()) } returns true
 
         viewModel.onEvent(
             LoginEvent.OnEmailValueChanged(
