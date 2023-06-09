@@ -87,6 +87,8 @@ dependencies {
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
 
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
     // Unit Test
     testImplementation("junit:junit:4.13.2")
     testImplementation("io.mockk:mockk-android:1.13.5")
