@@ -24,14 +24,13 @@ class MainActivity : ComponentActivity() {
         installSplashScreen().setKeepOnScreenCondition {
             splashViewModel.state.isLoading
         }
-        splashViewModel.checkAuthentication()
         setContent {
             if (!splashViewModel.state.isLoading) {
                 TaskyTheme {
                     val navController = rememberNavController()
                     TaskyNavigation(
                         navController = navController,
-                        startDestination = if (splashViewModel.state.navigateToAgenda == true) {
+                        startDestination = if (splashViewModel.state.isLoggedIn == true) {
                             TaskyRoutes.AgendaScreen.route
                         } else {
                             TaskyRoutes.LoginScreen.route

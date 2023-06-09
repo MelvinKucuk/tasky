@@ -5,26 +5,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tasky.core.data.remote.SplashService
+import com.example.tasky.authentication.domain.AuthenticationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val splashService: SplashService
+    private val authenticationRepository: AuthenticationRepository
 ) : ViewModel() {
 
     var state by mutableStateOf(SplashState())
         private set
 
-    fun checkAuthentication() {
+    init {
         viewModelScope.launch {
-            val result = splashService.checkAuthentication()
+            val result = authenticationRepository.checkAuthentication()
 
             state = state.copy(
                 isLoading = false,
-                navigateToAgenda = result.isSuccessful
+                isLoggedIn = result.isSuccessful
             )
         }
     }
@@ -32,5 +32,5 @@ class SplashViewModel @Inject constructor(
 
 data class SplashState(
     val isLoading: Boolean = true,
-    val navigateToAgenda: Boolean? = null
+    val isLoggedIn: Boolean? = null
 )
