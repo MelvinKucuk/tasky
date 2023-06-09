@@ -15,13 +15,17 @@ class DateGenerator @Inject constructor() {
         calendar.set(date.year, date.month.ordinal, date.dayOfMonth)
 
         val daysOfWeek = (1..7).map {
-            val dayOfWeek =
+            val letterOfDay =
                 calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
                     ?.get(0)
                     ?.uppercase() ?: ""
+            val numberOfDay = calendar.get(Calendar.DAY_OF_MONTH).toString()
+
+            calendar.add(Calendar.DAY_OF_WEEK, 1)
+
             Day(
-                letter = dayOfWeek,
-                number = calendar.get(Calendar.DAY_OF_MONTH).toString(),
+                letter = letterOfDay,
+                number = numberOfDay,
                 isSelected = it == 1
             )
         }
