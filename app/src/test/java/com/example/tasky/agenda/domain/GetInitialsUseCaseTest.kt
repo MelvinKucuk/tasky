@@ -39,4 +39,22 @@ class GetInitialsUseCaseTest {
 
         assertEquals("MK", result)
     }
+
+    @Test
+    fun `check initials when the name has 3 names`() {
+        val givenName = "Melvin Alex Kucuk"
+
+        val result = getInitials(givenName)
+
+        assertEquals("MK", result)
+    }
+
+    @Test
+    fun `check initials when the name has more than 3 names`() {
+        val givenName = "Melvin Alex Jacobo Kucuk"
+
+        val result = getInitials(givenName)
+
+        assertEquals("MK", result)
+    }
 }

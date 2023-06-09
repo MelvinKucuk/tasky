@@ -7,13 +7,13 @@ class GetInitialsUseCase @Inject constructor() {
     operator fun invoke(name: String?): String {
         if (name.isNullOrEmpty()) return ""
         val names = name.split(" ")
-        val initials = names.map {
-            if (names.size == 1) {
-                it.first().uppercase() + it[1].uppercase()
-            } else {
-                it.first().uppercase()
+
+        val initials =
+            when (names.size) {
+                1 -> names.first()[0].uppercase() + names.first()[1].uppercase()
+                else -> names.first()[0].uppercase() + names[names.lastIndex].first().uppercase()
             }
-        }
-        return initials.reduce { accumulated, initial -> accumulated + initial }
+
+        return initials
     }
 }

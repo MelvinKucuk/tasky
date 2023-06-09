@@ -13,21 +13,17 @@ class DateGenerator @Inject constructor() {
     fun getWeek(date: LocalDate = LocalDate.now()): List<Day> {
         val calendar = Calendar.getInstance()
         calendar.set(date.year, date.month.ordinal, date.dayOfMonth)
-        val daysOfWeek = mutableListOf<Day>()
 
-        for (i in 1..7) {
+        val daysOfWeek = (1..7).map {
             val dayOfWeek =
                 calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
                     ?.get(0)
                     ?.uppercase() ?: ""
-            daysOfWeek.add(
-                Day(
-                    letter = dayOfWeek,
-                    number = calendar.get(Calendar.DAY_OF_MONTH).toString(),
-                    isSelected = i == 1
-                )
+            Day(
+                letter = dayOfWeek,
+                number = calendar.get(Calendar.DAY_OF_MONTH).toString(),
+                isSelected = it == 1
             )
-            calendar.add(Calendar.DAY_OF_WEEK, 1)
         }
 
         return daysOfWeek
