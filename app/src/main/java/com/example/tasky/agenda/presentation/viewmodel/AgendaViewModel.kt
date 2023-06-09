@@ -1,5 +1,7 @@
+@file:SuppressLint("NewApi")
 package com.example.tasky.agenda.presentation.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,6 +16,7 @@ import com.example.tasky.authentication.domain.UserCache
 import com.example.tasky.core.data.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,7 +36,7 @@ class AgendaViewModel @Inject constructor(
             selectedMonth = dateGenerator.getMonth()
         )
         viewModelScope.launch {
-            val result = agendaRepository.getAgenda()
+            val result = agendaRepository.getAgenda(LocalDate.now())
 
             if (result is Resource.Success) {
                 state = state.copy(

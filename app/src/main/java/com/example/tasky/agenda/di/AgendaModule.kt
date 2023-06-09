@@ -1,19 +1,38 @@
 package com.example.tasky.agenda.di
 
-import com.example.tasky.agenda.data.remote.AgendaRepositoryImpl
+import android.content.Context
+import androidx.room.Room
+import com.example.tasky.agenda.data.AgendaRepositoryImpl
+import com.example.tasky.agenda.data.local.AgendaDao
+import com.example.tasky.agenda.data.local.AgendaDatabase
 import com.example.tasky.agenda.data.remote.AgendaService
 import com.example.tasky.agenda.domain.AgendaRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 
 @Module
 @InstallIn(SingletonComponent::class)
 class AgendaModule {
+
+    @Singleton
+    @Provides
+    fun providesAgendaDatabase(@ApplicationContext context: Context) =
+        Room.databaseBuilder(
+            context = context,
+            AgendaDatabase::class.java,
+            "agenda_db"
+        ).build()
+
+    @Provides
+    @Singleton
+    fun providesAgendaDao(agendaDatabase: AgendaDatabase): AgendaDao = agendaDatabase.dao
 
     @Provides
     fun providesAgendaRepository(retrofit: Retrofit): AgendaService {
