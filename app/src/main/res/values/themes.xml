@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.Tasky" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.Tasky.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/green</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:ignore="NewApi">
+            @drawable/ic_tasky
+        </item>
+        <item name="postSplashScreenTheme">@style/Theme.Tasky</item>
+    </style>
 </resources>

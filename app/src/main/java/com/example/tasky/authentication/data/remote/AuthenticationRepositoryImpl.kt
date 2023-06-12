@@ -45,4 +45,6 @@ class AuthenticationRepositoryImpl @Inject constructor(
                 )
             )
         }
+
+    override suspend fun checkAuthentication() = loginService.checkAuthentication()
 }

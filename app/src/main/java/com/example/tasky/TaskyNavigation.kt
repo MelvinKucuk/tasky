@@ -19,8 +19,11 @@ import com.example.tasky.core.util.ObserveError
 import com.example.tasky.core.util.makeToast
 
 @Composable
-fun TaskyNavigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = TaskyRoutes.AgendaScreen.route) {
+fun TaskyNavigation(
+    navController: NavHostController,
+    startDestination: String
+) {
+    NavHost(navController = navController, startDestination = startDestination) {
         composable(TaskyRoutes.LoginScreen.route) {
             val viewModel: LoginViewModel = hiltViewModel()
 
