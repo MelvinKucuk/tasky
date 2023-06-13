@@ -77,6 +77,9 @@ fun TaskyNavigation(
         composable(TaskyRoutes.AgendaScreen.route) {
             val viewModel: AgendaViewModel = hiltViewModel()
 
+            ObserveError(viewModel.state.errorMessage) {
+                // TODO reset value to null
+            }
             AgendaScreen(state = viewModel.state)
         }
     }

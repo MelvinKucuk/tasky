@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
 import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.DarkGreen
 import com.example.tasky.ui.theme.Gray
 import com.example.tasky.ui.theme.Green
@@ -50,6 +51,7 @@ fun EventItem(
         onDoneClicked = onDoneClicked,
         onMoreOptionsClicked = onMoreOptionsClicked,
         containerColor = LightGreen,
+        contentColor = Black,
         modifier = modifier
     )
 }
@@ -68,6 +70,7 @@ fun ReminderItem(
         onDoneClicked = onDoneClicked,
         onMoreOptionsClicked = onMoreOptionsClicked,
         containerColor = Gray,
+        contentColor = Black,
         modifier = modifier
     )
 }
@@ -100,6 +103,7 @@ fun AgendaItem(
     date: String,
     modifier: Modifier = Modifier,
     containerColor: Color = Green,
+    contentColor: Color = Color.White,
     isTask: Boolean = false,
     isDone: Boolean = false,
     onDoneClicked: (Boolean) -> Unit,
@@ -111,7 +115,7 @@ fun AgendaItem(
             .padding(start = 14.dp, end = 8.dp),
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
-            contentColor = Color.White
+            contentColor = contentColor
         )
     ) {
         Column(

@@ -1,9 +1,15 @@
 package com.example.tasky.agenda.domain
 
 import com.example.tasky.agenda.domain.model.AgendaItem
-import com.example.tasky.core.data.Resource
+import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 interface AgendaRepository {
 
-    suspend fun getAgenda(): Resource<List<AgendaItem>>
+    fun getAgenda(date: LocalDate): Flow<List<AgendaItem>>
+
+    /**
+     * @return Returns true when the request is successfull and false when it isn't.
+     */
+    suspend fun fetchAgenda(date: LocalDate): Boolean
 }
