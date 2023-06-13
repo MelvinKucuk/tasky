@@ -6,6 +6,7 @@ import androidx.room.Upsert
 import com.example.tasky.agenda.data.local.model.EventEntity
 import com.example.tasky.agenda.data.local.model.ReminderEntity
 import com.example.tasky.agenda.data.local.model.TaskEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AgendaDao {
@@ -22,11 +23,11 @@ interface AgendaDao {
     @Query(
         """
             SELECT * FROM EventEntity
-            WHERE `from` >= :day
+            WHERE `from` >= :startOfDay
             AND `from` < :endOfDay
         """
     )
-    suspend fun getEventsForGivenDay(day: Long, endOfDay: Long): List<EventEntity>
+    fun getEventsForGivenDay(startOfDay: Long, endOfDay: Long): Flow<List<EventEntity>>
 
     @Upsert
     suspend fun insertReminder(reminder: ReminderEntity)
@@ -40,11 +41,11 @@ interface AgendaDao {
     @Query(
         """
             SELECT * FROM ReminderEntity
-            WHERE time >= :day
+            WHERE time >= :startOfDay
             AND time < :endOfDay
         """
     )
-    suspend fun getRemindersForGivenDay(day: Long, endOfDay: Long): List<ReminderEntity>
+    fun getRemindersForGivenDay(startOfDay: Long, endOfDay: Long): Flow<List<ReminderEntity>>
 
     @Upsert
     suspend fun insertTask(task: TaskEntity)
@@ -58,9 +59,9 @@ interface AgendaDao {
     @Query(
         """
             SELECT * FROM TaskEntity
-            WHERE time >= :day
+            WHERE time >= :startOfDay
             AND time < :endOfDay
         """
     )
-    suspend fun getTasksForGivenDay(day: Long, endOfDay: Long): List<TaskEntity>
+    fun getTasksForGivenDay(startOfDay: Long, endOfDay: Long): Flow<List<TaskEntity>>
 }

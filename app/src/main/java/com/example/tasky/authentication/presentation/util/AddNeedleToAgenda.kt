@@ -1,4 +1,4 @@
-package com.example.tasky.agenda.domain
+package com.example.tasky.authentication.presentation.util
 
 import com.example.tasky.agenda.domain.model.AgendaItem
 

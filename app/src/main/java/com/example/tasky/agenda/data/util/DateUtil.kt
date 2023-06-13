@@ -16,10 +16,10 @@ fun Long.toCurrentTime(): String {
 }
 
 
-fun LocalDate.asTodayStartLong() =
+fun LocalDate.toStartOfDayLong() =
     this.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
-fun LocalDate.asTodayEndLong() =
+fun LocalDate.toEndOfDayLong() =
     this.atStartOfDay().plusDays(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
 fun LocalDate.toCurrentTimeMilli() =

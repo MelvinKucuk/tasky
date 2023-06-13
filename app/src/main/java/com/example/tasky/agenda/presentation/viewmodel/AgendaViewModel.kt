@@ -1,4 +1,5 @@
 @file:SuppressLint("NewApi")
+
 package com.example.tasky.agenda.presentation.viewmodel
 
 import android.annotation.SuppressLint
@@ -13,8 +14,9 @@ import com.example.tasky.agenda.domain.GetInitialsUseCase
 import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.Day
 import com.example.tasky.authentication.domain.UserCache
-import com.example.tasky.core.data.Resource
+import com.example.tasky.authentication.presentation.util.AddNeedleToAgenda
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -35,14 +37,20 @@ class AgendaViewModel @Inject constructor(
             userInitials = GetInitialsUseCase(userCache.getUser()?.fullName),
             selectedMonth = dateGenerator.getMonth()
         )
+        val now = LocalDate.now()
         viewModelScope.launch {
-            val result = agendaRepository.getAgenda(LocalDate.now())
-
-            if (result is Resource.Success) {
+            agendaRepository.getAgenda(now).collectLatest {
                 state = state.copy(
-                    agendaItems = result.data
+                    agendaItems = AddNeedleToAgenda(now.toEpochDay(), it.toMutableList())
                 )
             }
+        }
+        viewModelScope.launch {
+            val fetchSuccessfully = agendaRepository.fetchAgenda(now)
+
+            state = state.copy(
+                errorMessage = if (!fetchSuccessfully) "An error ocurred" else null
+            )
         }
     }
 }
@@ -51,5 +59,6 @@ data class AgendaState(
     val selectedMonth: String = "",
     val userInitials: String = "",
     val days: List<Day> = listOf(),
-    val agendaItems: List<AgendaItem> = listOf()
+    val agendaItems: List<AgendaItem> = listOf(),
+    val errorMessage: String? = null
 )
