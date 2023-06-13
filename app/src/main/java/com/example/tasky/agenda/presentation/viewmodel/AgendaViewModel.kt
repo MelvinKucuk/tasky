@@ -13,8 +13,8 @@ import com.example.tasky.agenda.domain.DateGenerator
 import com.example.tasky.agenda.domain.GetInitialsUseCase
 import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.Day
+import com.example.tasky.agenda.presentation.util.AddNeedleToAgenda
 import com.example.tasky.authentication.domain.UserCache
-import com.example.tasky.authentication.presentation.util.AddNeedleToAgenda
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

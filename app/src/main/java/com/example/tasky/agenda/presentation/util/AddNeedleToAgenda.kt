@@ -1,4 +1,4 @@
-package com.example.tasky.authentication.presentation.util
+package com.example.tasky.agenda.presentation.util
 
 import com.example.tasky.agenda.domain.model.AgendaItem
 
@@ -16,7 +16,7 @@ object AddNeedleToAgenda {
             }
         }
 
-        agendaList.add(needlePosition, AgendaItem.Needle)
+        if (agendaList.isNotEmpty()) agendaList.add(needlePosition, AgendaItem.Needle)
 
         return agendaList
     }
