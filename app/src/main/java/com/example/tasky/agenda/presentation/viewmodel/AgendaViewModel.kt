@@ -11,8 +11,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.DateGenerator
 import com.example.tasky.agenda.domain.GetInitialsUseCase
-import com.example.tasky.agenda.domain.model.AgendaItem
-import com.example.tasky.agenda.domain.model.Day
 import com.example.tasky.agenda.presentation.util.AddNeedleToAgenda
 import com.example.tasky.authentication.domain.UserCache
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,12 +51,8 @@ class AgendaViewModel @Inject constructor(
             )
         }
     }
-}
 
-data class AgendaState(
-    val selectedMonth: String = "",
-    val userInitials: String = "",
-    val days: List<Day> = listOf(),
-    val agendaItems: List<AgendaItem> = listOf(),
-    val errorMessage: String? = null
-)
+    fun onEvent(event: AgendaEvent) {
+
+    }
+}

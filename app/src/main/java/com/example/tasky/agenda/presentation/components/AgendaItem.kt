@@ -31,8 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
 import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.agenda.presentation.AgendaItemEvent
+import com.example.tasky.agenda.presentation.MenuItem
 import com.example.tasky.ui.theme.Black
-import com.example.tasky.ui.theme.DarkGreen
 import com.example.tasky.ui.theme.Gray
 import com.example.tasky.ui.theme.Green
 import com.example.tasky.ui.theme.LightGreen
@@ -40,16 +41,17 @@ import com.example.tasky.ui.theme.LightGreen
 @Composable
 fun EventItem(
     event: AgendaItem.Event,
-    onDoneClicked: (Boolean) -> Unit,
-    onMoreOptionsClicked: () -> Unit,
+    menuItems: List<MenuItem>,
+    onAgendaItemEvent: (AgendaItemEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AgendaItem(
         title = event.title,
         description = event.description,
         date = event.date,
-        onDoneClicked = onDoneClicked,
-        onMoreOptionsClicked = onMoreOptionsClicked,
+        menuItems = menuItems,
+        onAgendaEvent = onAgendaItemEvent,
+        showMenu = event.showMenu,
         containerColor = LightGreen,
         contentColor = Black,
         modifier = modifier
@@ -59,16 +61,17 @@ fun EventItem(
 @Composable
 fun ReminderItem(
     reminder: AgendaItem.Reminder,
-    onDoneClicked: (Boolean) -> Unit,
-    onMoreOptionsClicked: () -> Unit,
+    menuItems: List<MenuItem>,
+    onAgendaEvent: (AgendaItemEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AgendaItem(
         title = reminder.title,
         description = reminder.description,
         date = reminder.date,
-        onDoneClicked = onDoneClicked,
-        onMoreOptionsClicked = onMoreOptionsClicked,
+        menuItems = menuItems,
+        onAgendaEvent = onAgendaEvent,
+        showMenu = reminder.showMenu,
         containerColor = Gray,
         contentColor = Black,
         modifier = modifier
@@ -78,20 +81,20 @@ fun ReminderItem(
 @Composable
 fun TaskItem(
     task: AgendaItem.Task,
-    onDoneClicked: (Boolean) -> Unit,
-    onMoreOptionsClicked: () -> Unit,
+    menuItems: List<MenuItem>,
+    onAgendaEvent: (AgendaItemEvent) -> Unit,
     modifier: Modifier = Modifier,
-    isDone: Boolean = false,
 ) {
     AgendaItem(
         title = task.title,
         description = task.description,
         date = task.date,
-        onDoneClicked = onDoneClicked,
-        onMoreOptionsClicked = onMoreOptionsClicked,
+        menuItems = menuItems,
+        onAgendaEvent = onAgendaEvent,
+        showMenu = task.showMenu,
         isTask = true,
-        isDone = isDone,
-        containerColor = DarkGreen,
+        isDone = task.isDone,
+        containerColor = Green,
         modifier = modifier
     )
 }
@@ -101,13 +104,14 @@ fun AgendaItem(
     title: String,
     description: String,
     date: String,
+    menuItems: List<MenuItem>,
+    onAgendaEvent: (AgendaItemEvent) -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = Green,
     contentColor: Color = Color.White,
+    showMenu: Boolean = false,
     isTask: Boolean = false,
     isDone: Boolean = false,
-    onDoneClicked: (Boolean) -> Unit,
-    onMoreOptionsClicked: () -> Unit
 ) {
     Card(
         modifier = modifier
@@ -138,7 +142,7 @@ fun AgendaItem(
                             .then(
                                 if (isTask) {
                                     Modifier.toggleable(value = isDone) { isDone ->
-                                        onDoneClicked(isDone)
+                                        onAgendaEvent(AgendaItemEvent.DoneClick(isDone))
                                     }
                                 } else Modifier),
                         imageVector =
@@ -181,12 +185,22 @@ fun AgendaItem(
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
-                                onMoreOptionsClicked()
+                                onAgendaEvent(AgendaItemEvent.MoreOptions)
                             },
                         imageVector = Icons.Filled.MoreHoriz,
                         contentDescription = stringResource(
                             R.string.agenda_item_more_options
                         )
+                    )
+                    TaskyDropdownMenu(
+                        showDropdown = showMenu,
+                        items = menuItems,
+                        onClick = {
+                            onAgendaEvent(AgendaItemEvent.MenuClick(it))
+                        },
+                        onDismiss = {
+                            onAgendaEvent(AgendaItemEvent.MenuDismiss)
+                        }
                     )
                 }
             }
@@ -209,9 +223,10 @@ fun AgendaItemPreview() {
         title = "Project X",
         description = "Just work",
         date = "Mar 5, 10:00",
+        menuItems = listOf(),
         isDone = false,
-        onDoneClicked = {}
-    ) {}
+        onAgendaEvent = {}
+    )
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
@@ -221,9 +236,10 @@ fun AgendaItemBigDescriptionPreview() {
         title = "Project X",
         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus leo et dolor ultrices, id vestibulum lectus lobortis. Nulla hendrerit ex vitae dui finibus porta. Vestibulum sit amet feugiat justo, fermentum finibus elit. Duis quis molestie lectus, at dapibus magna. Maecenas sagittis justo quis leo imperdiet, commodo cursus lacus aliquam.",
         date = "Mar 5, 10:00",
+        menuItems = listOf(),
         isDone = false,
-        onDoneClicked = {}
-    ) {}
+        onAgendaEvent = {}
+    )
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
@@ -233,10 +249,11 @@ fun AgendaItemTaskDonePreview() {
         title = "Project X",
         description = "Just work",
         date = "Mar 5, 10:00",
+        menuItems = listOf(),
         isDone = true,
         isTask = true,
-        onDoneClicked = {}
-    ) {}
+        onAgendaEvent = {}
+    )
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFF)
@@ -246,7 +263,8 @@ fun AgendaItemTaskNotDonePreview() {
         title = "Project X",
         description = "Just work",
         date = "Mar 5, 10:00",
+        menuItems = listOf(),
         isTask = true,
-        onDoneClicked = {}
-    ) {}
+        onAgendaEvent = {}
+    )
 }

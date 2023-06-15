@@ -1,5 +1,6 @@
 @file:SuppressLint("NewApi")
-package com.example.tasky.agenda.data.util
+
+package com.example.tasky.agenda.domain.util
 
 import android.annotation.SuppressLint
 import java.time.Instant
@@ -7,12 +8,16 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 fun Long.toCurrentTime(): String {
-    return LocalDateTime.ofInstant(
+    val time = LocalDateTime.ofInstant(
         Instant.ofEpochMilli(this),
         ZoneId.systemDefault()
-    ).toLocalTime().toString()
+    )
+
+    val dateFormatter = DateTimeFormatter.ofPattern("MMM dd, HH:mm")
+    return time.format(dateFormatter)
 }
 
 

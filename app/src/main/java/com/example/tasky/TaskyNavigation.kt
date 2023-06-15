@@ -80,7 +80,7 @@ fun TaskyNavigation(
             ObserveError(viewModel.state.errorMessage) {
                 // TODO reset value to null
             }
-            AgendaScreen(state = viewModel.state)
+            AgendaScreen(state = viewModel.state, onEvent = viewModel::onEvent)
         }
     }
 }

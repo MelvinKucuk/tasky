@@ -1,6 +1,7 @@
 package com.example.tasky.agenda.presentation.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,13 +28,17 @@ import com.example.tasky.ui.theme.TaskyTheme
 @Composable
 fun DayPill(
     day: Day,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: (Int) -> Unit
 ) {
     Box(
         modifier = modifier
             .size(width = 40.dp, height = 60.dp)
             .clip(CircleShape)
             .background(color = if (day.isSelected) Orange else White)
+            .clickable {
+                onClick(day.number.toIntOrNull() ?: 1)
+            }
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -67,7 +72,7 @@ fun DayPillPreview() {
                 letter = "S",
                 number = "5"
             )
-        )
+        ) {}
     }
 }
 
@@ -81,6 +86,6 @@ fun DayPillSelectedPreview() {
                 number = "5",
                 isSelected = true
             )
-        )
+        ) {}
     }
 }
