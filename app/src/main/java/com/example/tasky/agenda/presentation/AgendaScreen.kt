@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
@@ -40,13 +41,16 @@ import com.example.tasky.agenda.presentation.components.Needle
 import com.example.tasky.agenda.presentation.components.ProfileButton
 import com.example.tasky.agenda.presentation.components.ReminderItem
 import com.example.tasky.agenda.presentation.components.TaskItem
+import com.example.tasky.agenda.presentation.components.TaskyDropdownMenu
+import com.example.tasky.agenda.presentation.viewmodel.AgendaEvent
 import com.example.tasky.agenda.presentation.viewmodel.AgendaState
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.TaskyTheme
 
 @Composable
 fun AgendaScreen(
-    state: AgendaState
+    state: AgendaState,
+    onEvent: (AgendaEvent) -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -68,13 +72,25 @@ fun AgendaScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 MonthButton(text = state.selectedMonth) {
-                    // TODO on month click
+                    onEvent(AgendaEvent.MonthClick)
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                ProfileButton(text = state.userInitials) {
-                    // TODO profile click
+                Box {
+                    ProfileButton(text = state.userInitials) {
+                        onEvent(AgendaEvent.ProfileClick)
+                    }
+                    TaskyDropdownMenu(
+                        showDropdown = state.showProfileMenu,
+                        items = state.profileMenu,
+                        onClick = {
+                            onEvent(AgendaEvent.Logout)
+                        },
+                        onDismiss = {
+                            onEvent(AgendaEvent.ProfileMenuDismiss)
+                        }
+                    )
                 }
             }
 
@@ -103,7 +119,9 @@ fun AgendaScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             state.days.forEach { day ->
-                                DayPill(day = day)
+                                DayPill(day = day) { numberOfDay ->
+                                    onEvent(AgendaEvent.DayClicked(numberOfDay))
+                                }
                             }
                         }
                         Text(
@@ -121,8 +139,10 @@ fun AgendaScreen(
                                     is AgendaItem.Event -> {
                                         EventItem(
                                             event = item,
-                                            onDoneClicked = {},
-                                            onMoreOptionsClicked = {}
+                                            menuItems = state.agendaItemMenu,
+                                            onAgendaItemEvent = { event ->
+                                                onEvent(AgendaEvent.OnAgendaItemEvent(event))
+                                            }
                                         )
                                         AddSpacer(state, index)
                                     }
@@ -130,8 +150,10 @@ fun AgendaScreen(
                                     is AgendaItem.Reminder -> {
                                         ReminderItem(
                                             reminder = item,
-                                            onDoneClicked = {},
-                                            onMoreOptionsClicked = {}
+                                            menuItems = state.agendaItemMenu,
+                                            onAgendaEvent = { event ->
+                                                onEvent(AgendaEvent.OnAgendaItemEvent(event))
+                                            }
                                         )
                                         AddSpacer(state, index)
                                     }
@@ -139,8 +161,10 @@ fun AgendaScreen(
                                     is AgendaItem.Task -> {
                                         TaskItem(
                                             task = item,
-                                            onDoneClicked = {},
-                                            onMoreOptionsClicked = {}
+                                            menuItems = state.agendaItemMenu,
+                                            onAgendaEvent = { event ->
+                                                onEvent(AgendaEvent.OnAgendaItemEvent(event))
+                                            }
                                         )
                                         AddSpacer(state, index)
                                     }
@@ -150,19 +174,32 @@ fun AgendaScreen(
                             }
                         }
                     }
-                    FloatingActionButton(
-                        modifier = Modifier
-                            .padding(bottom = 33.dp, end = 8.dp),
-                        onClick = {
-                            //OnClick Method
-                        },
-                        containerColor = Black,
-                        shape = RoundedCornerShape(16.dp),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Add,
-                            contentDescription = "Add FAB",
-                            tint = White,
+                    Box {
+                        FloatingActionButton(
+                            modifier = Modifier
+                                .padding(bottom = 33.dp, end = 8.dp),
+                            onClick = {
+                                onEvent(AgendaEvent.FabClicked)
+                            },
+                            containerColor = Black,
+                            shape = RoundedCornerShape(16.dp),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Rounded.Add,
+                                contentDescription = stringResource(R.string.add_fab),
+                                tint = White,
+                            )
+                        }
+                        TaskyDropdownMenu(
+                            showDropdown = state.showFab,
+                            items = state.fabMenu,
+                            offset = DpOffset(8.dp, 0.dp),
+                            onClick = { item ->
+                                onEvent(AgendaEvent.NewItem(item))
+                            },
+                            onDismiss = {
+                                onEvent(AgendaEvent.FabDismiss)
+                            }
                         )
                     }
                 }
@@ -203,22 +240,23 @@ fun AgendaScreenPreview() {
                     AgendaItem.Event(
                         title = "Project X",
                         description = "Just work",
-                        date = "Mar 5, 10:00",
+                        from = 1686697568646,
+                        to = 1686697868646
                     ),
                     AgendaItem.Needle,
                     AgendaItem.Task(
                         title = "Project X",
                         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempus leo et dolor ultrices, id vestibulum lectus lobortis. Nulla hendrerit ex vitae dui finibus porta. Vestibulum sit amet feugiat justo, fermentum finibus elit. Duis quis molestie lectus, at dapibus magna. Maecenas sagittis justo quis leo imperdiet, commodo cursus lacus aliquam.",
-                        date = "Mar 5, 10:00",
+                        time = 1686697568646,
                         isDone = false
                     ),
                     AgendaItem.Reminder(
                         title = "Project X",
                         description = "Just work",
-                        date = "Mar 5, 10:00",
+                        time = 1686697568646
                     )
                 )
             )
-        )
+        ) {}
     }
 }

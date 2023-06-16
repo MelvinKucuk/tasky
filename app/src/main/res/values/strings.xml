@@ -18,4 +18,12 @@
     <string name="today">Today</string>
     <string name="agenda_item_check">agenda item check</string>
     <string name="agenda_item_more_options">agenda item more options</string>
+    <string name="logout">Logout</string>
+    <string name="edit">Edit</string>
+    <string name="open">Open</string>
+    <string name="delete">Delete</string>
+    <string name="event">Event</string>
+    <string name="task">Task</string>
+    <string name="reminder">Reminder</string>
+    <string name="add_fab">Add FAB</string>
 </resources>

@@ -5,18 +5,16 @@ import com.example.tasky.agenda.data.local.AgendaDao
 import com.example.tasky.agenda.data.mapper.toDomain
 import com.example.tasky.agenda.data.mapper.toEntity
 import com.example.tasky.agenda.data.remote.AgendaService
-import com.example.tasky.agenda.data.util.toCurrentTimeMilli
-import com.example.tasky.agenda.data.util.toEndOfDayLong
-import com.example.tasky.agenda.data.util.toStartOfDayLong
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.agenda.domain.util.toCurrentTimeMilli
+import com.example.tasky.agenda.domain.util.toEndOfDayLong
+import com.example.tasky.agenda.domain.util.toStartOfDayLong
 import com.example.tasky.core.data.Resource
 import com.example.tasky.core.data.remote.safeApiCall
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -26,15 +24,13 @@ class AgendaRepositoryImpl @Inject constructor(
     private val agendaDao: AgendaDao
 ) : AgendaRepository {
 
-    override fun getAgenda(date: LocalDate): Flow<List<AgendaItem>> = callbackFlow {
+    override fun getAgenda(date: LocalDate): Flow<List<AgendaItem>> {
         val localEvents = getLocalEventsByDate(date)
         val localReminders = getLocalRemindersByDate(date)
         val localTasks = getLocalTasksByDate(date)
 
-        merge(localEvents, localReminders, localTasks).collectLatest { agendaItems ->
-            agendaItems.sortedBy { it.time }
-
-            send(agendaItems)
+        return combine(localEvents, localReminders, localTasks) { events, reminders, tasks ->
+            (events + reminders + tasks).sortedBy { it.time }
         }
     }
 

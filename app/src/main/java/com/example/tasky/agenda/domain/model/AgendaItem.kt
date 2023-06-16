@@ -1,29 +1,35 @@
 package com.example.tasky.agenda.domain.model
 
+import com.example.tasky.agenda.domain.util.toCurrentTime
+
 sealed class AgendaItem(
     open val id: String = "",
     open val title: String = "",
     open val description: String = "",
     open val time: Long = 0L,
     open val remindAt: Long = 0L,
+    open var showMenu: Boolean = false
 ) {
     data class Event(
         override val id: String = "",
         override val title: String = "",
         override val description: String = "",
+        override val remindAt: Long = 0L,
+        override var showMenu: Boolean = false,
         val from: Long = 0L,
         val to: Long = 0L,
-        override val remindAt: Long = 0L,
         val host: String = "",
         val isUserEventCreator: Boolean = false,
         val attendees: List<Attendee> = listOf(),
-        val photos: List<Photo> = listOf(),
-        val date: String = ""
+        val photos: List<Photo> = listOf()
     ) : AgendaItem(
         id, title, description, from
     ) {
         override val time: Long
             get() = from
+
+        val date: String
+            get() = "${from.toCurrentTime()} - ${to.toCurrentTime()}"
     }
 
     data class Reminder(
@@ -32,8 +38,11 @@ sealed class AgendaItem(
         override val description: String = "",
         override val time: Long = 0L,
         override val remindAt: Long = 0L,
-        val date: String = ""
-    ) : AgendaItem()
+        override var showMenu: Boolean = false,
+    ) : AgendaItem() {
+        val date: String
+            get() = time.toCurrentTime()
+    }
 
     data class Task(
         override val id: String = "",
@@ -41,9 +50,12 @@ sealed class AgendaItem(
         override val description: String = "",
         override val time: Long = 0L,
         override val remindAt: Long = 0L,
+        override var showMenu: Boolean = false,
         val isDone: Boolean = false,
-        val date: String = ""
-    ) : AgendaItem()
+    ) : AgendaItem() {
+        val date: String
+            get() = time.toCurrentTime()
+    }
 
     object Needle : AgendaItem()
 }
