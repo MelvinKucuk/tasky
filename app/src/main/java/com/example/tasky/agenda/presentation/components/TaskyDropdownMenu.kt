@@ -70,7 +70,7 @@ fun TaskyDropdownMenuPreview() {
     Surface {
         TaskyDropdownMenu(
             showDropdown = true,
-            items = listOf(MenuItem.Logout()),
+            items = listOf(MenuItem.LOGOUT),
             onClick = {},
             onDismiss = {}
         )

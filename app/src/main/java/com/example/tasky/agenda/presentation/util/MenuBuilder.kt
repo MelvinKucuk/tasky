@@ -4,19 +4,19 @@ import com.example.tasky.agenda.presentation.MenuItem
 
 fun fabMenu() =
     listOf(
-        MenuItem.Event(),
-        MenuItem.Reminder(),
-        MenuItem.Task(),
+        MenuItem.EVENT,
+        MenuItem.REMINDER,
+        MenuItem.TASK,
     )
 
 fun agendaItemMenu() =
     listOf(
-        MenuItem.Open(),
-        MenuItem.Edit(),
-        MenuItem.Delete(),
+        MenuItem.OPEN,
+        MenuItem.EDIT,
+        MenuItem.DELETE,
     )
 
 fun profileMenu() =
     listOf(
-        MenuItem.Logout()
+        MenuItem.LOGOUT
     )
