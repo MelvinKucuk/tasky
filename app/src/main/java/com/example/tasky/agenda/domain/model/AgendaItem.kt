@@ -8,14 +8,12 @@ sealed class AgendaItem(
     open val description: String = "",
     open val time: Long = 0L,
     open val remindAt: Long = 0L,
-    open var showMenu: Boolean = false
 ) {
     data class Event(
         override val id: String = "",
         override val title: String = "",
         override val description: String = "",
         override val remindAt: Long = 0L,
-        override var showMenu: Boolean = false,
         val from: Long = 0L,
         val to: Long = 0L,
         val host: String = "",
@@ -38,7 +36,6 @@ sealed class AgendaItem(
         override val description: String = "",
         override val time: Long = 0L,
         override val remindAt: Long = 0L,
-        override var showMenu: Boolean = false,
     ) : AgendaItem() {
         val date: String
             get() = time.toCurrentTime()
@@ -50,7 +47,6 @@ sealed class AgendaItem(
         override val description: String = "",
         override val time: Long = 0L,
         override val remindAt: Long = 0L,
-        override var showMenu: Boolean = false,
         val isDone: Boolean = false,
     ) : AgendaItem() {
         val date: String

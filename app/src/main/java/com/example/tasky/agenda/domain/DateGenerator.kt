@@ -1,3 +1,5 @@
+@file:SuppressLint("NewApi")
+
 package com.example.tasky.agenda.domain
 
 import android.annotation.SuppressLint
@@ -9,7 +11,6 @@ import javax.inject.Inject
 
 class DateGenerator @Inject constructor() {
 
-    @SuppressLint("NewApi")
     fun getWeek(date: LocalDate = LocalDate.now()): List<Day> {
         val calendar = Calendar.getInstance()
         calendar.set(date.year, date.month.ordinal, date.dayOfMonth)
@@ -33,8 +34,9 @@ class DateGenerator @Inject constructor() {
         return daysOfWeek
     }
 
-    fun getMonth(): String {
+    fun getMonth(date: LocalDate): String {
         val calendar = Calendar.getInstance()
+        calendar.set(date.year, date.month.ordinal, date.dayOfMonth)
 
         return calendar.getDisplayName(
             Calendar.MONTH,

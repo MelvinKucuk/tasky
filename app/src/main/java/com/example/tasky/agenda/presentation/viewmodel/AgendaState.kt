@@ -1,5 +1,8 @@
+@file:SuppressLint("NewApi")
+
 package com.example.tasky.agenda.presentation.viewmodel
 
+import android.annotation.SuppressLint
 import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.Day
 import com.example.tasky.agenda.presentation.MenuItem
@@ -17,5 +20,6 @@ data class AgendaState(
     val fabMenu: List<MenuItem> = fabMenu(),
     val showFab: Boolean = false,
     val showProfileMenu: Boolean = false,
+    val showCalendar: Boolean = false,
     val errorMessage: String? = null
 )

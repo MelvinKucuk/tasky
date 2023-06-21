@@ -11,9 +11,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.DateGenerator
 import com.example.tasky.agenda.domain.GetInitialsUseCase
+import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.agenda.presentation.AgendaItemEvent
 import com.example.tasky.agenda.presentation.util.AddNeedleToAgenda
 import com.example.tasky.authentication.domain.UserCache
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -26,33 +29,115 @@ class AgendaViewModel @Inject constructor(
     private val agendaRepository: AgendaRepository,
 ) : ViewModel() {
 
+    private val selectedDate: MutableStateFlow<LocalDate> = MutableStateFlow(LocalDate.now())
+
     var state by mutableStateOf(AgendaState())
         private set
 
     init {
         state = state.copy(
-            days = dateGenerator.getWeek(),
             userInitials = GetInitialsUseCase(userCache.getUser()?.fullName),
-            selectedMonth = dateGenerator.getMonth()
         )
-        val now = LocalDate.now()
+        val now = selectedDate.value
+        getAgendaForDate(date = now, shouldFetch = true)
         viewModelScope.launch {
-            agendaRepository.getAgenda(now).collectLatest {
+            selectedDate.collect {
+                getAgendaForDate(it, shouldFetch = true)
                 state = state.copy(
-                    agendaItems = AddNeedleToAgenda(now.toEpochDay(), it.toMutableList())
+                    days = dateGenerator.getWeek(it),
+                    userInitials = GetInitialsUseCase(userCache.getUser()?.fullName),
+                    selectedMonth = dateGenerator.getMonth(it)
                 )
             }
         }
-        viewModelScope.launch {
-            val fetchSuccessfully = agendaRepository.fetchAgenda(now)
+    }
 
-            state = state.copy(
-                errorMessage = if (!fetchSuccessfully) "An error ocurred" else null
-            )
+    private fun getAgendaForDate(date: LocalDate, shouldFetch: Boolean = false) {
+        viewModelScope.launch {
+            agendaRepository.getAgenda(date).collectLatest {
+                state = state.copy(
+                    agendaItems = AddNeedleToAgenda(date.toEpochDay(), it.toMutableList())
+                )
+            }
+        }
+        if (shouldFetch) {
+            viewModelScope.launch {
+                val fetchSuccessfully = agendaRepository.fetchAgenda(date)
+
+                state = state.copy(
+                    errorMessage = if (!fetchSuccessfully) "An error ocurred" else null
+                )
+            }
         }
     }
 
     fun onEvent(event: AgendaEvent) {
+        when (event) {
+            is AgendaEvent.MonthClick -> {
+                state = state.copy(showCalendar = true)
+            }
 
+            is AgendaEvent.MonthDismiss -> {
+                state = state.copy(showCalendar = false)
+            }
+
+            is AgendaEvent.DateSelected -> viewModelScope.launch {
+                selectedDate.emit(event.date)
+                state = state.copy(showCalendar = false)
+            }
+
+            is AgendaEvent.DayClicked -> viewModelScope.launch {
+                selectedDate.emit(
+                    selectedDate.value.withDayOfMonth(event.numberOfDay)
+                )
+            }
+
+            AgendaEvent.FabClicked -> {
+                state = state.copy(showFab = true)
+            }
+
+            AgendaEvent.FabDismiss -> {
+                state = state.copy(showFab = false)
+            }
+
+            AgendaEvent.Logout -> {
+
+            }
+
+            is AgendaEvent.NewItem -> {
+
+            }
+
+            is AgendaEvent.OnAgendaItemEvent -> {
+                onAgendaItemEvent(
+                    event = event.event,
+                    agendaItem = event.agendaItem
+                )
+            }
+
+            AgendaEvent.ProfileClick -> {
+                state = state.copy(showProfileMenu = true)
+            }
+
+            AgendaEvent.ProfileMenuDismiss -> {
+                state = state.copy(showProfileMenu = false)
+            }
+        }
+    }
+
+    private fun onAgendaItemEvent(event: AgendaItemEvent, agendaItem: AgendaItem) {
+        when (event) {
+            is AgendaItemEvent.DoneClick -> {
+                (agendaItem as? AgendaItem.Task)?.let {
+                    viewModelScope.launch {
+                        agendaRepository.updateTaskStatus(it.id, !it.isDone)
+                    }
+                }
+            }
+
+            is AgendaItemEvent.MenuClick -> {
+
+            }
+        }
     }
 }

@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import com.example.tasky.agenda.data.local.AgendaDao
 import com.example.tasky.agenda.data.mapper.toDomain
 import com.example.tasky.agenda.data.mapper.toEntity
+import com.example.tasky.agenda.data.mapper.toRemote
 import com.example.tasky.agenda.data.remote.AgendaService
+import com.example.tasky.agenda.data.remote.model.TaskResponse
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.util.toCurrentTimeMilli
@@ -54,6 +56,23 @@ class AgendaRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun createTask(task: AgendaItem.Task, isUpdate: Boolean) {
+        agendaDao.insertTask(task = task.toEntity())
+        createTaskRemotely(task = task.toRemote(), isUpdate = isUpdate)
+    }
+
+    private suspend fun createTaskRemotely(task: TaskResponse, isUpdate: Boolean) {
+        if (isUpdate) {
+            agendaService.updateTask(task)
+        } else {
+            agendaService.createTask(task)
+        }
+    }
+
+    override suspend fun updateTaskStatus(id: String, isDone: Boolean) {
+        val task = agendaDao.getTaskById(id).copy(isDone = isDone)
+        createTask(task = task.toDomain(), isUpdate = true)
+    }
 
     private fun getLocalEventsByDate(date: LocalDate): Flow<List<AgendaItem.Event>> {
         val day = date.toStartOfDayLong()

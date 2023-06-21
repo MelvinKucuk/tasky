@@ -12,4 +12,8 @@ interface AgendaRepository {
      * @return Returns true when the request is successfull and false when it isn't.
      */
     suspend fun fetchAgenda(date: LocalDate): Boolean
+
+    suspend fun createTask(task: AgendaItem.Task, isUpdate: Boolean = false)
+
+    suspend fun updateTaskStatus(id: String, isDone: Boolean)
 }
