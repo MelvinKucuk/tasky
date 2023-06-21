@@ -17,7 +17,6 @@ import com.example.tasky.agenda.presentation.util.AddNeedleToAgenda
 import com.example.tasky.authentication.domain.UserCache
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -38,14 +37,11 @@ class AgendaViewModel @Inject constructor(
         state = state.copy(
             userInitials = GetInitialsUseCase(userCache.getUser()?.fullName),
         )
-        val now = selectedDate.value
-        getAgendaForDate(date = now, shouldFetch = true)
         viewModelScope.launch {
             selectedDate.collect {
                 getAgendaForDate(it, shouldFetch = true)
                 state = state.copy(
                     days = dateGenerator.getWeek(it),
-                    userInitials = GetInitialsUseCase(userCache.getUser()?.fullName),
                     selectedMonth = dateGenerator.getMonth(it)
                 )
             }
@@ -54,7 +50,7 @@ class AgendaViewModel @Inject constructor(
 
     private fun getAgendaForDate(date: LocalDate, shouldFetch: Boolean = false) {
         viewModelScope.launch {
-            agendaRepository.getAgenda(date).collectLatest {
+            agendaRepository.getAgenda(date).collect {
                 state = state.copy(
                     agendaItems = AddNeedleToAgenda(date.toEpochDay(), it.toMutableList())
                 )
