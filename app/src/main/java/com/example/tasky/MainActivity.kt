@@ -10,7 +10,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.example.tasky.authentication.presentation.login.LoginScreen
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginState
-import com.example.tasky.core.presentation.SplashViewModel
+import com.example.tasky.core.presentation.MainViewModel
 import com.example.tasky.ui.theme.TaskyTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,22 +19,23 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val splashViewModel: SplashViewModel by viewModels()
+        val mainViewModel: MainViewModel by viewModels()
 
         installSplashScreen().setKeepOnScreenCondition {
-            splashViewModel.state.isLoading
+            mainViewModel.state.isLoading
         }
         setContent {
-            if (!splashViewModel.state.isLoading) {
+            if (!mainViewModel.state.isLoading) {
                 TaskyTheme {
                     val navController = rememberNavController()
                     TaskyNavigation(
                         navController = navController,
-                        startDestination = if (splashViewModel.state.isLoggedIn == true) {
+                        startDestination = if (mainViewModel.state.isLoggedIn == true) {
                             TaskyRoutes.AgendaScreen.route
                         } else {
                             TaskyRoutes.LoginScreen.route
-                        }
+                        },
+                        onLogout = mainViewModel::logout
                     )
                 }
             }

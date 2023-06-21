@@ -5,14 +5,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tasky.agenda.data.local.AgendaDatabase
 import com.example.tasky.authentication.domain.AuthenticationRepository
+import com.example.tasky.authentication.domain.UserCache
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(
-    private val authenticationRepository: AuthenticationRepository
+class MainViewModel @Inject constructor(
+    private val authenticationRepository: AuthenticationRepository,
+    private val userCache: UserCache,
+    private val dataBase: AgendaDatabase
 ) : ViewModel() {
 
     var state by mutableStateOf(SplashState())
@@ -27,6 +32,11 @@ class SplashViewModel @Inject constructor(
                 isLoggedIn = result.isSuccessful
             )
         }
+    }
+
+    fun logout() = viewModelScope.launch(Dispatchers.IO) {
+        userCache.deleteUser()
+        dataBase.clearAllTables()
     }
 }
 

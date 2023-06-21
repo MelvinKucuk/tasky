@@ -18,6 +18,7 @@ data class AgendaState(
     val agendaItemMenu: List<MenuItem> = agendaItemMenu(),
     val profileMenu: List<MenuItem> = profileMenu(),
     val fabMenu: List<MenuItem> = fabMenu(),
+    val logoutClicked: Boolean = false,
     val showFab: Boolean = false,
     val showProfileMenu: Boolean = false,
     val showCalendar: Boolean = false,

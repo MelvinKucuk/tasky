@@ -7,6 +7,8 @@ import java.time.LocalDate
 
 sealed class AgendaEvent {
     object Logout : AgendaEvent()
+    object LogoutHandled : AgendaEvent()
+    object ErrorHandled : AgendaEvent()
     object ProfileClick : AgendaEvent()
     object ProfileMenuDismiss : AgendaEvent()
     object FabDismiss : AgendaEvent()

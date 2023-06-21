@@ -101,7 +101,15 @@ class AgendaViewModel @Inject constructor(
             }
 
             AgendaEvent.Logout -> {
+                state = state.copy(logoutClicked = true)
+            }
 
+            AgendaEvent.LogoutHandled -> {
+                state = state.copy(logoutClicked = false)
+            }
+
+            AgendaEvent.ErrorHandled -> {
+                state = state.copy(errorMessage = null)
             }
 
             is AgendaEvent.NewItem -> {
