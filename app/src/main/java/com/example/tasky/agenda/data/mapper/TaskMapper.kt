@@ -33,3 +33,23 @@ fun TaskEntity.toDomain() =
         remindAt = remindAt,
         isDone = isDone,
     )
+
+fun AgendaItem.Task.toEntity() =
+    TaskEntity(
+        id = id,
+        title = title,
+        description = description,
+        time = time,
+        remindAt = remindAt,
+        isDone = isDone
+    )
+
+fun AgendaItem.Task.toRemote() =
+    TaskResponse(
+        id = id,
+        title = title,
+        description = description,
+        time = time,
+        remindAt = remindAt,
+        isDone = isDone
+    )

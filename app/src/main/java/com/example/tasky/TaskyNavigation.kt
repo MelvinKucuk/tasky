@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.tasky.agenda.presentation.AgendaScreen
+import com.example.tasky.agenda.presentation.viewmodel.AgendaEvent
 import com.example.tasky.agenda.presentation.viewmodel.AgendaViewModel
 import com.example.tasky.authentication.presentation.login.LoginScreen
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginEvent
@@ -21,7 +22,8 @@ import com.example.tasky.core.util.makeToast
 @Composable
 fun TaskyNavigation(
     navController: NavHostController,
-    startDestination: String
+    startDestination: String,
+    onLogout: () -> Unit
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(TaskyRoutes.LoginScreen.route) {
@@ -77,8 +79,19 @@ fun TaskyNavigation(
         composable(TaskyRoutes.AgendaScreen.route) {
             val viewModel: AgendaViewModel = hiltViewModel()
 
-            ObserveError(viewModel.state.errorMessage) {
-                // TODO reset value to null
+            with(viewModel.state) {
+                ObserveError(errorMessage) {
+                    viewModel.onEvent(AgendaEvent.ErrorHandled)
+                }
+                ObserveBoolean(isLoggedOut) {
+                    onLogout()
+                    navController.navigate(TaskyRoutes.LoginScreen.route) {
+                        popUpTo(TaskyRoutes.AgendaScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                    viewModel.onEvent(AgendaEvent.LogoutHandled)
+                }
             }
             AgendaScreen(state = viewModel.state, onEvent = viewModel::onEvent)
         }

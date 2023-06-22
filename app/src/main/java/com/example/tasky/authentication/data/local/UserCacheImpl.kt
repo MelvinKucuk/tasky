@@ -28,6 +28,10 @@ class UserCacheImpl @Inject constructor(
         return adapter.fromJson(json)
     }
 
+    override fun deleteUser() {
+        sharedPreferences.edit().remove(userKey).apply()
+    }
+
     companion object {
         private const val userKey = "user"
     }

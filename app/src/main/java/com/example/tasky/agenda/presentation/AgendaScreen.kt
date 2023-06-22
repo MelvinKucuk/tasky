@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,6 +47,9 @@ import com.example.tasky.agenda.presentation.viewmodel.AgendaEvent
 import com.example.tasky.agenda.presentation.viewmodel.AgendaState
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.TaskyTheme
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 
 @Composable
 fun AgendaScreen(
@@ -56,6 +60,31 @@ fun AgendaScreen(
         modifier = Modifier.fillMaxSize(),
         containerColor = Black,
     ) {
+
+        val dialogState = rememberMaterialDialogState()
+        MaterialDialog(
+            dialogState = dialogState,
+            buttons = {
+                positiveButton("Ok")
+                negativeButton("Cancel") {
+                    onEvent(AgendaEvent.MonthDismiss)
+                }
+            },
+            onCloseRequest = { dialog ->
+                onEvent(AgendaEvent.MonthDismiss)
+                dialog.hide()
+            }
+        ) {
+            datepicker { date ->
+                onEvent(AgendaEvent.DateSelected(date))
+            }
+        }
+
+        LaunchedEffect(key1 = state.showCalendar) {
+            if (state.showCalendar)
+                dialogState.show()
+        }
+
         Column(
             Modifier
                 .fillMaxSize()
@@ -141,7 +170,12 @@ fun AgendaScreen(
                                             event = item,
                                             menuItems = state.agendaItemMenu,
                                             onAgendaItemEvent = { event ->
-                                                onEvent(AgendaEvent.OnAgendaItemEvent(event))
+                                                onEvent(
+                                                    AgendaEvent.OnAgendaItemEvent(
+                                                        event = event,
+                                                        agendaItem = item
+                                                    )
+                                                )
                                             }
                                         )
                                         AddSpacer(state, index)
@@ -152,7 +186,12 @@ fun AgendaScreen(
                                             reminder = item,
                                             menuItems = state.agendaItemMenu,
                                             onAgendaEvent = { event ->
-                                                onEvent(AgendaEvent.OnAgendaItemEvent(event))
+                                                onEvent(
+                                                    AgendaEvent.OnAgendaItemEvent(
+                                                        event = event,
+                                                        agendaItem = item
+                                                    )
+                                                )
                                             }
                                         )
                                         AddSpacer(state, index)
@@ -163,7 +202,12 @@ fun AgendaScreen(
                                             task = item,
                                             menuItems = state.agendaItemMenu,
                                             onAgendaEvent = { event ->
-                                                onEvent(AgendaEvent.OnAgendaItemEvent(event))
+                                                onEvent(
+                                                    AgendaEvent.OnAgendaItemEvent(
+                                                        event = event,
+                                                        agendaItem = item
+                                                    )
+                                                )
                                             }
                                         )
                                         AddSpacer(state, index)

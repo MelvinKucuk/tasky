@@ -19,6 +19,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,7 +55,6 @@ fun EventItem(
         date = event.date,
         menuItems = menuItems,
         onAgendaEvent = onAgendaItemEvent,
-        showMenu = event.showMenu,
         containerColor = LightGreen,
         contentColor = Black,
         modifier = modifier
@@ -71,7 +74,6 @@ fun ReminderItem(
         date = reminder.date,
         menuItems = menuItems,
         onAgendaEvent = onAgendaEvent,
-        showMenu = reminder.showMenu,
         containerColor = Gray,
         contentColor = Black,
         modifier = modifier
@@ -91,7 +93,6 @@ fun TaskItem(
         date = task.date,
         menuItems = menuItems,
         onAgendaEvent = onAgendaEvent,
-        showMenu = task.showMenu,
         isTask = true,
         isDone = task.isDone,
         containerColor = Green,
@@ -109,7 +110,6 @@ fun AgendaItem(
     modifier: Modifier = Modifier,
     containerColor: Color = Green,
     contentColor: Color = Color.White,
-    showMenu: Boolean = false,
     isTask: Boolean = false,
     isDone: Boolean = false,
 ) {
@@ -181,17 +181,21 @@ fun AgendaItem(
                 }
                 Column {
                     Spacer(modifier = Modifier.size(2.dp))
+                    var showMenu by remember {
+                        mutableStateOf(false)
+                    }
                     Icon(
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
-                                onAgendaEvent(AgendaItemEvent.MoreOptions)
+                                showMenu = true
                             },
                         imageVector = Icons.Filled.MoreHoriz,
                         contentDescription = stringResource(
                             R.string.agenda_item_more_options
                         )
                     )
+
                     TaskyDropdownMenu(
                         showDropdown = showMenu,
                         items = menuItems,
@@ -199,7 +203,7 @@ fun AgendaItem(
                             onAgendaEvent(AgendaItemEvent.MenuClick(it))
                         },
                         onDismiss = {
-                            onAgendaEvent(AgendaItemEvent.MenuDismiss)
+                            showMenu = false
                         }
                     )
                 }
