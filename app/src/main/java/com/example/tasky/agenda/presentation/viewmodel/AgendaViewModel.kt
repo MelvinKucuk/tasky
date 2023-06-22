@@ -19,6 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -55,7 +56,7 @@ class AgendaViewModel @Inject constructor(
     private fun getAgendaForDate(date: LocalDate, shouldFetch: Boolean = false) {
         dataBaseJob?.cancel()
         dataBaseJob = viewModelScope.launch {
-            agendaRepository.getAgenda(date).collect {
+            agendaRepository.getAgenda(date).distinctUntilChanged().collectLatest {
                 state = state.copy(
                     agendaItems = addNeedleToAgenda(date.toEpochDay(), it.toMutableList())
                 )
