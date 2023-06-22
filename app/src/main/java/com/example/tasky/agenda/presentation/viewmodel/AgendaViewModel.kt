@@ -13,10 +13,12 @@ import com.example.tasky.agenda.domain.DateGenerator
 import com.example.tasky.agenda.domain.GetInitialsUseCase
 import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.presentation.AgendaItemEvent
-import com.example.tasky.agenda.presentation.util.AddNeedleToAgenda
+import com.example.tasky.agenda.presentation.util.addNeedleToAgenda
 import com.example.tasky.authentication.domain.UserCache
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -28,7 +30,9 @@ class AgendaViewModel @Inject constructor(
     private val agendaRepository: AgendaRepository,
 ) : ViewModel() {
 
-    private val selectedDate: MutableStateFlow<LocalDate> = MutableStateFlow(LocalDate.now())
+    private val selectedDate = MutableStateFlow(LocalDate.now())
+
+    private var dataBaseJob: Job? = null
 
     var state by mutableStateOf(AgendaState())
         private set
@@ -38,7 +42,7 @@ class AgendaViewModel @Inject constructor(
             userInitials = GetInitialsUseCase(userCache.getUser()?.fullName),
         )
         viewModelScope.launch {
-            selectedDate.collect {
+            selectedDate.collectLatest {
                 getAgendaForDate(it, shouldFetch = true)
                 state = state.copy(
                     days = dateGenerator.getWeek(it),
@@ -49,10 +53,11 @@ class AgendaViewModel @Inject constructor(
     }
 
     private fun getAgendaForDate(date: LocalDate, shouldFetch: Boolean = false) {
-        viewModelScope.launch {
+        dataBaseJob?.cancel()
+        dataBaseJob = viewModelScope.launch {
             agendaRepository.getAgenda(date).collect {
                 state = state.copy(
-                    agendaItems = AddNeedleToAgenda(date.toEpochDay(), it.toMutableList())
+                    agendaItems = addNeedleToAgenda(date.toEpochDay(), it.toMutableList())
                 )
             }
         }
@@ -61,7 +66,7 @@ class AgendaViewModel @Inject constructor(
                 val fetchSuccessfully = agendaRepository.fetchAgenda(date)
 
                 state = state.copy(
-                    errorMessage = if (!fetchSuccessfully) "An error ocurred" else null
+                    errorMessage = if (fetchSuccessfully) null else "An error ocurred"
                 )
             }
         }
@@ -97,11 +102,11 @@ class AgendaViewModel @Inject constructor(
             }
 
             AgendaEvent.Logout -> {
-                state = state.copy(logoutClicked = true)
+                state = state.copy(isLoggedOut = true)
             }
 
             AgendaEvent.LogoutHandled -> {
-                state = state.copy(logoutClicked = false)
+                state = state.copy(isLoggedOut = false)
             }
 
             AgendaEvent.ErrorHandled -> {

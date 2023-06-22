@@ -83,7 +83,7 @@ fun TaskyNavigation(
                 ObserveError(errorMessage) {
                     viewModel.onEvent(AgendaEvent.ErrorHandled)
                 }
-                ObserveBoolean(logoutClicked) {
+                ObserveBoolean(isLoggedOut) {
                     onLogout()
                     navController.navigate(TaskyRoutes.LoginScreen.route) {
                         popUpTo(TaskyRoutes.AgendaScreen.route) {
