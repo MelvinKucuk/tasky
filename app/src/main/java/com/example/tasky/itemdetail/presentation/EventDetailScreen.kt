@@ -166,8 +166,6 @@ fun EventDetailScreen(
                                 Spacer(modifier = Modifier.size(16.dp))
                             }
                         }
-                    }
-                    item {
                         Divider(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -199,9 +197,8 @@ fun EventDetailScreen(
                             }
 
                         }
+                        Spacer(modifier = Modifier.size(30.dp))
                     }
-
-                    item { Spacer(modifier = Modifier.size(30.dp)) }
 
                     item {
                         Box(
@@ -227,11 +224,9 @@ fun EventDetailScreen(
                                 )
                             }
                         }
-                    }
 
-                    item { Spacer(modifier = Modifier.size(25.dp)) }
+                        Spacer(modifier = Modifier.size(25.dp))
 
-                    item {
                         Divider(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -249,9 +244,7 @@ fun EventDetailScreen(
                             onTimeClicked = {},
                             onDateClicked = {}
                         )
-                    }
 
-                    item {
                         Divider(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -269,9 +262,7 @@ fun EventDetailScreen(
                             onTimeClicked = {},
                             onDateClicked = {}
                         )
-                    }
 
-                    item {
                         Divider(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -321,18 +312,16 @@ fun EventDetailScreen(
                                 )
                             }
                         }
-                    }
 
-                    item {
                         Divider(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp),
                             color = Light
                         )
-                    }
 
-                    item { Spacer(modifier = Modifier.size(30.dp)) }
+                        Spacer(modifier = Modifier.size(30.dp))
+                    }
 
                     item {
                         Row(
@@ -368,9 +357,9 @@ fun EventDetailScreen(
                                 }
                             }
                         }
-                    }
 
-                    item { Spacer(modifier = Modifier.size(36.dp)) }
+                        Spacer(modifier = Modifier.size(36.dp))
+                    }
 
                     item {
                         Row(
@@ -390,9 +379,9 @@ fun EventDetailScreen(
                                 visitorType = VisitorType.NotGoing(isSelected = false)
                             ) {}
                         }
-                    }
 
-                    item { Spacer(modifier = Modifier.size(20.dp)) }
+                        Spacer(modifier = Modifier.size(20.dp))
+                    }
 
                     item {
                         Text(
@@ -402,9 +391,9 @@ fun EventDetailScreen(
                             fontWeight = FontWeight.Medium,
                             fontSize = 16.sp
                         )
-                    }
 
-                    item { Spacer(modifier = Modifier.size(15.dp)) }
+                        Spacer(modifier = Modifier.size(15.dp))
+                    }
 
                     item {
                         Column(
@@ -420,9 +409,9 @@ fun EventDetailScreen(
                                 ) {}
                             }
                         }
-                    }
 
-                    item { Spacer(modifier = Modifier.size(20.dp)) }
+                        Spacer(modifier = Modifier.size(20.dp))
+                    }
 
                     item {
                         Text(
@@ -432,9 +421,9 @@ fun EventDetailScreen(
                             fontWeight = FontWeight.Medium,
                             fontSize = 16.sp
                         )
-                    }
 
-                    item { Spacer(modifier = Modifier.size(15.dp)) }
+                        Spacer(modifier = Modifier.size(15.dp))
+                    }
 
                     item {
                         Column(
@@ -450,9 +439,9 @@ fun EventDetailScreen(
                                 ) {}
                             }
                         }
-                    }
 
-                    item { Spacer(modifier = Modifier.size(45.dp)) }
+                        Spacer(modifier = Modifier.size(45.dp))
+                    }
 
                     item {
                         Box(
@@ -467,9 +456,9 @@ fun EventDetailScreen(
                                 fontSize = 16.sp
                             )
                         }
-                    }
 
-                    item { Spacer(modifier = Modifier.size(20.dp)) }
+                        Spacer(modifier = Modifier.size(20.dp))
+                    }
 
                     item {
                         Box(
@@ -484,9 +473,9 @@ fun EventDetailScreen(
                                     .background(Black)
                             )
                         }
-                    }
 
-                    item { Spacer(modifier = Modifier.size(20.dp)) }
+                        Spacer(modifier = Modifier.size(20.dp))
+                    }
                 }
             }
         }
