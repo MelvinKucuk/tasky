@@ -1,8 +1,8 @@
 package com.example.tasky.agenda.data.mapper
 
 import com.example.tasky.agenda.data.remote.model.AgendaResponse
-import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.core.data.Resource
+import com.example.tasky.core.domain.model.AgendaItem
 
 fun Resource<AgendaResponse>.toAgenda(): Resource<List<AgendaItem>> {
     return when (this) {

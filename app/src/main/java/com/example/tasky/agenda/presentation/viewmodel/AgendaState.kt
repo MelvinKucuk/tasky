@@ -3,12 +3,12 @@
 package com.example.tasky.agenda.presentation.viewmodel
 
 import android.annotation.SuppressLint
-import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.Day
 import com.example.tasky.agenda.presentation.MenuItem
 import com.example.tasky.agenda.presentation.util.agendaItemMenu
 import com.example.tasky.agenda.presentation.util.fabMenu
 import com.example.tasky.agenda.presentation.util.profileMenu
+import com.example.tasky.core.domain.model.AgendaItem
 
 data class AgendaState(
     val selectedMonth: String = "",

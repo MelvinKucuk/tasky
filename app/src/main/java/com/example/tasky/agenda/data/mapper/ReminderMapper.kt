@@ -2,7 +2,7 @@ package com.example.tasky.agenda.data.mapper
 
 import com.example.tasky.agenda.data.local.model.ReminderEntity
 import com.example.tasky.agenda.data.remote.model.ReminderResponse
-import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.core.domain.model.AgendaItem
 
 fun ReminderResponse.toDomain() =
     AgendaItem.Reminder(

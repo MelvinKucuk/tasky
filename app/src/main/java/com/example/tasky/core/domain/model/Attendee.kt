@@ -1,4 +1,6 @@
-package com.example.tasky.agenda.domain.model
+package com.example.tasky.core.domain.model
+
+import com.example.tasky.agenda.domain.getInitials
 
 data class Attendee(
     val email: String = "",
@@ -7,6 +9,7 @@ data class Attendee(
     val eventId: String? = null,
     val isGoing: Boolean? = null,
     val remindAt: Long? = null,
-    val isUserEventCreator: Boolean = false,
-    val initials: String = ""
-)
+    val isUserEventCreator: Boolean = false
+) {
+    val initials: String get() = getInitials(fullName)
+}
