@@ -1,4 +1,4 @@
-package com.example.tasky.itemdetail.domain
+package com.example.tasky.itemdetail.presentation.model
 
 import com.example.tasky.R
 

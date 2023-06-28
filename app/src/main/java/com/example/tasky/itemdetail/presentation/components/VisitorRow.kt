@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
-import com.example.tasky.agenda.domain.model.Attendee
+import com.example.tasky.core.domain.model.Attendee
 import com.example.tasky.ui.theme.DarkGray
 import com.example.tasky.ui.theme.Light2
 import com.example.tasky.ui.theme.LightBlue2
@@ -92,7 +92,6 @@ fun VisitorRow(
 fun VisitorRowPreview() {
     VisitorRow(
         visitor = Attendee(
-            initials = "MK",
             fullName = "Melvin Alex Kucuk"
         ),
         isEditMode = false
@@ -104,7 +103,6 @@ fun VisitorRowPreview() {
 fun VisitorRowCreatorPreview() {
     VisitorRow(
         visitor = Attendee(
-            initials = "MK",
             fullName = "Melvin Alex Kucuk",
             isUserEventCreator = true
         ),
@@ -117,7 +115,6 @@ fun VisitorRowCreatorPreview() {
 fun VisitorRowEditModeCreatorPreview() {
     VisitorRow(
         visitor = Attendee(
-            initials = "MK",
             fullName = "Melvin Alex Kucuk",
             isUserEventCreator = true
         ),
@@ -130,7 +127,6 @@ fun VisitorRowEditModeCreatorPreview() {
 fun VisitorRowEditModePreview() {
     VisitorRow(
         visitor = Attendee(
-            initials = "MK",
             fullName = "Melvin Alex Kucuk"
         ),
         isEditMode = true

@@ -44,13 +44,7 @@ fun TimeDatePicker(
 
         Row(
             modifier = Modifier
-                .then(
-                    if (isEditMode) {
-                        Modifier.clickable { onTimeClicked() }
-                    } else {
-                        Modifier
-                    }
-                )
+                .clickable(enabled = isEditMode) { onTimeClicked() }
         ) {
             Text(
                 modifier = Modifier

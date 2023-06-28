@@ -34,16 +34,5 @@ class DateGenerator @Inject constructor() {
         return daysOfWeek
     }
 
-    /*fun getMonth(date: LocalDate): String {
-        val calendar = Calendar.getInstance()
-        calendar.set(date.year, date.month.ordinal, date.dayOfMonth)
-
-        return calendar.getDisplayName(
-            Calendar.MONTH,
-            Calendar.LONG,
-            Locale.getDefault()
-        )?.uppercase() ?: ""
-    }*/
-
     fun getMonth(date: LocalDate) = date.month.name.uppercase()
 }

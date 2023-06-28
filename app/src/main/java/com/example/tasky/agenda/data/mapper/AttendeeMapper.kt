@@ -1,7 +1,7 @@
 package com.example.tasky.agenda.data.mapper
 
 import com.example.tasky.agenda.data.remote.model.AttendeeResponse
-import com.example.tasky.agenda.domain.model.Attendee
+import com.example.tasky.core.domain.model.Attendee
 
 fun AttendeeResponse.toDomain() =
     Attendee(
