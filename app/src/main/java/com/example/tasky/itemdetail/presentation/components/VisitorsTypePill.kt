@@ -24,28 +24,29 @@ import com.example.tasky.ui.theme.Light2
 
 @Composable
 fun VisitorTypePill(
-    visitorType: VisitorType,
+    type: VisitorType,
+    isSelected: Boolean,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: (VisitorType) -> Unit
 ) {
     Box(
         modifier = modifier
             .height(30.dp)
             .clip(CircleShape)
             .background(
-                if (visitorType.isSelected) {
+                if (isSelected) {
                     Black
                 } else {
                     Light2
                 }
             )
-            .clickable { onClick() },
+            .clickable { onClick(type) },
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(visitorType.name),
+            text = stringResource(type.value),
             color =
-            if (visitorType.isSelected) {
+            if (isSelected) {
                 White
             } else {
                 DarkGray
@@ -61,7 +62,8 @@ fun VisitorTypePill(
 fun VisitorTypePillPreviewSelected() {
     VisitorTypePill(
         modifier = Modifier.width(60.dp),
-        visitorType = VisitorType.All(isSelected = true)
+        type = VisitorType.ALL,
+        isSelected = true,
     ) {}
 }
 
@@ -70,6 +72,7 @@ fun VisitorTypePillPreviewSelected() {
 fun VisitorTypePillPreviewNotSelected() {
     VisitorTypePill(
         modifier = Modifier.width(60.dp),
-        visitorType = VisitorType.All(isSelected = false)
+        type = VisitorType.ALL,
+        isSelected = false,
     ) {}
 }

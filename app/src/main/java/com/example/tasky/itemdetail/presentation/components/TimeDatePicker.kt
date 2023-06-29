@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
 import com.example.tasky.ui.theme.Black
+import com.example.tasky.ui.theme.Light
 
 @Composable
 fun TimeDatePicker(
@@ -111,6 +113,13 @@ fun TimeDatePicker(
         } else {
             Spacer(modifier = Modifier.size(30.dp))
         }
+
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            color = Light
+        )
     }
 }
 
