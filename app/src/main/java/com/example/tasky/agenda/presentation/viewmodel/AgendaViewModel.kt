@@ -10,11 +10,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.DateGenerator
-import com.example.tasky.agenda.domain.GetInitialsUseCase
-import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.agenda.domain.getInitials
 import com.example.tasky.agenda.presentation.AgendaItemEvent
 import com.example.tasky.agenda.presentation.util.addNeedleToAgenda
 import com.example.tasky.authentication.domain.UserCache
+import com.example.tasky.core.domain.model.AgendaItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +40,7 @@ class AgendaViewModel @Inject constructor(
 
     init {
         state = state.copy(
-            userInitials = GetInitialsUseCase(userCache.getUser()?.fullName),
+            userInitials = getInitials(userCache.getUser()?.fullName),
         )
         viewModelScope.launch {
             selectedDate.collectLatest {

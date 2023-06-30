@@ -34,9 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
-import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.presentation.AgendaItemEvent
 import com.example.tasky.agenda.presentation.MenuItem
+import com.example.tasky.core.domain.model.AgendaItem
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.Gray
 import com.example.tasky.ui.theme.Green

@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
-import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.Day
 import com.example.tasky.agenda.presentation.components.DayPill
 import com.example.tasky.agenda.presentation.components.EventItem
@@ -45,6 +44,7 @@ import com.example.tasky.agenda.presentation.components.TaskItem
 import com.example.tasky.agenda.presentation.components.TaskyDropdownMenu
 import com.example.tasky.agenda.presentation.viewmodel.AgendaEvent
 import com.example.tasky.agenda.presentation.viewmodel.AgendaState
+import com.example.tasky.core.domain.model.AgendaItem
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.TaskyTheme
 import com.vanpra.composematerialdialogs.MaterialDialog
