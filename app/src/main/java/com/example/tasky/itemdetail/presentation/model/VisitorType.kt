@@ -1,32 +1,10 @@
 package com.example.tasky.itemdetail.presentation.model
 
+import androidx.annotation.StringRes
 import com.example.tasky.R
 
-sealed class VisitorType(
-    val name: Int,
-    val isSelected: Boolean
-) {
-    class All(
-        name: Int = R.string.all,
-        isSelected: Boolean
-    ) : VisitorType(
-        name,
-        isSelected
-    )
-
-    class Going(
-        name: Int = R.string.going,
-        isSelected: Boolean
-    ) : VisitorType(
-        name,
-        isSelected
-    )
-
-    class NotGoing(
-        name: Int = R.string.not_going,
-        isSelected: Boolean
-    ) : VisitorType(
-        name,
-        isSelected
-    )
+enum class VisitorType(@StringRes val value: Int) {
+    ALL(value = R.string.all),
+    GOING(value = R.string.going),
+    NOT_GOING(value = R.string.not_going)
 }
