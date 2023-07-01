@@ -32,4 +32,16 @@ class EventDetailViewModel @Inject constructor(
             )
         }
     }
+
+    fun onEvent(event: EventDetailEvent) {
+        when (event) {
+            EventDetailEvent.OnCloseClick -> {
+                state = state.copy(navigateBack = true)
+            }
+
+            EventDetailEvent.CloseClickResolved -> {
+                state = state.copy(navigateBack = false)
+            }
+        }
+    }
 }

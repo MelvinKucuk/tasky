@@ -22,6 +22,7 @@ import com.example.tasky.core.util.ObserveError
 import com.example.tasky.core.util.ObserveString
 import com.example.tasky.core.util.makeToast
 import com.example.tasky.itemdetail.presentation.EventDetailScreen
+import com.example.tasky.itemdetail.presentation.viewmodel.EventDetailEvent
 import com.example.tasky.itemdetail.presentation.viewmodel.EventDetailViewModel
 
 @Composable
@@ -115,7 +116,17 @@ fun TaskyNavigation(
         ) {
             val viewModel: EventDetailViewModel = hiltViewModel()
 
-            EventDetailScreen(state = viewModel.state)
+            with(viewModel.state) {
+                ObserveBoolean(navigateBack) {
+                    navController.popBackStack()
+                    viewModel.onEvent(EventDetailEvent.CloseClickResolved)
+                }
+            }
+
+            EventDetailScreen(
+                state = viewModel.state,
+                onEvent = viewModel::onEvent
+            )
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.tasky.itemdetail.presentation
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,13 +42,15 @@ import com.example.tasky.itemdetail.presentation.components.DetailVisitorsTitle
 import com.example.tasky.itemdetail.presentation.components.EventActionText
 import com.example.tasky.itemdetail.presentation.components.TimeDatePicker
 import com.example.tasky.itemdetail.presentation.components.VisitorTypeList
+import com.example.tasky.itemdetail.presentation.viewmodel.EventDetailEvent
 import com.example.tasky.itemdetail.presentation.viewmodel.EventDetailState
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.LightGreen
 
 @Composable
 fun EventDetailScreen(
-    state: EventDetailState
+    state: EventDetailState,
+    onEvent: (EventDetailEvent) -> Unit
 ) {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -70,6 +73,7 @@ fun EventDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
+                    modifier = Modifier.clickable { onEvent(EventDetailEvent.OnCloseClick) },
                     imageVector = Icons.Filled.Close,
                     tint = Color.White,
                     contentDescription = stringResource(R.string.close)
@@ -200,11 +204,11 @@ fun EventDetailScreen(
 @Preview
 @Composable
 fun EventDetailScreenPreview() {
-    EventDetailScreen(EventDetailState())
+    EventDetailScreen(EventDetailState()) {}
 }
 
 @Preview
 @Composable
 fun EventDetailScreenPreviewWithEdit() {
-    EventDetailScreen(EventDetailState(isEditMode = true))
+    EventDetailScreen(EventDetailState(isEditMode = true)) {}
 }

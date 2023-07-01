@@ -7,5 +7,6 @@ data class EventDetailState(
     val eventId: String = "",
     val event: AgendaItem.Event = AgendaItem.Event(),
     val isEditMode: Boolean = false,
+    val navigateBack: Boolean = false,
     val selectedFilter: VisitorType = VisitorType.ALL
 )
