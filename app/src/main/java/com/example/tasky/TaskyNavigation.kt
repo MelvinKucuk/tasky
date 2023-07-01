@@ -98,7 +98,7 @@ fun TaskyNavigation(
                     viewModel.onEvent(AgendaEvent.LogoutHandled)
                 }
                 ObserveString(navigateToEventDetail) { eventId ->
-                    navController.navigate(TaskyRoutes.EventDetailScreen.route + "/$eventId")
+                    navController.navigate(TaskyRoutes.EventDetailScreen.getDestination(eventId))
                     viewModel.onEvent(AgendaEvent.EventNavigationHandled)
                 }
             }
@@ -106,7 +106,7 @@ fun TaskyNavigation(
         }
 
         composable(
-            route = TaskyRoutes.EventDetailScreen.route + "/{${TaskyRoutes.EventDetailScreen.EVENT_ID}}",
+            route = TaskyRoutes.EventDetailScreen.getCompleteRoute(),
             arguments = listOf(
                 navArgument(TaskyRoutes.EventDetailScreen.EVENT_ID) {
                     type = NavType.StringType
