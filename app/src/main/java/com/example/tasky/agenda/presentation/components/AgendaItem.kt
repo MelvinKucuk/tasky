@@ -116,7 +116,8 @@ fun AgendaItem(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 14.dp, end = 8.dp),
+            .padding(start = 14.dp, end = 8.dp)
+            .clickable { onAgendaEvent(AgendaItemEvent.MenuClick(MenuItem.OPEN)) },
         colors = CardDefaults.cardColors(
             containerColor = containerColor,
             contentColor = contentColor
