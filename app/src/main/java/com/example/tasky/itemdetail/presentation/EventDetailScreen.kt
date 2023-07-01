@@ -169,7 +169,9 @@ fun EventDetailScreen(
                     }
 
                     item {
-                        VisitorTypeList(selectedFilter = state.selectedFilter) {}
+                        VisitorTypeList(selectedFilter = state.selectedFilter) { visitorType ->
+                            onEvent(EventDetailEvent.OnFilterClicked(visitorType))
+                        }
                     }
 
                     item {

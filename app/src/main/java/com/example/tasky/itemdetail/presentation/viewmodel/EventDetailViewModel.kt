@@ -42,6 +42,10 @@ class EventDetailViewModel @Inject constructor(
             EventDetailEvent.CloseClickResolved -> {
                 state = state.copy(navigateBack = false)
             }
+
+            is EventDetailEvent.OnFilterClicked -> {
+                state = state.copy(selectedFilter = event.filter)
+            }
         }
     }
 }
