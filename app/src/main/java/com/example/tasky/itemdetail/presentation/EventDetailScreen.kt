@@ -26,6 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
+import com.example.tasky.agenda.domain.util.toCurrentDate
+import com.example.tasky.agenda.domain.util.toHours
+import com.example.tasky.agenda.domain.util.toSimplifiedDate
 import com.example.tasky.itemdetail.presentation.components.AttendeeTypeText
 import com.example.tasky.itemdetail.presentation.components.BottomDecorator
 import com.example.tasky.itemdetail.presentation.components.DetailAttendeeList
@@ -38,6 +41,7 @@ import com.example.tasky.itemdetail.presentation.components.DetailVisitorsTitle
 import com.example.tasky.itemdetail.presentation.components.EventActionText
 import com.example.tasky.itemdetail.presentation.components.TimeDatePicker
 import com.example.tasky.itemdetail.presentation.components.VisitorTypeList
+import com.example.tasky.itemdetail.presentation.viewmodel.EventDetailState
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.LightGreen
 
@@ -72,7 +76,7 @@ fun EventDetailScreen(
                 )
 
                 Text(
-                    text = "01 MARCH 2022",
+                    text = state.event.from.toCurrentDate(),
                     color = Color.White,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
@@ -105,14 +109,14 @@ fun EventDetailScreen(
                     }
                     item {
                         DetailTitle(
-                            title = "Title of event",
+                            title = state.event.title,
                             isEditMode = state.isEditMode
                         ) {}
                     }
 
                     item {
                         DetailDescription(
-                            description = "This is a description",
+                            description = state.event.description,
                             isEditMode = state.isEditMode
                         ) {
 
@@ -125,9 +129,9 @@ fun EventDetailScreen(
 
                     item {
                         TimeDatePicker(
-                            time = "08:00",
+                            time = state.event.from.toHours(),
                             timePrefix = stringResource(id = R.string.from),
-                            date = "Jul 21 2023",
+                            date = state.event.from.toSimplifiedDate(),
                             isEditMode = state.isEditMode,
                             onTimeClicked = {},
                             onDateClicked = {}
@@ -136,9 +140,9 @@ fun EventDetailScreen(
 
                     item {
                         TimeDatePicker(
-                            time = "10:00",
+                            time = state.event.to.toHours(),
                             timePrefix = stringResource(id = R.string.to),
-                            date = "Jul 21 2023",
+                            date = state.event.to.toSimplifiedDate(),
                             isEditMode = state.isEditMode,
                             onTimeClicked = {},
                             onDateClicked = {}
@@ -146,7 +150,10 @@ fun EventDetailScreen(
                     }
 
                     item {
-                        DetailReminder(text = "30 minutes before", isEditMode = state.isEditMode) {
+                        DetailReminder(
+                            text = "${state.event.remindAt} minutes before",
+                            isEditMode = state.isEditMode
+                        ) {
 
                         }
                     }

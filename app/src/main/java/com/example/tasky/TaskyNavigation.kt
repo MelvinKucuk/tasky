@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.tasky.agenda.presentation.AgendaScreen
 import com.example.tasky.agenda.presentation.viewmodel.AgendaEvent
 import com.example.tasky.agenda.presentation.viewmodel.AgendaViewModel
@@ -17,7 +19,10 @@ import com.example.tasky.authentication.presentation.signup.viewmodel.SignUpEven
 import com.example.tasky.authentication.presentation.signup.viewmodel.SignUpViewModel
 import com.example.tasky.core.util.ObserveBoolean
 import com.example.tasky.core.util.ObserveError
+import com.example.tasky.core.util.ObserveString
 import com.example.tasky.core.util.makeToast
+import com.example.tasky.itemdetail.presentation.EventDetailScreen
+import com.example.tasky.itemdetail.presentation.viewmodel.EventDetailViewModel
 
 @Composable
 fun TaskyNavigation(
@@ -92,8 +97,25 @@ fun TaskyNavigation(
                     }
                     viewModel.onEvent(AgendaEvent.LogoutHandled)
                 }
+                ObserveString(navigateToEventDetail) { eventId ->
+                    navController.navigate(TaskyRoutes.EventDetailScreen.route + "/$eventId")
+                    viewModel.onEvent(AgendaEvent.EventNavigationHandled)
+                }
             }
             AgendaScreen(state = viewModel.state, onEvent = viewModel::onEvent)
+        }
+
+        composable(
+            route = TaskyRoutes.EventDetailScreen.route + "/{${TaskyRoutes.EventDetailScreen.EVENT_ID}}",
+            arguments = listOf(
+                navArgument(TaskyRoutes.EventDetailScreen.EVENT_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val viewModel: EventDetailViewModel = hiltViewModel()
+
+            EventDetailScreen(state = viewModel.state)
         }
     }
 }

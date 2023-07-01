@@ -8,6 +8,7 @@ import java.time.LocalDate
 sealed class AgendaEvent {
     object Logout : AgendaEvent()
     object LogoutHandled : AgendaEvent()
+    object EventNavigationHandled : AgendaEvent()
     object ErrorHandled : AgendaEvent()
     object ProfileClick : AgendaEvent()
     object ProfileMenuDismiss : AgendaEvent()
@@ -19,7 +20,6 @@ sealed class AgendaEvent {
         val event: AgendaItemEvent,
         val agendaItem: AgendaItem
     ) : AgendaEvent()
-
     data class DayClicked(val numberOfDay: Int) : AgendaEvent()
     data class NewItem(val item: MenuItem) : AgendaEvent()
     data class DateSelected(val date: LocalDate) : AgendaEvent()

@@ -2,6 +2,7 @@ package com.example.tasky.itemdetail.presentation.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,83 +36,86 @@ fun TimeDatePicker(
     onDateClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(
-        modifier = modifier
-            .height(70.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-
+    Column {
         Row(
-            modifier = Modifier
-                .clickable(enabled = isEditMode) { onTimeClicked() }
+            modifier = modifier
+                .height(70.dp)
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                modifier = Modifier
-                    .padding(start = 6.dp),
-                text = timePrefix,
-                color = Black,
-                fontSize = 16.sp
-            )
 
-            if (timePrefix == "From") {
-                Spacer(modifier = Modifier.width(17.dp))
-            } else {
-                Spacer(modifier = Modifier.width(37.dp))
+            Row(
+                modifier = Modifier
+                    .clickable(enabled = isEditMode) { onTimeClicked() }
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 6.dp),
+                    text = timePrefix,
+                    color = Black,
+                    fontSize = 16.sp
+                )
+
+                if (timePrefix == "From") {
+                    Spacer(modifier = Modifier.width(17.dp))
+                } else {
+                    Spacer(modifier = Modifier.width(37.dp))
+                }
+
+                Text(
+                    text = time,
+                    color = Black,
+                    fontSize = 16.sp
+                )
             }
 
-            Text(
-                text = time,
-                color = Black,
-                fontSize = 16.sp
-            )
-        }
-
-        if (isEditMode) {
-            Icon(
-                modifier = Modifier
-                    .size(30.dp)
-                    .clickable { onTimeClicked() },
-                imageVector = Icons.Filled.ChevronRight,
-                tint = Black,
-                contentDescription = stringResource(R.string.edit)
-            )
-        } else {
-            Spacer(modifier = Modifier.size(30.dp))
-        }
-
-        Row(
-            modifier = Modifier
-                .then(
-                    if (isEditMode) {
-                        Modifier.clickable { onDateClicked() }
-                    } else {
-                        Modifier
-                    }
+            if (isEditMode) {
+                Icon(
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clickable { onTimeClicked() },
+                    imageVector = Icons.Filled.ChevronRight,
+                    tint = Black,
+                    contentDescription = stringResource(R.string.edit)
                 )
-        ) {
-            Text(
-                modifier = Modifier
-                    .padding(start = 6.dp),
-                text = date,
-                color = Black,
-                fontSize = 16.sp
-            )
-        }
+            } else {
+                Spacer(modifier = Modifier.size(30.dp))
+            }
 
-        if (isEditMode) {
-            Icon(
+            Row(
                 modifier = Modifier
-                    .size(30.dp)
-                    .clickable { onDateClicked() },
-                imageVector = Icons.Filled.ChevronRight,
-                tint = Black,
-                contentDescription = stringResource(R.string.edit)
-            )
-        } else {
-            Spacer(modifier = Modifier.size(30.dp))
+                    .then(
+                        if (isEditMode) {
+                            Modifier.clickable { onDateClicked() }
+                        } else {
+                            Modifier
+                        }
+                    )
+            ) {
+                Text(
+                    modifier = Modifier
+                        .padding(start = 6.dp),
+                    text = date,
+                    color = Black,
+                    fontSize = 16.sp
+                )
+            }
+
+            if (isEditMode) {
+                Icon(
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clickable { onDateClicked() },
+                    imageVector = Icons.Filled.ChevronRight,
+                    tint = Black,
+                    contentDescription = stringResource(R.string.edit)
+                )
+            } else {
+                Spacer(modifier = Modifier.size(30.dp))
+            }
+
         }
 
         Divider(

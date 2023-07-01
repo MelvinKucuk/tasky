@@ -23,3 +23,12 @@ fun ObserveBoolean(observer: Boolean?, onTriggered: () -> Unit) {
         }
     }
 }
+
+@Composable
+fun ObserveString(observer: String?, onTriggered: (String) -> Unit) {
+    LaunchedEffect(key1 = observer) {
+        if (observer != null) {
+            onTriggered(observer)
+        }
+    }
+}

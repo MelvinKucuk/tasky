@@ -12,6 +12,7 @@ import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.DateGenerator
 import com.example.tasky.agenda.domain.getInitials
 import com.example.tasky.agenda.presentation.AgendaItemEvent
+import com.example.tasky.agenda.presentation.MenuItem
 import com.example.tasky.agenda.presentation.util.addNeedleToAgenda
 import com.example.tasky.authentication.domain.UserCache
 import com.example.tasky.core.domain.model.AgendaItem
@@ -114,6 +115,10 @@ class AgendaViewModel @Inject constructor(
                 state = state.copy(errorMessage = null)
             }
 
+            AgendaEvent.EventNavigationHandled -> {
+                state = state.copy(navigateToEventDetail = null)
+            }
+
             is AgendaEvent.NewItem -> {
 
             }
@@ -146,7 +151,15 @@ class AgendaViewModel @Inject constructor(
             }
 
             is AgendaItemEvent.MenuClick -> {
+                when (event.menu) {
+                    MenuItem.OPEN -> {
+                        state = state.copy(
+                            navigateToEventDetail = agendaItem.id
+                        )
+                    }
 
+                    else -> {}
+                }
             }
         }
     }

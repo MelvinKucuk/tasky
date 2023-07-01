@@ -22,5 +22,6 @@ data class AgendaState(
     val showFab: Boolean = false,
     val showProfileMenu: Boolean = false,
     val showCalendar: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val navigateToEventDetail: String? = null
 )
