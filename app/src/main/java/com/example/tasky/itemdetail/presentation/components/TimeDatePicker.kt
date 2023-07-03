@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Divider
@@ -49,6 +48,7 @@ fun TimeDatePicker(
             Row(
                 modifier = Modifier
                     .clickable(enabled = isEditMode) { onTimeClicked() }
+                    .weight(1f)
             ) {
                 Text(
                     modifier = Modifier
@@ -58,11 +58,7 @@ fun TimeDatePicker(
                     fontSize = 16.sp
                 )
 
-                if (timePrefix == "From") {
-                    Spacer(modifier = Modifier.width(17.dp))
-                } else {
-                    Spacer(modifier = Modifier.width(37.dp))
-                }
+                Spacer(modifier = Modifier.weight(0.1f))
 
                 Text(
                     text = time,
@@ -75,24 +71,22 @@ fun TimeDatePicker(
                 Icon(
                     modifier = Modifier
                         .size(30.dp)
-                        .clickable { onTimeClicked() },
+                        .clickable { onTimeClicked() }
+                        .weight(1f),
                     imageVector = Icons.Filled.ChevronRight,
                     tint = Black,
                     contentDescription = stringResource(R.string.edit)
                 )
             } else {
-                Spacer(modifier = Modifier.size(30.dp))
+                Spacer(modifier = Modifier
+                    .size(30.dp)
+                    .weight(1f))
             }
 
             Row(
                 modifier = Modifier
-                    .then(
-                        if (isEditMode) {
-                            Modifier.clickable { onDateClicked() }
-                        } else {
-                            Modifier
-                        }
-                    )
+                    .clickable(enabled = isEditMode) { onDateClicked() }
+                    .weight(1f)
             ) {
                 Text(
                     modifier = Modifier

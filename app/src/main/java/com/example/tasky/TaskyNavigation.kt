@@ -17,9 +17,9 @@ import com.example.tasky.authentication.presentation.login.viewmodel.LoginViewMo
 import com.example.tasky.authentication.presentation.signup.SignUpScreen
 import com.example.tasky.authentication.presentation.signup.viewmodel.SignUpEvent
 import com.example.tasky.authentication.presentation.signup.viewmodel.SignUpViewModel
+import com.example.tasky.core.util.Observe
 import com.example.tasky.core.util.ObserveBoolean
 import com.example.tasky.core.util.ObserveError
-import com.example.tasky.core.util.ObserveString
 import com.example.tasky.core.util.makeToast
 import com.example.tasky.itemdetail.presentation.EventDetailScreen
 import com.example.tasky.itemdetail.presentation.viewmodel.EventDetailEvent
@@ -98,7 +98,7 @@ fun TaskyNavigation(
                     }
                     viewModel.onEvent(AgendaEvent.LogoutHandled)
                 }
-                ObserveString(navigateToEventDetail) { eventId ->
+                Observe(navigateToEventDetail) { eventId ->
                     navController.navigate(TaskyRoutes.EventDetailScreen.getDestination(eventId))
                     viewModel.onEvent(AgendaEvent.EventNavigationHandled)
                 }

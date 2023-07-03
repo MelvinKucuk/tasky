@@ -22,14 +22,16 @@ class EventDetailViewModel @Inject constructor(
         private set
 
     init {
-        val eventId = savedStateHandle.get<String>(TaskyRoutes.EventDetailScreen.EVENT_ID) ?: ""
-        state = state.copy(eventId = eventId)
-        viewModelScope.launch {
-            val event = repository.getEventById(state.eventId)
+        val eventId = savedStateHandle.get<String>(TaskyRoutes.EventDetailScreen.EVENT_ID)
+        if (eventId != null) {
+            state = state.copy(eventId = eventId)
+            viewModelScope.launch {
+                val event = repository.getEventById(state.eventId)
 
-            state = state.copy(
-                event = event
-            )
+                state = state.copy(
+                    event = event
+                )
+            }
         }
     }
 
