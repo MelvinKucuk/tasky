@@ -20,6 +20,36 @@ fun Long.toCurrentTime(): String {
     return time.format(dateFormatter)
 }
 
+fun Long.toCurrentDate(): String {
+    val time = LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(this),
+        ZoneId.systemDefault()
+    )
+
+    val dateFormatter = DateTimeFormatter.ofPattern("dd MMMM y")
+    return time.format(dateFormatter)
+}
+
+fun Long.toHours(): String {
+    val time = LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(this),
+        ZoneId.systemDefault()
+    )
+
+    val dateFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    return time.format(dateFormatter)
+}
+
+fun Long.toSimplifiedDate(): String {
+    val time = LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(this),
+        ZoneId.systemDefault()
+    )
+
+    val dateFormatter = DateTimeFormatter.ofPattern("MMM dd y")
+    return time.format(dateFormatter)
+}
+
 
 fun LocalDate.toStartOfDayLong() =
     this.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()

@@ -3,10 +3,12 @@ package com.example.tasky.agenda.di
 import android.content.Context
 import androidx.room.Room
 import com.example.tasky.agenda.data.AgendaRepositoryImpl
+import com.example.tasky.agenda.data.EventRepositoryImpl
 import com.example.tasky.agenda.data.local.AgendaDao
 import com.example.tasky.agenda.data.local.AgendaDatabase
 import com.example.tasky.agenda.data.remote.AgendaService
 import com.example.tasky.agenda.domain.AgendaRepository
+import com.example.tasky.agenda.domain.EventRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -46,4 +48,7 @@ sealed class AgendaBindsModule {
 
     @Binds
     abstract fun bindAgendaRepository(agendaRepositoryImpl: AgendaRepositoryImpl): AgendaRepository
+
+    @Binds
+    abstract fun providesEventRepository(eventRepositoryImpl: EventRepositoryImpl): EventRepository
 }

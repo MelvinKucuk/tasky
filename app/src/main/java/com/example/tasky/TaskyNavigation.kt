@@ -4,17 +4,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.tasky.agenda.presentation.AgendaScreen
-import com.example.tasky.agenda.presentation.viewmodel.AgendaEvent
-import com.example.tasky.agenda.presentation.viewmodel.AgendaViewModel
+import androidx.navigation.navArgument
+import com.example.tasky.agenda.presentation.home.AgendaScreen
+import com.example.tasky.agenda.presentation.home.viewmodel.AgendaViewModel
+import com.example.tasky.agenda.presentation.itemdetail.EventDetailScreen
+import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailEvent
+import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailViewModel
 import com.example.tasky.authentication.presentation.login.LoginScreen
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginEvent
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginViewModel
 import com.example.tasky.authentication.presentation.signup.SignUpScreen
 import com.example.tasky.authentication.presentation.signup.viewmodel.SignUpEvent
 import com.example.tasky.authentication.presentation.signup.viewmodel.SignUpViewModel
+import com.example.tasky.core.util.Observe
 import com.example.tasky.core.util.ObserveBoolean
 import com.example.tasky.core.util.ObserveError
 import com.example.tasky.core.util.makeToast
@@ -81,7 +86,7 @@ fun TaskyNavigation(
 
             with(viewModel.state) {
                 ObserveError(errorMessage) {
-                    viewModel.onEvent(AgendaEvent.ErrorHandled)
+                    viewModel.onEvent(com.example.tasky.agenda.presentation.home.viewmodel.AgendaEvent.ErrorHandled)
                 }
                 ObserveBoolean(isLoggedOut) {
                     onLogout()
@@ -90,10 +95,37 @@ fun TaskyNavigation(
                             inclusive = true
                         }
                     }
-                    viewModel.onEvent(AgendaEvent.LogoutHandled)
+                    viewModel.onEvent(com.example.tasky.agenda.presentation.home.viewmodel.AgendaEvent.LogoutHandled)
+                }
+                Observe(navigateToEventDetail) { eventId ->
+                    navController.navigate(TaskyRoutes.EventDetailScreen.getDestination(eventId))
+                    viewModel.onEvent(com.example.tasky.agenda.presentation.home.viewmodel.AgendaEvent.EventNavigationHandled)
                 }
             }
             AgendaScreen(state = viewModel.state, onEvent = viewModel::onEvent)
+        }
+
+        composable(
+            route = TaskyRoutes.EventDetailScreen.getCompleteRoute(),
+            arguments = listOf(
+                navArgument(TaskyRoutes.EventDetailScreen.EVENT_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val viewModel: EventDetailViewModel = hiltViewModel()
+
+            with(viewModel.state) {
+                ObserveBoolean(navigateBack) {
+                    navController.popBackStack()
+                    viewModel.onEvent(EventDetailEvent.CloseClickResolved)
+                }
+            }
+
+            EventDetailScreen(
+                state = viewModel.state,
+                onEvent = viewModel::onEvent
+            )
         }
     }
 }
