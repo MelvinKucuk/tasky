@@ -1,5 +1,8 @@
+@file:SuppressLint("NewApi")
+
 package com.example.tasky.agenda.presentation.itemdetail.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +11,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tasky.TaskyRoutes
 import com.example.tasky.agenda.domain.EventRepository
+import com.example.tasky.agenda.domain.util.toLocalDate
+import com.example.tasky.agenda.domain.util.toLong
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,6 +52,35 @@ class EventDetailViewModel @Inject constructor(
 
             is EventDetailEvent.OnFilterClicked -> {
                 state = state.copy(selectedFilter = event.filter)
+            }
+
+            EventDetailEvent.HideTimePicker -> {
+                state = state.copy(showTimePicker = false)
+            }
+
+            is EventDetailEvent.ShowTimePicker -> {
+                state = state.copy(
+                    showTimePicker = true,
+                    isFrom = event.isFromTime
+                )
+            }
+
+            is EventDetailEvent.TimeSelected -> {
+                state = if (state.isFrom == true) {
+                    state.copy(
+                        event = state.event.copy(
+                            from = event.time.atDate(state.event.from.toLocalDate()).toLong()
+                        ),
+                        isFrom = null
+                    )
+                } else {
+                    state.copy(
+                        event = state.event.copy(
+                            to = event.time.atDate(state.event.to.toLocalDate()).toLong()
+                        ),
+                        isFrom = null
+                    )
+                }
             }
         }
     }
