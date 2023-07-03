@@ -11,11 +11,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.DateGenerator
 import com.example.tasky.agenda.domain.getInitials
+import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.presentation.home.AgendaItemEvent
 import com.example.tasky.agenda.presentation.home.MenuItem
 import com.example.tasky.agenda.presentation.home.util.addNeedleToAgenda
 import com.example.tasky.authentication.domain.UserCache
-import com.example.tasky.core.domain.model.AgendaItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

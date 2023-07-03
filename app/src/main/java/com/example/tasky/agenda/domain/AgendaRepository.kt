@@ -1,6 +1,6 @@
 package com.example.tasky.agenda.domain
 
-import com.example.tasky.core.domain.model.AgendaItem
+import com.example.tasky.agenda.domain.model.AgendaItem
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
 

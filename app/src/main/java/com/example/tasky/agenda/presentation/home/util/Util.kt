@@ -1,6 +1,6 @@
 package com.example.tasky.agenda.presentation.home.util
 
-import com.example.tasky.core.domain.model.AgendaItem
+import com.example.tasky.agenda.domain.model.AgendaItem
 
 fun addNeedleToAgenda(
     timeNow: Long,

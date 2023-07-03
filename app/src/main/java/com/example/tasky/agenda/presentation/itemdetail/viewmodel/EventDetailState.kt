@@ -1,7 +1,7 @@
 package com.example.tasky.agenda.presentation.itemdetail.viewmodel
 
+import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.presentation.itemdetail.model.VisitorType
-import com.example.tasky.core.domain.model.AgendaItem
 
 data class EventDetailState(
     val eventId: String = "",

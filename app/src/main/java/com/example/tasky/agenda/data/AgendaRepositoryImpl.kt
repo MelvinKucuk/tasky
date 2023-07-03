@@ -9,12 +9,12 @@ import com.example.tasky.agenda.data.mapper.toRemote
 import com.example.tasky.agenda.data.remote.AgendaService
 import com.example.tasky.agenda.data.remote.model.TaskResponse
 import com.example.tasky.agenda.domain.AgendaRepository
+import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.util.toCurrentTimeMilli
 import com.example.tasky.agenda.domain.util.toEndOfDayLong
 import com.example.tasky.agenda.domain.util.toStartOfDayLong
 import com.example.tasky.core.data.Resource
 import com.example.tasky.core.data.remote.safeApiCall
-import com.example.tasky.core.domain.model.AgendaItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map

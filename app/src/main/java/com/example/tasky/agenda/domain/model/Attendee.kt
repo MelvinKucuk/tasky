@@ -1,4 +1,4 @@
-package com.example.tasky.core.domain.model
+package com.example.tasky.agenda.domain.model
 
 import com.example.tasky.agenda.domain.getInitials
 
