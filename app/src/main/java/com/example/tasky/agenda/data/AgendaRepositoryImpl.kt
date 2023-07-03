@@ -2,6 +2,7 @@ package com.example.tasky.agenda.data
 
 import android.annotation.SuppressLint
 import com.example.tasky.agenda.data.local.AgendaDao
+import com.example.tasky.agenda.data.local.model.relations.EventAttendeesCrossRef
 import com.example.tasky.agenda.data.mapper.toDomain
 import com.example.tasky.agenda.data.mapper.toEntity
 import com.example.tasky.agenda.data.mapper.toRemote
@@ -45,7 +46,7 @@ class AgendaRepositoryImpl @Inject constructor(
         return when (result) {
             is Resource.Success -> {
                 with(result.data) {
-                    events.map { agendaDao.insertEvent(it.toEntity()) }
+                    events.map { insertEvent(it.toDomain()) }
                     reminders.map { agendaDao.insertReminder(it.toEntity()) }
                     tasks.map { agendaDao.insertTask(it.toEntity()) }
                 }
@@ -72,6 +73,20 @@ class AgendaRepositoryImpl @Inject constructor(
     override suspend fun updateTaskStatus(id: String, isDone: Boolean) {
         val task = agendaDao.getTaskById(id).copy(isDone = isDone)
         createTask(task = task.toDomain(), isUpdate = true)
+    }
+
+    override suspend fun insertEvent(event: AgendaItem.Event) {
+        event.attendees.map {
+            agendaDao.insertAttendee(it.toEntity())
+            agendaDao.insertEventAttendeeCrossRef(
+                EventAttendeesCrossRef(
+                    id = event.id,
+                    userId = it.userId
+                )
+            )
+        }
+
+        agendaDao.insertEvent(event.toEntity())
     }
 
     private fun getLocalEventsByDate(date: LocalDate): Flow<List<AgendaItem.Event>> {

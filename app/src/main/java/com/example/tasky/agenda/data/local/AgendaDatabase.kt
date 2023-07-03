@@ -6,15 +6,17 @@ import com.example.tasky.agenda.data.local.model.AttendeeEntity
 import com.example.tasky.agenda.data.local.model.EventEntity
 import com.example.tasky.agenda.data.local.model.ReminderEntity
 import com.example.tasky.agenda.data.local.model.TaskEntity
+import com.example.tasky.agenda.data.local.model.relations.EventAttendeesCrossRef
 
 @Database(
     entities = [
         EventEntity::class,
         ReminderEntity::class,
         TaskEntity::class,
-        AttendeeEntity::class
+        AttendeeEntity::class,
+        EventAttendeesCrossRef::class
     ],
-    version = 1
+    version = 2
 )
 abstract class AgendaDatabase : RoomDatabase() {
 
