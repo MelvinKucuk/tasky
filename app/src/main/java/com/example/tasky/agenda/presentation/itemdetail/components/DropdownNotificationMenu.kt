@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.tasky.agenda.presentation.itemdetail.model.NotificationType
 import com.example.tasky.ui.theme.Light
 
@@ -51,7 +52,8 @@ fun DropdownNotificationMenu(
                     Text(
                         modifier = Modifier.padding(start = 20.dp),
                         text = stringResource(menuItem.type),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        fontSize = 16.sp
                     )
                 }
                 if (index != items.lastIndex) {
