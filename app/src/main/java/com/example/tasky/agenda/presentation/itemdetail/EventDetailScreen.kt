@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.tasky.R
 import com.example.tasky.agenda.domain.util.toCurrentDate
 import com.example.tasky.agenda.domain.util.toHours
+import com.example.tasky.agenda.domain.util.toLocalDate
 import com.example.tasky.agenda.domain.util.toSimplifiedDate
 import com.example.tasky.agenda.presentation.itemdetail.components.AttendeeTypeText
 import com.example.tasky.agenda.presentation.itemdetail.components.BottomDecorator
@@ -42,6 +43,7 @@ import com.example.tasky.agenda.presentation.itemdetail.components.DetailVisitor
 import com.example.tasky.agenda.presentation.itemdetail.components.EventActionText
 import com.example.tasky.agenda.presentation.itemdetail.components.TimeDatePicker
 import com.example.tasky.agenda.presentation.itemdetail.components.VisitorTypeList
+import com.example.tasky.agenda.presentation.itemdetail.model.NotificationType
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailEvent
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailState
 import com.example.tasky.ui.theme.Black
@@ -155,7 +157,12 @@ fun EventDetailScreen(
 
                     item {
                         DetailReminder(
-                            text = "${state.event.remindAt} minutes before",
+                            text = stringResource(
+                                NotificationType.from(
+                                    dateTime = state.event.from.toLocalDate(),
+                                    notificationTime = state.event.remindAt.toLocalDate()
+                                ).type
+                            ),
                             isEditMode = state.isEditMode
                         ) {
 

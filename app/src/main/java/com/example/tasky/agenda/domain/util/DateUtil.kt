@@ -50,6 +50,13 @@ fun Long.toSimplifiedDate(): String {
     return time.format(dateFormatter)
 }
 
+fun Long.toLocalDate(): LocalDateTime {
+    return LocalDateTime.ofInstant(
+        Instant.ofEpochMilli(this),
+        ZoneId.systemDefault()
+    )
+}
+
 
 fun LocalDate.toStartOfDayLong() =
     this.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
