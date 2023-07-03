@@ -153,9 +153,17 @@ class AgendaViewModel @Inject constructor(
             is AgendaItemEvent.MenuClick -> {
                 when (event.menu) {
                     MenuItem.OPEN -> {
-                        state = state.copy(
-                            navigateToEventDetail = agendaItem.id
-                        )
+                        when (agendaItem) {
+                            is AgendaItem.Event -> {
+                                state = state.copy(
+                                    navigateToEventDetail = agendaItem.id
+                                )
+                            }
+
+                            is AgendaItem.Reminder -> {}
+                            is AgendaItem.Task -> {}
+                            else -> {}
+                        }
                     }
 
                     else -> {}
