@@ -16,7 +16,7 @@ import com.example.tasky.agenda.data.local.model.relations.EventAttendeesCrossRe
         AttendeeEntity::class,
         EventAttendeesCrossRef::class
     ],
-    version = 2
+    version = 1
 )
 abstract class AgendaDatabase : RoomDatabase() {
 
