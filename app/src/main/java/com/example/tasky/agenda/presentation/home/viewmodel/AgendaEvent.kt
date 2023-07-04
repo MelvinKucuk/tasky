@@ -1,8 +1,8 @@
 package com.example.tasky.agenda.presentation.home.viewmodel
 
+import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.presentation.home.AgendaItemEvent
 import com.example.tasky.agenda.presentation.home.MenuItem
-import com.example.tasky.core.domain.model.AgendaItem
 import java.time.LocalDate
 
 sealed class AgendaEvent {

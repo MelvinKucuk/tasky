@@ -1,6 +1,5 @@
-package com.example.tasky.core.domain.model
+package com.example.tasky.agenda.domain.model
 
-import com.example.tasky.agenda.domain.model.Photo
 import com.example.tasky.agenda.domain.util.toCurrentTime
 
 sealed class AgendaItem(
