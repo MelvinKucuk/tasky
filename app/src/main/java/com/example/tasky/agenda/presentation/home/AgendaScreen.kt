@@ -65,8 +65,8 @@ fun AgendaScreen(
         MaterialDialog(
             dialogState = dialogState,
             buttons = {
-                positiveButton("Ok")
-                negativeButton("Cancel") {
+                positiveButton(stringResource(R.string.ok))
+                negativeButton(stringResource(R.string.cancel)) {
                     onEvent(AgendaEvent.MonthDismiss)
                 }
             },

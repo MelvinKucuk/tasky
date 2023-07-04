@@ -46,9 +46,7 @@ fun TimeDatePicker(
         ) {
 
             Row(
-                modifier = Modifier
-                    .clickable(enabled = isEditMode) { onTimeClicked() }
-                    .weight(1f)
+                modifier = Modifier.weight(1f)
             ) {
                 Text(
                     modifier = Modifier
@@ -84,9 +82,7 @@ fun TimeDatePicker(
             }
 
             Row(
-                modifier = Modifier
-                    .clickable(enabled = isEditMode) { onDateClicked() }
-                    .weight(1f)
+                modifier = Modifier.weight(1f)
             ) {
                 Text(
                     modifier = Modifier

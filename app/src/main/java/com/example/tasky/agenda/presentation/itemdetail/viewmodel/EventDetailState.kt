@@ -8,5 +8,13 @@ data class EventDetailState(
     val event: AgendaItem.Event = AgendaItem.Event(),
     val isEditMode: Boolean = true,
     val navigateBack: Boolean = false,
+    val showTimePicker: Boolean = false,
+    val showDatePicker: Boolean = false,
+    val dateTimeSelected: DateTimeSelector? = null,
     val selectedFilter: VisitorType = VisitorType.ALL
 )
+
+sealed class DateTimeSelector {
+    object From : DateTimeSelector()
+    object To : DateTimeSelector()
+}

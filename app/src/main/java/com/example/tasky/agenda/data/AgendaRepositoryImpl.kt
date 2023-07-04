@@ -18,6 +18,8 @@ import com.example.tasky.core.data.remote.safeApiCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.supervisorScope
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -76,14 +78,18 @@ class AgendaRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertEvent(event: AgendaItem.Event) {
-        event.attendees.map {
-            agendaDao.insertAttendee(it.toEntity())
-            agendaDao.insertEventAttendeeCrossRef(
-                EventAttendeesCrossRef(
-                    id = event.id,
-                    userId = it.userId
-                )
-            )
+        supervisorScope {
+            event.attendees.map {
+                launch {
+                    agendaDao.insertAttendee(it.toEntity())
+                    agendaDao.insertEventAttendeeCrossRef(
+                        EventAttendeesCrossRef(
+                            id = event.id,
+                            userId = it.userId
+                        )
+                    )
+                }
+            }.map { it.join() }
         }
 
         agendaDao.insertEvent(event.toEntity())

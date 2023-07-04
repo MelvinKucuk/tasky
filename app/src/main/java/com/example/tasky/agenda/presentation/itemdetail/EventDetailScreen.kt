@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.example.tasky.R
 import com.example.tasky.agenda.domain.util.toCurrentDate
 import com.example.tasky.agenda.domain.util.toHours
-import com.example.tasky.agenda.domain.util.toLocalDate
+import com.example.tasky.agenda.domain.util.toLocalDateTime
 import com.example.tasky.agenda.domain.util.toSimplifiedDate
 import com.example.tasky.agenda.presentation.itemdetail.components.AttendeeTypeText
 import com.example.tasky.agenda.presentation.itemdetail.components.BottomDecorator
@@ -44,10 +44,16 @@ import com.example.tasky.agenda.presentation.itemdetail.components.EventActionTe
 import com.example.tasky.agenda.presentation.itemdetail.components.TimeDatePicker
 import com.example.tasky.agenda.presentation.itemdetail.components.VisitorTypeList
 import com.example.tasky.agenda.presentation.itemdetail.model.NotificationType
+import com.example.tasky.agenda.presentation.itemdetail.viewmodel.DateTimeSelector
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailEvent
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailState
+import com.example.tasky.core.util.ObserveBoolean
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.LightGreen
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.datetime.time.timepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 
 @Composable
 fun EventDetailScreen(
@@ -58,6 +64,53 @@ fun EventDetailScreen(
         modifier = Modifier.fillMaxSize(),
         containerColor = Black,
     ) {
+
+        val dialogState = rememberMaterialDialogState()
+        MaterialDialog(
+            dialogState = dialogState,
+            buttons = {
+                positiveButton(stringResource(R.string.ok))
+                negativeButton(stringResource(R.string.cancel)) {
+                    onEvent(EventDetailEvent.HideTimePicker)
+                }
+            },
+            onCloseRequest = { dialog ->
+                onEvent(EventDetailEvent.HideTimePicker)
+                dialog.hide()
+            }
+        ) {
+            timepicker { time ->
+                onEvent(EventDetailEvent.TimeSelected(time))
+            }
+        }
+
+        ObserveBoolean(observer = state.showTimePicker) {
+            dialogState.show()
+        }
+
+        val dateDialogState = rememberMaterialDialogState()
+        MaterialDialog(
+            dialogState = dateDialogState,
+            buttons = {
+                positiveButton(stringResource(R.string.ok))
+                negativeButton(stringResource(R.string.cancel)) {
+                    onEvent(EventDetailEvent.HideDatePicker)
+                }
+            },
+            onCloseRequest = { dialog ->
+                onEvent(EventDetailEvent.HideDatePicker)
+                dialog.hide()
+            }
+        ) {
+            datepicker { date ->
+                onEvent(EventDetailEvent.DateSelected(date))
+            }
+        }
+
+        ObserveBoolean(observer = state.showDatePicker) {
+            dateDialogState.show()
+        }
+
         Column(
             Modifier
                 .fillMaxSize()
@@ -139,8 +192,18 @@ fun EventDetailScreen(
                             timePrefix = stringResource(id = R.string.from),
                             date = state.event.from.toSimplifiedDate(),
                             isEditMode = state.isEditMode,
-                            onTimeClicked = {},
-                            onDateClicked = {}
+                            onTimeClicked = {
+                                onEvent(
+                                    EventDetailEvent
+                                        .ShowTimePicker(dateTimeSelected = DateTimeSelector.From)
+                                )
+                            },
+                            onDateClicked = {
+                                onEvent(
+                                    EventDetailEvent
+                                        .ShowDatePicker(dateTimeSelected = DateTimeSelector.From)
+                                )
+                            }
                         )
                     }
 
@@ -150,8 +213,18 @@ fun EventDetailScreen(
                             timePrefix = stringResource(id = R.string.to),
                             date = state.event.to.toSimplifiedDate(),
                             isEditMode = state.isEditMode,
-                            onTimeClicked = {},
-                            onDateClicked = {}
+                            onTimeClicked = {
+                                onEvent(
+                                    EventDetailEvent
+                                        .ShowTimePicker(dateTimeSelected = DateTimeSelector.To)
+                                )
+                            },
+                            onDateClicked = {
+                                onEvent(
+                                    EventDetailEvent
+                                        .ShowDatePicker(dateTimeSelected = DateTimeSelector.To)
+                                )
+                            }
                         )
                     }
 
@@ -159,8 +232,8 @@ fun EventDetailScreen(
                         DetailReminder(
                             text = stringResource(
                                 NotificationType.from(
-                                    dateTime = state.event.from.toLocalDate(),
-                                    notificationTime = state.event.remindAt.toLocalDate()
+                                    dateTime = state.event.from.toLocalDateTime(),
+                                    notificationTime = state.event.remindAt.toLocalDateTime()
                                 ).type
                             ),
                             isEditMode = state.isEditMode

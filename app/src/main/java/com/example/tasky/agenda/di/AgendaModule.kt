@@ -30,9 +30,7 @@ class AgendaModule {
             context = context,
             AgendaDatabase::class.java,
             "agenda_db"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
+        ).build()
 
     @Provides
     @Singleton

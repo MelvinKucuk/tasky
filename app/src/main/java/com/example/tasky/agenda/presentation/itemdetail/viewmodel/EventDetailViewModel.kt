@@ -1,5 +1,8 @@
+@file:SuppressLint("NewApi")
+
 package com.example.tasky.agenda.presentation.itemdetail.viewmodel
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +11,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tasky.TaskyRoutes
 import com.example.tasky.agenda.domain.EventRepository
+import com.example.tasky.agenda.domain.util.toLocalDate
+import com.example.tasky.agenda.domain.util.toLocalTime
+import com.example.tasky.agenda.domain.util.toLong
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,6 +53,75 @@ class EventDetailViewModel @Inject constructor(
 
             is EventDetailEvent.OnFilterClicked -> {
                 state = state.copy(selectedFilter = event.filter)
+            }
+
+            EventDetailEvent.HideTimePicker -> {
+                state = state.copy(showTimePicker = false)
+            }
+
+            is EventDetailEvent.ShowTimePicker -> {
+                state = state.copy(
+                    showTimePicker = true,
+                    dateTimeSelected = event.dateTimeSelected
+                )
+            }
+
+            is EventDetailEvent.TimeSelected -> {
+                state = when (state.dateTimeSelected) {
+                    DateTimeSelector.From -> {
+                        state.copy(
+                            event = state.event.copy(
+                                from = event.time.atDate(state.event.from.toLocalDate()).toLong()
+                            )
+                        )
+                    }
+
+                    DateTimeSelector.To -> {
+                        state.copy(
+                            event = state.event.copy(
+                                to = event.time.atDate(state.event.to.toLocalDate()).toLong()
+                            )
+                        )
+                    }
+
+                    else -> state
+                }
+                state = state.copy(
+                    dateTimeSelected = null,
+                    showTimePicker = false
+                )
+            }
+
+            EventDetailEvent.HideDatePicker -> state = state.copy(showDatePicker = false)
+            is EventDetailEvent.ShowDatePicker -> state = state.copy(
+                showDatePicker = true,
+                dateTimeSelected = event.dateTimeSelected
+            )
+
+            is EventDetailEvent.DateSelected -> {
+                state = when (state.dateTimeSelected) {
+                    DateTimeSelector.From -> {
+                        state.copy(
+                            event = state.event.copy(
+                                from = event.date.atTime(state.event.from.toLocalTime()).toLong()
+                            )
+                        )
+                    }
+
+                    DateTimeSelector.To -> {
+                        state.copy(
+                            event = state.event.copy(
+                                to = event.date.atTime(state.event.to.toLocalTime()).toLong()
+                            )
+                        )
+                    }
+
+                    else -> state
+                }
+                state = state.copy(
+                    dateTimeSelected = null,
+                    showDatePicker = false
+                )
             }
         }
     }

@@ -41,4 +41,6 @@
     <string name="one_hour_before">1 hour before</string>
     <string name="six_hours_before">6 hours before</string>
     <string name="one_day_before">1 day before</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>
