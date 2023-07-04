@@ -44,6 +44,7 @@ import com.example.tasky.agenda.presentation.itemdetail.components.EventActionTe
 import com.example.tasky.agenda.presentation.itemdetail.components.TimeDatePicker
 import com.example.tasky.agenda.presentation.itemdetail.components.VisitorTypeList
 import com.example.tasky.agenda.presentation.itemdetail.model.NotificationType
+import com.example.tasky.agenda.presentation.itemdetail.viewmodel.DateTimeSelector
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailEvent
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailState
 import com.example.tasky.core.util.ObserveBoolean
@@ -192,10 +193,16 @@ fun EventDetailScreen(
                             date = state.event.from.toSimplifiedDate(),
                             isEditMode = state.isEditMode,
                             onTimeClicked = {
-                                onEvent(EventDetailEvent.ShowTimePicker(isFrom = true))
+                                onEvent(
+                                    EventDetailEvent
+                                        .ShowTimePicker(dateTimeSelected = DateTimeSelector.From)
+                                )
                             },
                             onDateClicked = {
-                                onEvent(EventDetailEvent.ShowDatePicker(isFrom = true))
+                                onEvent(
+                                    EventDetailEvent
+                                        .ShowDatePicker(dateTimeSelected = DateTimeSelector.From)
+                                )
                             }
                         )
                     }
@@ -207,10 +214,16 @@ fun EventDetailScreen(
                             date = state.event.to.toSimplifiedDate(),
                             isEditMode = state.isEditMode,
                             onTimeClicked = {
-                                onEvent(EventDetailEvent.ShowTimePicker(isFrom = false))
+                                onEvent(
+                                    EventDetailEvent
+                                        .ShowTimePicker(dateTimeSelected = DateTimeSelector.To)
+                                )
                             },
                             onDateClicked = {
-                                onEvent(EventDetailEvent.ShowDatePicker(isFrom = false))
+                                onEvent(
+                                    EventDetailEvent
+                                        .ShowDatePicker(dateTimeSelected = DateTimeSelector.To)
+                                )
                             }
                         )
                     }

@@ -62,26 +62,32 @@ class EventDetailViewModel @Inject constructor(
             is EventDetailEvent.ShowTimePicker -> {
                 state = state.copy(
                     showTimePicker = true,
-                    isFrom = event.isFrom
+                    dateTimeSelected = event.dateTimeSelected
                 )
             }
 
             is EventDetailEvent.TimeSelected -> {
-                state = if (state.isFrom == true) {
-                    state.copy(
-                        event = state.event.copy(
-                            from = event.time.atDate(state.event.from.toLocalDate()).toLong()
+                state = when (state.dateTimeSelected) {
+                    DateTimeSelector.From -> {
+                        state.copy(
+                            event = state.event.copy(
+                                from = event.time.atDate(state.event.from.toLocalDate()).toLong()
+                            )
                         )
-                    )
-                } else {
-                    state.copy(
-                        event = state.event.copy(
-                            to = event.time.atDate(state.event.to.toLocalDate()).toLong()
+                    }
+
+                    DateTimeSelector.To -> {
+                        state.copy(
+                            event = state.event.copy(
+                                to = event.time.atDate(state.event.to.toLocalDate()).toLong()
+                            )
                         )
-                    )
+                    }
+
+                    else -> state
                 }
                 state = state.copy(
-                    isFrom = null,
+                    dateTimeSelected = null,
                     showTimePicker = false
                 )
             }
@@ -89,25 +95,31 @@ class EventDetailViewModel @Inject constructor(
             EventDetailEvent.HideDatePicker -> state = state.copy(showDatePicker = false)
             is EventDetailEvent.ShowDatePicker -> state = state.copy(
                 showDatePicker = true,
-                isFrom = event.isFrom
+                dateTimeSelected = event.dateTimeSelected
             )
 
             is EventDetailEvent.DateSelected -> {
-                state = if (state.isFrom == true) {
-                    state.copy(
-                        event = state.event.copy(
-                            from = event.date.atTime(state.event.from.toLocalTime()).toLong()
+                state = when (state.dateTimeSelected) {
+                    DateTimeSelector.From -> {
+                        state.copy(
+                            event = state.event.copy(
+                                from = event.date.atTime(state.event.from.toLocalTime()).toLong()
+                            )
                         )
-                    )
-                } else {
-                    state.copy(
-                        event = state.event.copy(
-                            to = event.date.atTime(state.event.to.toLocalTime()).toLong()
+                    }
+
+                    DateTimeSelector.To -> {
+                        state.copy(
+                            event = state.event.copy(
+                                to = event.date.atTime(state.event.to.toLocalTime()).toLong()
+                            )
                         )
-                    )
+                    }
+
+                    else -> state
                 }
                 state = state.copy(
-                    isFrom = null,
+                    dateTimeSelected = null,
                     showDatePicker = false
                 )
             }

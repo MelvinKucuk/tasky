@@ -10,6 +10,11 @@ data class EventDetailState(
     val navigateBack: Boolean = false,
     val showTimePicker: Boolean = false,
     val showDatePicker: Boolean = false,
-    val isFrom: Boolean? = null,
+    val dateTimeSelected: DateTimeSelector? = null,
     val selectedFilter: VisitorType = VisitorType.ALL
 )
+
+sealed class DateTimeSelector {
+    object From : DateTimeSelector()
+    object To : DateTimeSelector()
+}
