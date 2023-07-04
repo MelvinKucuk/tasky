@@ -9,6 +9,7 @@ data class EventDetailState(
     val isEditMode: Boolean = true,
     val navigateBack: Boolean = false,
     val showTimePicker: Boolean = false,
+    val showDatePicker: Boolean = false,
     val isFrom: Boolean? = null,
     val selectedFilter: VisitorType = VisitorType.ALL
 )

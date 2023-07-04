@@ -61,6 +61,10 @@ fun Long.toLocalDate(): LocalDate {
     return Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDate()
 }
 
+fun Long.toLocalTime(): LocalTime {
+    return Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalTime()
+}
+
 fun LocalDate.toStartOfDayLong() =
     this.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 

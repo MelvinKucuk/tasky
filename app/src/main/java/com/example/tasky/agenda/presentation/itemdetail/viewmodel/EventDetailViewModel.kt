@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tasky.TaskyRoutes
 import com.example.tasky.agenda.domain.EventRepository
 import com.example.tasky.agenda.domain.util.toLocalDate
+import com.example.tasky.agenda.domain.util.toLocalTime
 import com.example.tasky.agenda.domain.util.toLong
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -61,7 +62,7 @@ class EventDetailViewModel @Inject constructor(
             is EventDetailEvent.ShowTimePicker -> {
                 state = state.copy(
                     showTimePicker = true,
-                    isFrom = event.isFromTime
+                    isFrom = event.isFrom
                 )
             }
 
@@ -70,17 +71,45 @@ class EventDetailViewModel @Inject constructor(
                     state.copy(
                         event = state.event.copy(
                             from = event.time.atDate(state.event.from.toLocalDate()).toLong()
-                        ),
-                        isFrom = null
+                        )
                     )
                 } else {
                     state.copy(
                         event = state.event.copy(
                             to = event.time.atDate(state.event.to.toLocalDate()).toLong()
-                        ),
-                        isFrom = null
+                        )
                     )
                 }
+                state = state.copy(
+                    isFrom = null,
+                    showTimePicker = false
+                )
+            }
+
+            EventDetailEvent.HideDatePicker -> state = state.copy(showDatePicker = false)
+            is EventDetailEvent.ShowDatePicker -> state = state.copy(
+                showDatePicker = true,
+                isFrom = event.isFrom
+            )
+
+            is EventDetailEvent.DateSelected -> {
+                state = if (state.isFrom == true) {
+                    state.copy(
+                        event = state.event.copy(
+                            from = event.date.atTime(state.event.from.toLocalTime()).toLong()
+                        )
+                    )
+                } else {
+                    state.copy(
+                        event = state.event.copy(
+                            to = event.date.atTime(state.event.to.toLocalTime()).toLong()
+                        )
+                    )
+                }
+                state = state.copy(
+                    isFrom = null,
+                    showDatePicker = false
+                )
             }
         }
     }

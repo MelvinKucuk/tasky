@@ -50,6 +50,7 @@ import com.example.tasky.core.util.ObserveBoolean
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.LightGreen
 import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.datetime.time.timepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 
@@ -84,6 +85,29 @@ fun EventDetailScreen(
 
         ObserveBoolean(observer = state.showTimePicker) {
             dialogState.show()
+        }
+
+        val dateDialogState = rememberMaterialDialogState()
+        MaterialDialog(
+            dialogState = dateDialogState,
+            buttons = {
+                positiveButton(stringResource(R.string.ok))
+                negativeButton(stringResource(R.string.cancel)) {
+                    onEvent(EventDetailEvent.HideDatePicker)
+                }
+            },
+            onCloseRequest = { dialog ->
+                onEvent(EventDetailEvent.HideDatePicker)
+                dialog.hide()
+            }
+        ) {
+            datepicker { date ->
+                onEvent(EventDetailEvent.DateSelected(date))
+            }
+        }
+
+        ObserveBoolean(observer = state.showDatePicker) {
+            dateDialogState.show()
         }
 
         Column(
@@ -168,9 +192,11 @@ fun EventDetailScreen(
                             date = state.event.from.toSimplifiedDate(),
                             isEditMode = state.isEditMode,
                             onTimeClicked = {
-                                onEvent(EventDetailEvent.ShowTimePicker(isFromTime = true))
+                                onEvent(EventDetailEvent.ShowTimePicker(isFrom = true))
                             },
-                            onDateClicked = {}
+                            onDateClicked = {
+                                onEvent(EventDetailEvent.ShowDatePicker(isFrom = true))
+                            }
                         )
                     }
 
@@ -181,9 +207,11 @@ fun EventDetailScreen(
                             date = state.event.to.toSimplifiedDate(),
                             isEditMode = state.isEditMode,
                             onTimeClicked = {
-                                onEvent(EventDetailEvent.ShowTimePicker(isFromTime = false))
+                                onEvent(EventDetailEvent.ShowTimePicker(isFrom = false))
                             },
-                            onDateClicked = {}
+                            onDateClicked = {
+                                onEvent(EventDetailEvent.ShowDatePicker(isFrom = false))
+                            }
                         )
                     }
 
