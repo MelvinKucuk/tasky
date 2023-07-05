@@ -27,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
+import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toCurrentDate
 import com.example.tasky.agenda.domain.util.toHours
 import com.example.tasky.agenda.domain.util.toLocalDateTime
@@ -44,6 +46,7 @@ import com.example.tasky.agenda.presentation.itemdetail.components.EventActionTe
 import com.example.tasky.agenda.presentation.itemdetail.components.TimeDatePicker
 import com.example.tasky.agenda.presentation.itemdetail.components.VisitorTypeList
 import com.example.tasky.agenda.presentation.itemdetail.model.NotificationType
+import com.example.tasky.agenda.presentation.itemdetail.model.VisitorType
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.DateTimeSelector
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailEvent
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailState
@@ -248,26 +251,27 @@ fun EventDetailScreen(
                         }
                     }
 
-                    item {
-                        VisitorTypeList(selectedFilter = state.selectedFilter) { visitorType ->
-                            onEvent(EventDetailEvent.OnFilterClicked(visitorType))
+                    if (state.attendeesGoing.isNotEmpty() || state.attendeesNotGoing.isNotEmpty()) {
+                        item {
+                            VisitorTypeList(selectedFilter = state.selectedFilter) { visitorType ->
+                                onEvent(EventDetailEvent.OnFilterClicked(visitorType))
+                            }
                         }
                     }
 
-                    item {
-                        AttendeeTypeText(text = R.string.going)
-                    }
+                    when (state.selectedFilter) {
+                        VisitorType.ALL -> {
+                            item { AttendeesGoing(state) }
+                            item { AttendeesNotGoing(state) }
+                        }
 
-                    item {
-                        DetailAttendeeList(isEditMode = state.isEditMode)
-                    }
+                        VisitorType.GOING -> {
+                            item { AttendeesGoing(state) }
+                        }
 
-                    item {
-                        AttendeeTypeText(text = R.string.not_going)
-                    }
-
-                    item {
-                        DetailAttendeeList(isEditMode = state.isEditMode)
+                        VisitorType.NOT_GOING -> {
+                            item { AttendeesNotGoing(state) }
+                        }
                     }
 
                     item {
@@ -283,14 +287,75 @@ fun EventDetailScreen(
     }
 }
 
+@Composable
+private fun AttendeesNotGoing(state: EventDetailState) {
+    if (state.attendeesNotGoing.isNotEmpty()) {
+        AttendeeTypeText(text = R.string.not_going)
+
+        DetailAttendeeList(
+            isEditMode = state.isEditMode,
+            attendees = state.attendeesNotGoing
+        )
+    }
+}
+
+@Composable
+private fun AttendeesGoing(state: EventDetailState) {
+    if (state.attendeesGoing.isNotEmpty()) {
+        AttendeeTypeText(text = R.string.going)
+
+        DetailAttendeeList(
+            isEditMode = state.isEditMode,
+            attendees = state.attendeesGoing
+        )
+    }
+}
+
 @Preview
 @Composable
 fun EventDetailScreenPreview() {
-    EventDetailScreen(EventDetailState()) {}
+    EventDetailScreen(
+        EventDetailState(
+            event = AgendaItem.Event(
+                title = "This is a title",
+                description = "This is a description",
+                attendees = listOf(
+                    Attendee(
+                        fullName = "Melvin Alex Kucuk",
+                        isGoing = true,
+                        isUserEventCreator = true
+                    ),
+                    Attendee(
+                        fullName = "Juan Perez",
+                        isGoing = false
+                    )
+                )
+            )
+        )
+    ) {}
 }
 
 @Preview
 @Composable
 fun EventDetailScreenPreviewWithEdit() {
-    EventDetailScreen(EventDetailState(isEditMode = true)) {}
+    EventDetailScreen(
+        EventDetailState(
+            event = AgendaItem.Event(
+                title = "This is a title",
+                description = "This is a description",
+                attendees = listOf(
+                    Attendee(
+                        fullName = "Melvin Alex Kucuk",
+                        isGoing = true,
+                        isUserEventCreator = true
+                    ),
+                    Attendee(
+                        fullName = "Melvin Alex Kucuk",
+                        isGoing = false
+                    )
+                )
+            ),
+            isEditMode = true
+        )
+    ) {}
 }

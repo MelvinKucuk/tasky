@@ -11,8 +11,11 @@ data class EventDetailState(
     val showTimePicker: Boolean = false,
     val showDatePicker: Boolean = false,
     val dateTimeSelected: DateTimeSelector? = null,
-    val selectedFilter: VisitorType = VisitorType.ALL
-)
+    val selectedFilter: VisitorType = VisitorType.ALL,
+) {
+    val attendeesGoing get() = event.attendees.filter { it.isGoing == true }
+    val attendeesNotGoing get() = event.attendees.filter { it.isGoing == false }
+}
 
 sealed class DateTimeSelector {
     object From : DateTimeSelector()
