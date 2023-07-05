@@ -68,6 +68,8 @@ fun EventDetailScreen(
         containerColor = Black,
     ) {
 
+        //AddAttendeeDialog()
+
         val dialogState = rememberMaterialDialogState()
         MaterialDialog(
             dialogState = dialogState,

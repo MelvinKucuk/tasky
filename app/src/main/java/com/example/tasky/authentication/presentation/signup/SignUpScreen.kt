@@ -79,6 +79,7 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.size(50.dp))
 
                     TaskyTextField(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         value = signUpState.nameValue,
                         placeholder = stringResource(R.string.name),
                         imeAction = ImeAction.Next,
@@ -89,6 +90,7 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.size(16.dp))
 
                     TaskyTextField(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         value = signUpState.emailValue,
                         placeholder = stringResource(R.string.email_address),
                         imeAction = ImeAction.Next,
@@ -99,6 +101,7 @@ fun SignUpScreen(
                     Spacer(modifier = Modifier.size(16.dp))
 
                     TaskyPasswordTextField(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         value = signUpState.passwordValue,
                         placeholder = stringResource(R.string.password),
                         showPassword = signUpState.showPassword,
