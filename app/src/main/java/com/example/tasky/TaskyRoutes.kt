@@ -10,4 +10,15 @@ sealed class TaskyRoutes(val route: String) {
 
         const val EVENT_ID = "event_id"
     }
+
+    object EditScreen : TaskyRoutes("edit_screen") {
+        fun getCompleteRoute() = "$route?$TEXT={$TEXT}&$IS_TITLE={$IS_TITLE}"
+        fun getDestination(
+            text: String,
+            isTitle: Boolean
+        ) = "$route?$TEXT=$text&$IS_TITLE=$isTitle"
+
+        const val TEXT = "event_id"
+        const val IS_TITLE = "is_title"
+    }
 }

@@ -41,6 +41,30 @@ class EventDetailViewModel @Inject constructor(
         }
     }
 
+    fun setEditedText(savedStateHandle: SavedStateHandle) {
+        val editedText = savedStateHandle.get<String>(TaskyRoutes.EditScreen.TEXT)
+        val isTitle = savedStateHandle.get<Boolean>(TaskyRoutes.EditScreen.IS_TITLE)
+        if (editedText == null) {
+            return
+        }
+        if (isTitle == null) {
+            return
+        }
+        state = if (isTitle) {
+            state.copy(
+                event = state.event.copy(
+                    title = editedText
+                )
+            )
+        } else {
+            state.copy(
+                event = state.event.copy(
+                    description = editedText
+                )
+            )
+        }
+    }
+
     fun onEvent(event: EventDetailEvent) {
         when (event) {
             EventDetailEvent.OnCloseClick -> {
@@ -123,6 +147,18 @@ class EventDetailViewModel @Inject constructor(
                     showDatePicker = false
                 )
             }
+
+            EventDetailEvent.NavigateEditDescriptionResolved ->
+                state = state.copy(navigateEditDescription = null)
+
+            EventDetailEvent.NavigateEditTitleResolved ->
+                state = state.copy(navigateEditTitle = null)
+
+            EventDetailEvent.NavigateEditDescription ->
+                state = state.copy(navigateEditDescription = state.event.description)
+
+            EventDetailEvent.NavigateEditTitle ->
+                state = state.copy(navigateEditTitle = state.event.title)
         }
     }
 }

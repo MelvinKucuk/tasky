@@ -170,7 +170,9 @@ fun EventDetailScreen(
                         DetailTitle(
                             title = state.event.title,
                             isEditMode = state.isEditMode
-                        ) {}
+                        ) {
+                            onEvent(EventDetailEvent.NavigateEditTitle)
+                        }
                     }
 
                     item {
@@ -178,7 +180,7 @@ fun EventDetailScreen(
                             description = state.event.description,
                             isEditMode = state.isEditMode
                         ) {
-
+                            onEvent(EventDetailEvent.NavigateEditDescription)
                         }
                     }
 
