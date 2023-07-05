@@ -1,5 +1,7 @@
 package com.example.tasky
 
+import com.example.tasky.agenda.presentation.edit.model.EditType
+
 sealed class TaskyRoutes(val route: String) {
     object LoginScreen : TaskyRoutes("login_screen")
     object SignUpScreen : TaskyRoutes("sign_up_screen")
@@ -12,13 +14,13 @@ sealed class TaskyRoutes(val route: String) {
     }
 
     object EditScreen : TaskyRoutes("edit_screen") {
-        fun getCompleteRoute() = "$route?$TEXT={$TEXT}&$IS_TITLE={$IS_TITLE}"
+        fun getCompleteRoute() = "$route?$TEXT={$TEXT}&$EDIT_TYPE={$EDIT_TYPE}"
         fun getDestination(
             text: String,
-            isTitle: Boolean
-        ) = "$route?$TEXT=$text&$IS_TITLE=$isTitle"
+            editType: EditType
+        ) = "$route?$TEXT=$text&$EDIT_TYPE=$editType"
 
         const val TEXT = "event_id"
-        const val IS_TITLE = "is_title"
+        const val EDIT_TYPE = "edit_type"
     }
 }

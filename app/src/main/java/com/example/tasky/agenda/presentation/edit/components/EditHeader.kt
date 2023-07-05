@@ -19,12 +19,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.R
+import com.example.tasky.agenda.presentation.edit.model.EditType
 import com.example.tasky.ui.theme.Black
 import com.example.tasky.ui.theme.Green
 
 @Composable
 fun EditHeader(
-    isTitle: Boolean,
+    editType: EditType,
     onSaveClick: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -44,10 +45,9 @@ fun EditHeader(
         )
 
         Text(
-            text = if (isTitle) {
-                stringResource(R.string.edit_title)
-            } else {
-                stringResource(R.string.edit_description)
+            text = when (editType) {
+                EditType.Title -> stringResource(R.string.edit_title)
+                EditType.Description -> stringResource(R.string.edit_description)
             },
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
@@ -68,7 +68,7 @@ fun EditHeader(
 @Composable
 fun EditHeaderPreview() {
     EditHeader(
-        isTitle = true,
+        editType = EditType.Title,
         onSaveClick = {},
         onBackClick = {}
     )
@@ -78,7 +78,7 @@ fun EditHeaderPreview() {
 @Composable
 fun EditHeaderPreviewNotTitle() {
     EditHeader(
-        isTitle = false,
+        editType = EditType.Description,
         onSaveClick = {},
         onBackClick = {}
     )

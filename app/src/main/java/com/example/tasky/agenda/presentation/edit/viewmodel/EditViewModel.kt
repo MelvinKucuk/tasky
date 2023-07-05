@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.tasky.TaskyRoutes
+import com.example.tasky.agenda.presentation.edit.model.EditType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,7 +18,8 @@ class EditViewModel @Inject constructor(
     var state by mutableStateOf(
         EditState(
             text = savedStateHandle.get<String>(TaskyRoutes.EditScreen.TEXT) ?: "",
-            isTitle = savedStateHandle.get<Boolean>(TaskyRoutes.EditScreen.IS_TITLE) ?: false
+            editType = savedStateHandle.get<EditType>(TaskyRoutes.EditScreen.EDIT_TYPE)
+                ?: EditType.Title
         )
     )
         private set

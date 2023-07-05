@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasky.agenda.presentation.edit.components.EditHeader
+import com.example.tasky.agenda.presentation.edit.model.EditType
 import com.example.tasky.agenda.presentation.edit.viewmodel.EditEvent
 import com.example.tasky.agenda.presentation.edit.viewmodel.EditState
 import com.example.tasky.ui.theme.Black
@@ -29,7 +30,7 @@ fun EditScreen(
         Column(modifier = Modifier.padding(it)) {
 
             EditHeader(
-                isTitle = state.isTitle,
+                editType = state.editType,
                 onSaveClick = {
                     onEvent(EditEvent.OnSaveClicked)
                 },
@@ -41,7 +42,7 @@ fun EditScreen(
             Divider(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 20.dp),
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
                 color = Light
             )
 
@@ -55,16 +56,14 @@ fun EditScreen(
                 },
                 textStyle = TextStyle.Default.copy(
                     fontWeight =
-                    if (state.isTitle) {
-                        FontWeight.Medium
-                    } else {
-                        FontWeight.Normal
+                    when (state.editType) {
+                        EditType.Title -> FontWeight.Medium
+                        EditType.Description -> FontWeight.Normal
                     },
                     fontSize =
-                    if (state.isTitle) {
-                        26.sp
-                    } else {
-                        16.sp
+                    when (state.editType) {
+                        EditType.Title -> 26.sp
+                        EditType.Description -> 16.sp
                     },
                     color = Black
                 ),

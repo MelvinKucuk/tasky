@@ -14,6 +14,7 @@ import com.example.tasky.agenda.domain.EventRepository
 import com.example.tasky.agenda.domain.util.toLocalDate
 import com.example.tasky.agenda.domain.util.toLocalTime
 import com.example.tasky.agenda.domain.util.toLong
+import com.example.tasky.agenda.presentation.edit.model.EditType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -43,21 +44,21 @@ class EventDetailViewModel @Inject constructor(
 
     fun setEditedText(savedStateHandle: SavedStateHandle) {
         val editedText = savedStateHandle.get<String>(TaskyRoutes.EditScreen.TEXT)
-        val isTitle = savedStateHandle.get<Boolean>(TaskyRoutes.EditScreen.IS_TITLE)
+        val isTitle = savedStateHandle.get<EditType>(TaskyRoutes.EditScreen.EDIT_TYPE)
         if (editedText == null) {
             return
         }
         if (isTitle == null) {
             return
         }
-        state = if (isTitle) {
-            state.copy(
+        state = when (isTitle) {
+            EditType.Title -> state.copy(
                 event = state.event.copy(
                     title = editedText
                 )
             )
-        } else {
-            state.copy(
+
+            EditType.Description -> state.copy(
                 event = state.event.copy(
                     description = editedText
                 )

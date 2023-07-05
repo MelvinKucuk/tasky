@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.tasky.agenda.presentation.edit.EditScreen
+import com.example.tasky.agenda.presentation.edit.model.EditType
 import com.example.tasky.agenda.presentation.edit.viewmodel.EditEvent
 import com.example.tasky.agenda.presentation.edit.viewmodel.EditViewModel
 import com.example.tasky.agenda.presentation.home.AgendaScreen
@@ -130,7 +131,7 @@ fun TaskyNavigation(
                     navController.navigate(
                         TaskyRoutes.EditScreen.getDestination(
                             text = it,
-                            isTitle = true
+                            editType = EditType.Title
                         )
                     )
                     viewModel.onEvent(EventDetailEvent.NavigateEditTitleResolved)
@@ -140,7 +141,7 @@ fun TaskyNavigation(
                     navController.navigate(
                         TaskyRoutes.EditScreen.getDestination(
                             text = it,
-                            isTitle = false
+                            editType = EditType.Description
                         )
                     )
                     viewModel.onEvent(EventDetailEvent.NavigateEditDescriptionResolved)
@@ -159,8 +160,8 @@ fun TaskyNavigation(
                 navArgument(TaskyRoutes.EditScreen.TEXT) {
                     type = NavType.StringType
                 },
-                navArgument(TaskyRoutes.EditScreen.IS_TITLE) {
-                    type = NavType.BoolType
+                navArgument(TaskyRoutes.EditScreen.EDIT_TYPE) {
+                    type = NavType.inferFromValueType(EditType.Title)
                 }
             )
         ) {
@@ -178,7 +179,7 @@ fun TaskyNavigation(
                         ?.set(TaskyRoutes.EditScreen.TEXT, it)
                     navController.previousBackStackEntry
                         ?.savedStateHandle
-                        ?.set(TaskyRoutes.EditScreen.IS_TITLE, isTitle)
+                        ?.set(TaskyRoutes.EditScreen.EDIT_TYPE, editType)
                     navController.popBackStack()
                     viewModel.onEvent(EditEvent.OnSaveResolved)
                 }
