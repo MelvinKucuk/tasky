@@ -1,8 +1,5 @@
-@file:SuppressLint("NewApi")
-
 package com.example.tasky.agenda.presentation.itemdetail.viewmodel
 
-import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
