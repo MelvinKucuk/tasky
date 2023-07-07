@@ -12,7 +12,7 @@ import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toLocalDate
 import com.example.tasky.agenda.domain.util.toLocalTime
 import com.example.tasky.agenda.domain.util.toLong
-import com.example.tasky.authentication.domain.EmailValidator
+import com.example.tasky.core.domain.EmailValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -160,8 +160,7 @@ class EventDetailViewModel @Inject constructor(
                                     fullName = attendee.fullName,
                                     userId = attendee.userId,
                                     eventId = state.eventId,
-                                    isGoing = true,
-                                    remindAt = state.event.remindAt
+                                    isGoing = true
                                 )
                             )
                         )
