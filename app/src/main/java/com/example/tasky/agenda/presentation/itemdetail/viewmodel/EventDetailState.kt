@@ -10,6 +10,8 @@ data class EventDetailState(
     val navigateBack: Boolean = false,
     val showTimePicker: Boolean = false,
     val showDatePicker: Boolean = false,
+    val navigateEditTitle: String? = null,
+    val navigateEditDescription: String? = null,
     val dateTimeSelected: DateTimeSelector? = null,
     val attendeeDialogState: AttendeeDialogState = AttendeeDialogState(),
     val selectedFilter: VisitorType = VisitorType.ALL,

@@ -43,6 +43,10 @@
     <string name="one_day_before">1 day before</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="back">back</string>
+    <string name="edit_title">EDIT TITLE</string>
+    <string name="edit_description">EDIT DESCRIPTION</string>
+    <string name="save">Save</string>
     <string name="add_visitor">Add visitor</string>
     <string name="add">ADD</string>
     <string name="there_is_no_user_with_that_email">There is no user with that email</string>

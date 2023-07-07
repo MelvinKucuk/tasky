@@ -12,6 +12,7 @@ import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toLocalDate
 import com.example.tasky.agenda.domain.util.toLocalTime
 import com.example.tasky.agenda.domain.util.toLong
+import com.example.tasky.agenda.presentation.edit.model.EditType
 import com.example.tasky.core.domain.EmailValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -38,6 +39,30 @@ class EventDetailViewModel @Inject constructor(
                     event = event
                 )
             }
+        }
+    }
+
+    fun setEditedText(savedStateHandle: SavedStateHandle) {
+        val editedText = savedStateHandle.get<String>(TaskyRoutes.EditScreen.TEXT)
+        val editType = savedStateHandle.get<EditType>(TaskyRoutes.EditScreen.EDIT_TYPE)
+        if (editedText == null) {
+            return
+        }
+        if (editType == null) {
+            return
+        }
+        state = when (editType) {
+            EditType.Title -> state.copy(
+                event = state.event.copy(
+                    title = editedText
+                )
+            )
+
+            EditType.Description -> state.copy(
+                event = state.event.copy(
+                    description = editedText
+                )
+            )
         }
     }
 
@@ -123,6 +148,18 @@ class EventDetailViewModel @Inject constructor(
                     showDatePicker = false
                 )
             }
+
+            EventDetailEvent.NavigateEditDescriptionResolved ->
+                state = state.copy(navigateEditDescription = null)
+
+            EventDetailEvent.NavigateEditTitleResolved ->
+                state = state.copy(navigateEditTitle = null)
+
+            EventDetailEvent.NavigateEditDescription ->
+                state = state.copy(navigateEditDescription = state.event.description)
+
+            EventDetailEvent.NavigateEditTitle ->
+                state = state.copy(navigateEditTitle = state.event.title)
 
             EventDetailEvent.AddAttendeeClicked ->
                 state = state.copy(
