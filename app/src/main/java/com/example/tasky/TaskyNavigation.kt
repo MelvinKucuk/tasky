@@ -8,6 +8,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.tasky.agenda.presentation.edit.EditScreen
+import com.example.tasky.agenda.presentation.edit.model.EditType
+import com.example.tasky.agenda.presentation.edit.viewmodel.EditEvent
+import com.example.tasky.agenda.presentation.edit.viewmodel.EditViewModel
 import com.example.tasky.agenda.presentation.home.AgendaScreen
 import com.example.tasky.agenda.presentation.home.viewmodel.AgendaViewModel
 import com.example.tasky.agenda.presentation.itemdetail.EventDetailScreen
@@ -112,17 +116,76 @@ fun TaskyNavigation(
                     type = NavType.StringType
                 }
             )
-        ) {
+        ) { entry ->
             val viewModel: EventDetailViewModel = hiltViewModel()
+
+            viewModel.setEditedText(entry.savedStateHandle)
 
             with(viewModel.state) {
                 ObserveBoolean(navigateBack) {
                     navController.popBackStack()
                     viewModel.onEvent(EventDetailEvent.CloseClickResolved)
                 }
+
+                Observe(observer = navigateEditTitle) {
+                    navController.navigate(
+                        TaskyRoutes.EditScreen.getDestination(
+                            text = it,
+                            editType = EditType.Title
+                        )
+                    )
+                    viewModel.onEvent(EventDetailEvent.NavigateEditTitleResolved)
+                }
+
+                Observe(observer = navigateEditDescription) {
+                    navController.navigate(
+                        TaskyRoutes.EditScreen.getDestination(
+                            text = it,
+                            editType = EditType.Description
+                        )
+                    )
+                    viewModel.onEvent(EventDetailEvent.NavigateEditDescriptionResolved)
+                }
             }
 
             EventDetailScreen(
+                state = viewModel.state,
+                onEvent = viewModel::onEvent
+            )
+        }
+
+        composable(
+            route = TaskyRoutes.EditScreen.getCompleteRoute(),
+            arguments = listOf(
+                navArgument(TaskyRoutes.EditScreen.TEXT) {
+                    type = NavType.StringType
+                },
+                navArgument(TaskyRoutes.EditScreen.EDIT_TYPE) {
+                    type = NavType.inferFromValueType(EditType.Title)
+                }
+            )
+        ) {
+            val viewModel: EditViewModel = hiltViewModel()
+
+            with(viewModel.state) {
+                Observe(observer = navigateBack) {
+                    navController.popBackStack()
+                    viewModel.onEvent(EditEvent.OnBackResolved)
+                }
+
+                Observe(observer = navigateWithResult) {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(TaskyRoutes.EditScreen.TEXT, it)
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(TaskyRoutes.EditScreen.EDIT_TYPE, editType)
+                    navController.popBackStack()
+                    viewModel.onEvent(EditEvent.OnSaveResolved)
+                }
+            }
+
+            EditScreen(
                 state = viewModel.state,
                 onEvent = viewModel::onEvent
             )

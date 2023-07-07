@@ -43,4 +43,8 @@
     <string name="one_day_before">1 day before</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
+    <string name="back">back</string>
+    <string name="edit_title">EDIT TITLE</string>
+    <string name="edit_description">EDIT DESCRIPTION</string>
+    <string name="save">Save</string>
 </resources>

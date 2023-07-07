@@ -7,6 +7,10 @@ import java.time.LocalTime
 sealed class EventDetailEvent {
     object OnCloseClick : EventDetailEvent()
     object CloseClickResolved : EventDetailEvent()
+    object NavigateEditTitle : EventDetailEvent()
+    object NavigateEditDescription : EventDetailEvent()
+    object NavigateEditTitleResolved : EventDetailEvent()
+    object NavigateEditDescriptionResolved : EventDetailEvent()
     data class ShowTimePicker(val dateTimeSelected: DateTimeSelector) : EventDetailEvent()
     object HideTimePicker : EventDetailEvent()
     data class TimeSelected(val time: LocalTime) : EventDetailEvent()
