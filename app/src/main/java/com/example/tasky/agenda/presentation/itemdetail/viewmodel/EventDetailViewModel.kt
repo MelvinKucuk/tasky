@@ -44,14 +44,14 @@ class EventDetailViewModel @Inject constructor(
 
     fun setEditedText(savedStateHandle: SavedStateHandle) {
         val editedText = savedStateHandle.get<String>(TaskyRoutes.EditScreen.TEXT)
-        val isTitle = savedStateHandle.get<EditType>(TaskyRoutes.EditScreen.EDIT_TYPE)
+        val editType = savedStateHandle.get<EditType>(TaskyRoutes.EditScreen.EDIT_TYPE)
         if (editedText == null) {
             return
         }
-        if (isTitle == null) {
+        if (editType == null) {
             return
         }
-        state = when (isTitle) {
+        state = when (editType) {
             EditType.Title -> state.copy(
                 event = state.event.copy(
                     title = editedText
