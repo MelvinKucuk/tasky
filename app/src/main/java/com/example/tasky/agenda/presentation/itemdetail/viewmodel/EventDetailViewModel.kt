@@ -126,12 +126,8 @@ class EventDetailViewModel @Inject constructor(
 
             EventDetailEvent.AddAttendeeClicked ->
                 state = state.copy(
-                    attendeeDialogState = state.attendeeDialogState.copy(
-                        show = true,
-                        isLoading = false,
-                        email = "",
-                        showError = false,
-                        showSuccess = false
+                    attendeeDialogState = AttendeeDialogState(
+                        show = true
                     )
                 )
 
