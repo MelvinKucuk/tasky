@@ -80,6 +80,7 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.size(50.dp))
 
                     TaskyTextField(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         value = loginState.emailValue,
                         placeholder = stringResource(R.string.email_address),
                         imeAction = Companion.Next,
@@ -90,6 +91,7 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.size(16.dp))
 
                     TaskyPasswordTextField(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         value = loginState.passwordValue,
                         placeholder = stringResource(R.string.password),
                         showPassword = loginState.showPassword,
@@ -102,6 +104,7 @@ fun LoginScreen(
                     }
                     Spacer(modifier = Modifier.size(25.dp))
                     ButtonWithLoader(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         text = stringResource(id = R.string.log_in),
                         isLoading = loginState.isLoading
                     ) {

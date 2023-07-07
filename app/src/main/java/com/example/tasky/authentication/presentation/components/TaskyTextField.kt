@@ -1,7 +1,6 @@
 package com.example.tasky.authentication.presentation.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -93,9 +92,7 @@ private fun BaseTaskyTextField(
     onShowPasswordChange: (Boolean) -> Unit = {}
 ) {
     OutlinedTextField(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+        modifier = modifier.fillMaxWidth(),
         value = value,
         placeholder = {
             if (placeholder != null) {

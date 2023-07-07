@@ -18,4 +18,8 @@ sealed class EventDetailEvent {
     object HideDatePicker : EventDetailEvent()
     data class DateSelected(val date: LocalDate) : EventDetailEvent()
     data class OnFilterClicked(val filter: VisitorType) : EventDetailEvent()
+    object AddAttendeeClicked : EventDetailEvent()
+    object AddButtonClicked : EventDetailEvent()
+    object AddAttendeeCloseClicked : EventDetailEvent()
+    data class EmailChanged(val email: String) : EventDetailEvent()
 }

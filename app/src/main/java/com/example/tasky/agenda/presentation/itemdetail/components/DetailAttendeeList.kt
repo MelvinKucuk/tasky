@@ -13,17 +13,16 @@ import com.example.tasky.agenda.domain.model.Attendee
 @Composable
 fun DetailAttendeeList(
     isEditMode: Boolean,
+    attendees: List<Attendee>,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        (1..3).forEach { _ ->
+        attendees.forEach { attendee ->
             VisitorRow(
-                visitor = Attendee(
-                    fullName = "Melvin Alex Kucuk"
-                ),
+                visitor = attendee,
                 isEditMode = isEditMode
             ) {}
         }
@@ -35,5 +34,18 @@ fun DetailAttendeeList(
 @Preview
 @Composable
 fun DetailAttendeeListPreview() {
-    DetailAttendeeList(false)
+    DetailAttendeeList(
+        isEditMode = false,
+        listOf(
+            Attendee(
+                fullName = "Melvin Alex Kucuk"
+            ),
+            Attendee(
+                fullName = "Juan Perez"
+            ),
+            Attendee(
+                fullName = "Kevin"
+            ),
+        )
+    )
 }
