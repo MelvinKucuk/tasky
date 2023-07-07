@@ -104,6 +104,7 @@ fun LoginScreen(
                     }
                     Spacer(modifier = Modifier.size(25.dp))
                     ButtonWithLoader(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         text = stringResource(id = R.string.log_in),
                         isLoading = loginState.isLoading
                     ) {

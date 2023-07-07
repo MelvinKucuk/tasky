@@ -33,6 +33,7 @@ import com.example.tasky.agenda.domain.util.toCurrentDate
 import com.example.tasky.agenda.domain.util.toHours
 import com.example.tasky.agenda.domain.util.toLocalDateTime
 import com.example.tasky.agenda.domain.util.toSimplifiedDate
+import com.example.tasky.agenda.presentation.itemdetail.components.AddAttendeeDialog
 import com.example.tasky.agenda.presentation.itemdetail.components.AttendeeTypeText
 import com.example.tasky.agenda.presentation.itemdetail.components.BottomDecorator
 import com.example.tasky.agenda.presentation.itemdetail.components.DetailAttendeeList
@@ -68,7 +69,20 @@ fun EventDetailScreen(
         containerColor = Black,
     ) {
 
-        //AddAttendeeDialog()
+        if (state.attendeeDialogState.show) {
+            AddAttendeeDialog(
+                state = state.attendeeDialogState,
+                textValueChanged = { mail ->
+                    onEvent(EventDetailEvent.EmailChanged(mail))
+                },
+                onCloseClick = {
+                    onEvent(EventDetailEvent.AddAttendeeCloseClicked)
+                },
+                onAddClick = {
+                    onEvent(EventDetailEvent.AddButtonClicked)
+                }
+            )
+        }
 
         val dialogState = rememberMaterialDialogState()
         MaterialDialog(
@@ -249,7 +263,7 @@ fun EventDetailScreen(
 
                     item {
                         DetailVisitorsTitle(isEditMode = state.isEditMode) {
-
+                            onEvent(EventDetailEvent.AddAttendeeClicked)
                         }
                     }
 

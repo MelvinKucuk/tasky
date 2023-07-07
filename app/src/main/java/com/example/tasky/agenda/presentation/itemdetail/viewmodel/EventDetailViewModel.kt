@@ -8,9 +8,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tasky.TaskyRoutes
 import com.example.tasky.agenda.domain.EventRepository
+import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toLocalDate
 import com.example.tasky.agenda.domain.util.toLocalTime
 import com.example.tasky.agenda.domain.util.toLong
+import com.example.tasky.authentication.domain.EmailValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: EventRepository
+    private val repository: EventRepository,
+    private val validateEmail: EmailValidator
 ) : ViewModel() {
 
     var state by mutableStateOf(EventDetailState())
@@ -118,6 +121,75 @@ class EventDetailViewModel @Inject constructor(
                 state = state.copy(
                     dateTimeSelected = null,
                     showDatePicker = false
+                )
+            }
+
+            EventDetailEvent.AddAttendeeClicked ->
+                state = state.copy(
+                    attendeeDialogState = state.attendeeDialogState.copy(
+                        show = true,
+                        isLoading = false,
+                        email = "",
+                        showError = false,
+                        showSuccess = false
+                    )
+                )
+
+            EventDetailEvent.AddAttendeeCloseClicked ->
+                state = state.copy(
+                    attendeeDialogState = state.attendeeDialogState.copy(
+                        show = false
+                    )
+                )
+
+            EventDetailEvent.AddButtonClicked -> {
+                state = state.copy(
+                    attendeeDialogState = state.attendeeDialogState.copy(
+                        isLoading = true
+                    )
+                )
+
+                viewModelScope.launch {
+                    val attendee = repository.getValidUser(state.attendeeDialogState.email)
+
+                    state = if (attendee != null) {
+                        state.copy(
+                            attendeeDialogState = state.attendeeDialogState.copy(
+                                isLoading = false,
+                                showSuccess = true
+                            ),
+                            event = state.event.copy(
+                                attendees = state.event.attendees + Attendee(
+                                    email = attendee.email,
+                                    fullName = attendee.fullName,
+                                    userId = attendee.userId,
+                                    eventId = state.eventId,
+                                    isGoing = true,
+                                    remindAt = state.event.remindAt
+                                )
+                            )
+                        )
+                    } else {
+                        state.copy(
+                            attendeeDialogState = state.attendeeDialogState.copy(
+                                isLoading = false,
+                                showError = true
+                            )
+                        )
+                    }
+                }
+            }
+
+            is EventDetailEvent.EmailChanged -> {
+                val isValid = validateEmail(event.email)
+                state = state.copy(
+                    attendeeDialogState = state.attendeeDialogState.copy(
+                        email = event.email,
+                        isValidEmail = isValid,
+                        isEnabled = isValid,
+                        showSuccess = false,
+                        showError = false
+                    )
                 )
             }
         }

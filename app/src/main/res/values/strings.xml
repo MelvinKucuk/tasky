@@ -45,4 +45,6 @@
     <string name="cancel">Cancel</string>
     <string name="add_visitor">Add visitor</string>
     <string name="add">ADD</string>
+    <string name="there_is_no_user_with_that_email">There is no user with that email</string>
+    <string name="visitor_added_successfully">Visitor added successfully</string>
 </resources>

@@ -114,6 +114,7 @@ fun SignUpScreen(
                     }
                     Spacer(modifier = Modifier.size(25.dp))
                     ButtonWithLoader(
+                        modifier = Modifier.padding(horizontal = 16.dp),
                         text = stringResource(R.string.get_started),
                         isLoading = signUpState.isLoading
                     ) {
@@ -134,11 +135,6 @@ fun SignUpScreen(
             }
         }
     }
-}
-
-sealed class SignUpNavigation {
-    object Back : SignUpNavigation()
-    object Login : SignUpNavigation()
 }
 
 @Preview

@@ -11,11 +11,22 @@ data class EventDetailState(
     val showTimePicker: Boolean = false,
     val showDatePicker: Boolean = false,
     val dateTimeSelected: DateTimeSelector? = null,
+    val attendeeDialogState: AttendeeDialogState = AttendeeDialogState(),
     val selectedFilter: VisitorType = VisitorType.ALL,
 ) {
     val attendeesGoing get() = event.attendees.filter { it.isGoing == true }
     val attendeesNotGoing get() = event.attendees.filter { it.isGoing == false }
 }
+
+data class AttendeeDialogState(
+    val email: String = "",
+    val isValidEmail: Boolean = false,
+    val isEnabled: Boolean = false,
+    val show: Boolean = false,
+    val isLoading: Boolean = false,
+    val showError: Boolean = false,
+    val showSuccess: Boolean = false,
+)
 
 sealed class DateTimeSelector {
     object From : DateTimeSelector()

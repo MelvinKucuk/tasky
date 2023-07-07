@@ -1,6 +1,7 @@
 package com.example.tasky.agenda.data.remote
 
 import com.example.tasky.agenda.data.remote.model.AgendaResponse
+import com.example.tasky.agenda.data.remote.model.AttendeeWithExist
 import com.example.tasky.agenda.data.remote.model.TaskResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -24,4 +25,7 @@ interface AgendaService {
 
     @PUT("/task")
     suspend fun updateTask(@Body task: TaskResponse): Response<ResponseBody>
+
+    @GET("/attendee")
+    suspend fun getValidUser(@Query("email") email: String): Response<AttendeeWithExist>
 }
