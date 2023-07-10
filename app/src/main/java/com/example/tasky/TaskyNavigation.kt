@@ -17,6 +17,9 @@ import com.example.tasky.agenda.presentation.home.viewmodel.AgendaViewModel
 import com.example.tasky.agenda.presentation.itemdetail.EventDetailScreen
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailEvent
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailViewModel
+import com.example.tasky.agenda.presentation.photoviewer.PhotoViewerEvent
+import com.example.tasky.agenda.presentation.photoviewer.PhotoViewerScreen
+import com.example.tasky.agenda.presentation.photoviewer.PhotoViewerViewModel
 import com.example.tasky.authentication.presentation.login.LoginScreen
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginEvent
 import com.example.tasky.authentication.presentation.login.viewmodel.LoginViewModel
@@ -121,6 +124,8 @@ fun TaskyNavigation(
 
             viewModel.setEditedText(entry.savedStateHandle)
 
+            viewModel.deletePhoto(entry.savedStateHandle)
+
             with(viewModel.state) {
                 ObserveBoolean(navigateBack) {
                     navController.popBackStack()
@@ -145,6 +150,15 @@ fun TaskyNavigation(
                         )
                     )
                     viewModel.onEvent(EventDetailEvent.NavigateEditDescriptionResolved)
+                }
+
+                Observe(observer = navigatePhotoViewer) {
+                    navController.navigate(
+                        TaskyRoutes.PhotoViewerScreen.getDestination(
+                            imageUrl = it
+                        )
+                    )
+                    viewModel.onEvent(EventDetailEvent.PhotoClickedResolved)
                 }
             }
 
@@ -189,6 +203,34 @@ fun TaskyNavigation(
                 state = viewModel.state,
                 onEvent = viewModel::onEvent
             )
+        }
+
+        composable(
+            route = TaskyRoutes.PhotoViewerScreen.getCompleteRoute(),
+            arguments = listOf(
+                navArgument(TaskyRoutes.PhotoViewerScreen.IMAGE_URL) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val viewModel: PhotoViewerViewModel = hiltViewModel()
+
+            with(viewModel.state) {
+                Observe(observer = navigateBack) {
+                    navController.popBackStack()
+                    viewModel.onEvent(PhotoViewerEvent.OnBackResolved)
+                }
+
+                Observe(observer = navigateWithDelete) { imageUrl ->
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(TaskyRoutes.PhotoViewerScreen.IMAGE_URL, imageUrl)
+                    navController.popBackStack()
+                    viewModel.onEvent(PhotoViewerEvent.OnDeleteResolved)
+                }
+            }
+
+            PhotoViewerScreen(imageUrl = viewModel.state.imageUrl, onEvent = viewModel::onEvent)
         }
     }
 }

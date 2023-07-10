@@ -12,6 +12,7 @@ data class EventDetailState(
     val showDatePicker: Boolean = false,
     val navigateEditTitle: String? = null,
     val navigateEditDescription: String? = null,
+    val navigatePhotoViewer: String? = null,
     val dateTimeSelected: DateTimeSelector? = null,
     val canAddPhoto: Boolean = true,
     val attendeeDialogState: AttendeeDialogState = AttendeeDialogState(),
