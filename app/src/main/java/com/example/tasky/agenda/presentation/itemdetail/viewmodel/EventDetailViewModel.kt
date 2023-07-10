@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tasky.TaskyRoutes
 import com.example.tasky.agenda.domain.EventRepository
+import com.example.tasky.agenda.domain.model.AgendaPhoto
 import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toLocalDate
 import com.example.tasky.agenda.domain.util.toLocalTime
@@ -36,7 +37,8 @@ class EventDetailViewModel @Inject constructor(
                 val event = repository.getEventById(state.eventId)
 
                 state = state.copy(
-                    event = event
+                    event = event,
+                    canAddPhoto = event.photos.size < 10
                 )
             }
         }
@@ -223,6 +225,21 @@ class EventDetailViewModel @Inject constructor(
                         showError = false
                     )
                 )
+            }
+
+            is EventDetailEvent.PhotoSelected -> {
+                val photos = state.event.photos.toMutableList()
+                photos.add(AgendaPhoto.Local(event.url))
+                state = state.copy(
+                    event = state.event.copy(
+                        photos = photos
+                    ),
+                    canAddPhoto = photos.size < 10
+                )
+            }
+
+            is EventDetailEvent.PhotoClicked -> {
+
             }
         }
     }

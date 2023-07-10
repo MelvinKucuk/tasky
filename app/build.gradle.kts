@@ -79,6 +79,8 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.security:security-crypto:1.0.0")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.31.5-beta")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 

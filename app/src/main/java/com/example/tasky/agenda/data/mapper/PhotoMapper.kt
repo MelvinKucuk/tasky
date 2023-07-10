@@ -1,10 +1,7 @@
 package com.example.tasky.agenda.data.mapper
 
 import com.example.tasky.agenda.data.remote.model.PhotoResponse
-import com.example.tasky.agenda.domain.model.Photo
+import com.example.tasky.agenda.domain.model.AgendaPhoto
 
 fun PhotoResponse.toDomain() =
-    Photo(
-        key = key,
-        url = url
-    )
+    AgendaPhoto.Remote(url = url)
