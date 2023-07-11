@@ -19,7 +19,7 @@ sealed class AgendaItem(
         val host: String = "",
         val isUserEventCreator: Boolean = false,
         val attendees: List<Attendee> = listOf(),
-        val photos: List<AgendaPhoto> = listOf()
+        val photos: List<Photo> = listOf()
     ) : AgendaItem(
         id, title, description, from
     ) {
