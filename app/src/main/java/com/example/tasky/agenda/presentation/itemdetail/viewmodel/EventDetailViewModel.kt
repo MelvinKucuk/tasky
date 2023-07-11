@@ -38,7 +38,7 @@ class EventDetailViewModel @Inject constructor(
 
                 state = state.copy(
                     event = event,
-                    canAddPhoto = event.photos.size < 10
+                    canAddPhoto = event.photos.size < MAX_PHOTOS
                 )
             }
         }
@@ -66,6 +66,19 @@ class EventDetailViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun deletePhoto(savedStateHandle: SavedStateHandle) {
+        val url = savedStateHandle.get<String>(TaskyRoutes.PhotoViewerScreen.IMAGE_URL) ?: return
+        val photos = state.event.photos.toMutableList()
+        val photoToDelete = photos.first { it.url == url }
+        photos.remove(photoToDelete)
+        state = state.copy(
+            event = state.event.copy(
+                photos = photos
+            )
+        )
+        savedStateHandle[TaskyRoutes.PhotoViewerScreen.IMAGE_URL] = null
     }
 
     fun onEvent(event: EventDetailEvent) {
@@ -234,13 +247,21 @@ class EventDetailViewModel @Inject constructor(
                     event = state.event.copy(
                         photos = photos
                     ),
-                    canAddPhoto = photos.size < 10
+                    canAddPhoto = photos.size < MAX_PHOTOS
                 )
             }
 
             is EventDetailEvent.PhotoClicked -> {
+                state = state.copy(navigatePhotoViewer = event.url)
+            }
 
+            EventDetailEvent.PhotoClickedResolved -> {
+                state = state.copy(navigatePhotoViewer = null)
             }
         }
+    }
+
+    companion object {
+        const val MAX_PHOTOS = 10
     }
 }
