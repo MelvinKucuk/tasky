@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tasky.TaskyRoutes
 import com.example.tasky.agenda.domain.EventRepository
+import com.example.tasky.agenda.domain.model.AgendaPhoto
 import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toLocalDate
 import com.example.tasky.agenda.domain.util.toLocalTime
@@ -36,7 +37,8 @@ class EventDetailViewModel @Inject constructor(
                 val event = repository.getEventById(state.eventId)
 
                 state = state.copy(
-                    event = event
+                    event = event,
+                    canAddPhoto = event.photos.size < MAX_PHOTOS
                 )
             }
         }
@@ -64,6 +66,19 @@ class EventDetailViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun deletePhoto(savedStateHandle: SavedStateHandle) {
+        val url = savedStateHandle.get<String>(TaskyRoutes.PhotoViewerScreen.IMAGE_URL) ?: return
+        val photos = state.event.photos.toMutableList()
+        val photoToDelete = photos.first { it.url == url }
+        photos.remove(photoToDelete)
+        state = state.copy(
+            event = state.event.copy(
+                photos = photos
+            )
+        )
+        savedStateHandle[TaskyRoutes.PhotoViewerScreen.IMAGE_URL] = null
     }
 
     fun onEvent(event: EventDetailEvent) {
@@ -224,6 +239,29 @@ class EventDetailViewModel @Inject constructor(
                     )
                 )
             }
+
+            is EventDetailEvent.PhotoSelected -> {
+                val photos = state.event.photos.toMutableList()
+                photos.add(AgendaPhoto.Local(event.url))
+                state = state.copy(
+                    event = state.event.copy(
+                        photos = photos
+                    ),
+                    canAddPhoto = photos.size < MAX_PHOTOS
+                )
+            }
+
+            is EventDetailEvent.PhotoClicked -> {
+                state = state.copy(navigatePhotoViewer = event.url)
+            }
+
+            EventDetailEvent.PhotoClickedResolved -> {
+                state = state.copy(navigatePhotoViewer = null)
+            }
         }
+    }
+
+    companion object {
+        const val MAX_PHOTOS = 10
     }
 }

@@ -23,4 +23,11 @@ sealed class TaskyRoutes(val route: String) {
         const val TEXT = "event_id"
         const val EDIT_TYPE = "edit_type"
     }
+
+    object PhotoViewerScreen : TaskyRoutes("photo_viewer_screen") {
+        fun getCompleteRoute() = "$route?$IMAGE_URL={$IMAGE_URL}"
+        fun getDestination(imageUrl: String) = "$route?$IMAGE_URL=$imageUrl"
+
+        const val IMAGE_URL = "image_url"
+    }
 }

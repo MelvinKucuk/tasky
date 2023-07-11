@@ -1,59 +1,65 @@
 package com.example.tasky.agenda.presentation.itemdetail.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
+import android.Manifest
+import android.net.Uri
+import android.os.Build
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.tasky.R
-import com.example.tasky.ui.theme.Gray
+import com.example.tasky.BuildConfig
+import com.example.tasky.agenda.domain.model.AgendaPhoto
 import com.example.tasky.ui.theme.Light
-import com.example.tasky.ui.theme.LightGray2
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.PermissionStatus
+import com.google.accompanist.permissions.rememberPermissionState
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun DetailPhotosContainer(
+    photos: List<AgendaPhoto>,
+    canAddPhoto: Boolean,
+    onPhotoSelected: (String) -> Unit,
+    onPhotoClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onAddClick: () -> Unit
 ) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(110.dp)
-            .background(color = LightGray2)
-            .clickable { onAddClick() },
-        contentAlignment = Alignment.Center
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                modifier = Modifier.size(30.dp),
-                imageVector = Icons.Outlined.Add,
-                tint = Gray,
-                contentDescription = null,
-            )
-            Spacer(modifier = Modifier.size(15.dp))
-            Text(
-                text = stringResource(R.string.add_photos),
-                color = Gray,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
+    val galleryLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
+            if (it != null) {
+                onPhotoSelected(it.toString())
+            }
+        }
+
+    val readGalleryPermissionState =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            rememberPermissionState(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            rememberPermissionState(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+    if (photos.isNotEmpty()) {
+        PhotosListContainer(
+            canAddPhoto = canAddPhoto,
+            photos = photos,
+            onAddClick = {
+                launchImageGallery(readGalleryPermissionState, galleryLauncher)
+            },
+            onPhotoClick = onPhotoClick,
+            modifier = modifier
+        )
+    } else {
+        AddPhotosContainer(modifier = modifier) {
+            launchImageGallery(readGalleryPermissionState, galleryLauncher)
         }
     }
 
@@ -67,8 +73,27 @@ fun DetailPhotosContainer(
     )
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
+private fun launchImageGallery(
+    permissionState: PermissionState,
+    galleryLauncher: ManagedActivityResultLauncher<PickVisualMediaRequest, Uri?>
+) {
+    if (permissionState.status == PermissionStatus.Granted || BuildConfig.DEBUG) {
+        val mediaRequest =
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        galleryLauncher.launch(mediaRequest)
+    } else {
+        permissionState.launchPermissionRequest()
+    }
+}
+
 @Preview
 @Composable
 fun DetailPhotosContainerPreview() {
-    DetailPhotosContainer {}
+    DetailPhotosContainer(
+        photos = listOf(),
+        canAddPhoto = true,
+        onPhotoSelected = {},
+        onPhotoClick = {}
+    )
 }
