@@ -13,7 +13,6 @@ data class EventDetailState(
     val navigateEditTitle: String? = null,
     val navigateEditDescription: String? = null,
     val dateTimeSelected: DateTimeSelector? = null,
-    val canAddPhoto: Boolean = true,
     val attendeeDialogState: AttendeeDialogState = AttendeeDialogState(),
     val selectedFilter: VisitorType = VisitorType.ALL,
 ) {

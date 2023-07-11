@@ -204,16 +204,7 @@ fun EventDetailScreen(
                     }
 
                     item {
-                        DetailPhotosContainer(
-                            photos = state.event.photos,
-                            canAddPhoto = state.canAddPhoto,
-                            onPhotoSelected = { url ->
-                                onEvent(EventDetailEvent.PhotoSelected(url))
-                            },
-                            onPhotoClick = { url ->
-                                onEvent(EventDetailEvent.PhotoClicked(url))
-                            }
-                        )
+                        DetailPhotosContainer {}
                     }
 
                     item {

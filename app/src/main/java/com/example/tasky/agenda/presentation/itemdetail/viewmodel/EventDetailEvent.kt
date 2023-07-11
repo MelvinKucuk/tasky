@@ -22,6 +22,4 @@ sealed class EventDetailEvent {
     object AddButtonClicked : EventDetailEvent()
     object AddAttendeeCloseClicked : EventDetailEvent()
     data class EmailChanged(val email: String) : EventDetailEvent()
-    data class PhotoSelected(val url: String) : EventDetailEvent()
-    data class PhotoClicked(val url: String) : EventDetailEvent()
 }
