@@ -38,7 +38,7 @@ class EventDetailViewModel @Inject constructor(
 
                 state = state.copy(
                     event = event,
-                    canAddPhoto = event.photos.size < 10
+                    canAddPhoto = event.photos.size < MAX_PHOTOS
                 )
             }
         }
@@ -247,7 +247,7 @@ class EventDetailViewModel @Inject constructor(
                     event = state.event.copy(
                         photos = photos
                     ),
-                    canAddPhoto = photos.size < 10
+                    canAddPhoto = photos.size < MAX_PHOTOS
                 )
             }
 
@@ -259,5 +259,9 @@ class EventDetailViewModel @Inject constructor(
                 state = state.copy(navigatePhotoViewer = null)
             }
         }
+    }
+
+    companion object {
+        const val MAX_PHOTOS = 10
     }
 }
