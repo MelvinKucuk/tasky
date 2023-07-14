@@ -321,7 +321,8 @@ private fun AttendeesNotGoing(state: EventDetailState) {
 
         DetailAttendeeList(
             isEditMode = state.isEditMode,
-            attendees = state.attendeesNotGoing
+            attendees = state.attendeesNotGoing,
+            hostId = state.event.host
         )
     }
 }
@@ -333,7 +334,8 @@ private fun AttendeesGoing(state: EventDetailState) {
 
         DetailAttendeeList(
             isEditMode = state.isEditMode,
-            attendees = state.attendeesGoing
+            attendees = state.attendeesGoing,
+            hostId = state.event.host
         )
     }
 }
