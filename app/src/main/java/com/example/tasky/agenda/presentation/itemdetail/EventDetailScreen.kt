@@ -38,7 +38,6 @@ import com.example.tasky.agenda.presentation.itemdetail.components.AttendeeTypeT
 import com.example.tasky.agenda.presentation.itemdetail.components.BottomDecorator
 import com.example.tasky.agenda.presentation.itemdetail.components.DetailAttendeeList
 import com.example.tasky.agenda.presentation.itemdetail.components.DetailDescription
-import com.example.tasky.agenda.presentation.itemdetail.components.DetailPhotosContainer
 import com.example.tasky.agenda.presentation.itemdetail.components.DetailReminder
 import com.example.tasky.agenda.presentation.itemdetail.components.DetailTitle
 import com.example.tasky.agenda.presentation.itemdetail.components.DetailTypeIndicator
@@ -204,7 +203,7 @@ fun EventDetailScreen(
                     }
 
                     item {
-                        DetailPhotosContainer(
+                        /*DetailPhotosContainer(
                             photos = state.event.photos,
                             canAddPhoto = state.canAddPhoto,
                             onPhotoSelected = { url ->
@@ -213,7 +212,7 @@ fun EventDetailScreen(
                             onPhotoClick = { url ->
                                 onEvent(EventDetailEvent.PhotoClicked(url))
                             }
-                        )
+                        )*/
                     }
 
                     item {

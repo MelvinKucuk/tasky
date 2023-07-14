@@ -5,6 +5,7 @@ package com.example.tasky.agenda.presentation.itemdetail.model
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import com.example.tasky.R
+import com.example.tasky.agenda.domain.util.toLong
 import java.time.Duration
 import java.time.LocalDateTime
 import kotlin.math.abs
@@ -34,14 +35,14 @@ enum class NotificationType(@StringRes val type: Int) {
             return TEN_MINUTES
         }
 
-        fun remindAt(time: LocalDateTime, notificationType: NotificationType): LocalDateTime {
+        fun remindAt(time: LocalDateTime, notificationType: NotificationType): Long {
             return when (notificationType) {
                 TEN_MINUTES -> time.minusMinutes(10)
                 THIRTY_MINUTES -> time.minusMinutes(30)
                 ONE_HOUR -> time.minusHours(1)
                 SIX_HOURS -> time.minusHours(6)
                 ONE_DAY -> time.minusDays(1)
-            }
+            }.toLong()
         }
     }
 }
