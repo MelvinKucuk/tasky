@@ -15,7 +15,8 @@ fun DetailAttendeeList(
     isEditMode: Boolean,
     attendees: List<Attendee>,
     hostId: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDelete: (Attendee) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -25,8 +26,9 @@ fun DetailAttendeeList(
             VisitorRow(
                 visitor = attendee,
                 isEditMode = isEditMode,
-                hostId = hostId
-            ) {}
+                hostId = hostId,
+                onDelete = onDelete
+            )
         }
     }
 
@@ -50,5 +52,5 @@ fun DetailAttendeeListPreview() {
             ),
         ),
         hostId = ""
-    )
+    ) {}
 }

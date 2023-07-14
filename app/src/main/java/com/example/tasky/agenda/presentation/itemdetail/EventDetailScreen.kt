@@ -288,16 +288,16 @@ fun EventDetailScreen(
 
                     when (state.selectedFilter) {
                         VisitorType.ALL -> {
-                            item { AttendeesGoing(state) }
-                            item { AttendeesNotGoing(state) }
+                            item { AttendeesGoing(state, onEvent) }
+                            item { AttendeesNotGoing(state, onEvent) }
                         }
 
                         VisitorType.GOING -> {
-                            item { AttendeesGoing(state) }
+                            item { AttendeesGoing(state, onEvent) }
                         }
 
                         VisitorType.NOT_GOING -> {
-                            item { AttendeesNotGoing(state) }
+                            item { AttendeesNotGoing(state, onEvent) }
                         }
                     }
 
@@ -315,7 +315,7 @@ fun EventDetailScreen(
 }
 
 @Composable
-private fun AttendeesNotGoing(state: EventDetailState) {
+private fun AttendeesNotGoing(state: EventDetailState, onEvent: (EventDetailEvent) -> Unit) {
     if (state.attendeesNotGoing.isNotEmpty()) {
         AttendeeTypeText(text = R.string.not_going)
 
@@ -323,12 +323,14 @@ private fun AttendeesNotGoing(state: EventDetailState) {
             isEditMode = state.isEditMode,
             attendees = state.attendeesNotGoing,
             hostId = state.event.host
-        )
+        ) {
+            onEvent(EventDetailEvent.OnAttendeeDelete(it))
+        }
     }
 }
 
 @Composable
-private fun AttendeesGoing(state: EventDetailState) {
+private fun AttendeesGoing(state: EventDetailState, onEvent: (EventDetailEvent) -> Unit) {
     if (state.attendeesGoing.isNotEmpty()) {
         AttendeeTypeText(text = R.string.going)
 
@@ -336,7 +338,9 @@ private fun AttendeesGoing(state: EventDetailState) {
             isEditMode = state.isEditMode,
             attendees = state.attendeesGoing,
             hostId = state.event.host
-        )
+        ) {
+            onEvent(EventDetailEvent.OnAttendeeDelete(it))
+        }
     }
 }
 

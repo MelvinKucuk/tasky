@@ -35,7 +35,7 @@ fun VisitorRow(
     isEditMode: Boolean,
     hostId: String,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Attendee) -> Unit,
+    onDelete: (Attendee) -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -77,7 +77,7 @@ fun VisitorRow(
                     modifier = Modifier
                         .size(30.dp)
                         .clickable {
-                            onDeleteClick(visitor)
+                            onDelete(visitor)
                         },
                     painter = painterResource(id = R.drawable.ic_delete),
                     tint = DarkGray,

@@ -258,6 +258,17 @@ class EventDetailViewModel @Inject constructor(
             EventDetailEvent.PhotoClickedResolved -> {
                 state = state.copy(navigatePhotoViewer = null)
             }
+
+            is EventDetailEvent.OnAttendeeDelete -> {
+                val attendees = state.event.attendees.toMutableList()
+                val attendeeToDelte = attendees.first { it.userId == event.attendee.userId }
+                attendees.remove(attendeeToDelte)
+                state = state.copy(
+                    event = state.event.copy(
+                        attendees = attendees
+                    )
+                )
+            }
         }
     }
 
