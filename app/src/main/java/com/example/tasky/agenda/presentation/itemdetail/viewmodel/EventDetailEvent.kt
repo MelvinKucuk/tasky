@@ -1,5 +1,6 @@
 package com.example.tasky.agenda.presentation.itemdetail.viewmodel
 
+import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.presentation.itemdetail.model.VisitorType
 import java.time.LocalDate
 import java.time.LocalTime
@@ -19,6 +20,7 @@ sealed class EventDetailEvent {
     data class DateSelected(val date: LocalDate) : EventDetailEvent()
     data class OnFilterClicked(val filter: VisitorType) : EventDetailEvent()
     object AddAttendeeClicked : EventDetailEvent()
+    data class OnAttendeeDelete(val attendee: Attendee) : EventDetailEvent()
     object AddButtonClicked : EventDetailEvent()
     object AddAttendeeCloseClicked : EventDetailEvent()
     data class EmailChanged(val email: String) : EventDetailEvent()
