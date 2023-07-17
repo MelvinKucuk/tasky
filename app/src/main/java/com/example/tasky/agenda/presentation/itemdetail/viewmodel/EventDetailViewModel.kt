@@ -260,12 +260,11 @@ class EventDetailViewModel @Inject constructor(
             }
 
             is EventDetailEvent.OnAttendeeDelete -> {
-                val attendees = state.event.attendees.toMutableList()
+                val attendees = state.event.attendees
                 val attendeeToDelete = attendees.first { it.userId == event.attendee.userId }
-                attendees.remove(attendeeToDelete)
                 state = state.copy(
                     event = state.event.copy(
-                        attendees = attendees
+                        attendees = attendees - attendeeToDelete
                     )
                 )
             }
