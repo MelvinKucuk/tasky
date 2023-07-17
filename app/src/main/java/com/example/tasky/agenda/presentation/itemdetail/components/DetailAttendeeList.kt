@@ -14,7 +14,9 @@ import com.example.tasky.agenda.domain.model.Attendee
 fun DetailAttendeeList(
     isEditMode: Boolean,
     attendees: List<Attendee>,
-    modifier: Modifier = Modifier
+    hostId: String,
+    modifier: Modifier = Modifier,
+    onDelete: (Attendee) -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -23,8 +25,10 @@ fun DetailAttendeeList(
         attendees.forEach { attendee ->
             VisitorRow(
                 visitor = attendee,
-                isEditMode = isEditMode
-            ) {}
+                isEditMode = isEditMode,
+                hostId = hostId,
+                onDelete = onDelete
+            )
         }
     }
 
@@ -46,6 +50,7 @@ fun DetailAttendeeListPreview() {
             Attendee(
                 fullName = "Kevin"
             ),
-        )
-    )
+        ),
+        hostId = ""
+    ) {}
 }

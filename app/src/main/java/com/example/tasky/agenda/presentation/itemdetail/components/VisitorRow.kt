@@ -33,8 +33,9 @@ import com.example.tasky.ui.theme.LightBlue2
 fun VisitorRow(
     visitor: Attendee,
     isEditMode: Boolean,
+    hostId: String,
     modifier: Modifier = Modifier,
-    onDeleteClick: (Attendee) -> Unit,
+    onDelete: (Attendee) -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -62,7 +63,7 @@ fun VisitorRow(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (visitor.isUserEventCreator) {
+            if (visitor.userId == hostId) {
                 Text(
                     text = stringResource(R.string.creator),
                     color = LightBlue2,
@@ -71,12 +72,12 @@ fun VisitorRow(
                 )
             }
 
-            if (isEditMode && !visitor.isUserEventCreator) {
+            if (isEditMode && visitor.userId != hostId) {
                 Icon(
                     modifier = Modifier
                         .size(30.dp)
                         .clickable {
-                            onDeleteClick(visitor)
+                            onDelete(visitor)
                         },
                     painter = painterResource(id = R.drawable.ic_delete),
                     tint = DarkGray,
@@ -94,6 +95,7 @@ fun VisitorRowPreview() {
         visitor = Attendee(
             fullName = "Melvin Alex Kucuk"
         ),
+        hostId = "2",
         isEditMode = false
     ) {}
 }
@@ -106,6 +108,7 @@ fun VisitorRowCreatorPreview() {
             fullName = "Melvin Alex Kucuk",
             isUserEventCreator = true
         ),
+        hostId = "",
         isEditMode = false
     ) {}
 }
@@ -118,6 +121,7 @@ fun VisitorRowEditModeCreatorPreview() {
             fullName = "Melvin Alex Kucuk",
             isUserEventCreator = true
         ),
+        hostId = "",
         isEditMode = true
     ) {}
 }
@@ -129,6 +133,7 @@ fun VisitorRowEditModePreview() {
         visitor = Attendee(
             fullName = "Melvin Alex Kucuk"
         ),
+        hostId = "2",
         isEditMode = true
     ) {}
 }
