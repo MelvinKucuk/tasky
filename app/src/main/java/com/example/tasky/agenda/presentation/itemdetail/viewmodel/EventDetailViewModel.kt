@@ -11,9 +11,11 @@ import com.example.tasky.agenda.domain.EventRepository
 import com.example.tasky.agenda.domain.model.AgendaPhoto
 import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toLocalDate
+import com.example.tasky.agenda.domain.util.toLocalDateTime
 import com.example.tasky.agenda.domain.util.toLocalTime
 import com.example.tasky.agenda.domain.util.toLong
 import com.example.tasky.agenda.presentation.edit.model.EditType
+import com.example.tasky.agenda.presentation.itemdetail.model.NotificationType
 import com.example.tasky.core.domain.EmailValidator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -266,6 +268,22 @@ class EventDetailViewModel @Inject constructor(
                     event = state.event.copy(
                         attendees = attendees - attendeeToDelete
                     )
+                )
+            }
+
+            is EventDetailEvent.ReminderChanged -> {
+                val remindAt = NotificationType.remindAt(
+                    state.event.from.toLocalDateTime(),
+                    event.remindAt
+                )
+                state = state.copy(
+                    event = state.event.copy(
+                        remindAt = remindAt,
+                    ),
+                    remindAt = NotificationType.from(
+                        state.event.from.toLocalDateTime(),
+                        remindAt.toLocalDateTime()
+                    ).type
                 )
             }
         }

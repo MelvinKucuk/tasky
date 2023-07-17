@@ -1,6 +1,7 @@
 package com.example.tasky.agenda.presentation.itemdetail.viewmodel
 
 import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.agenda.presentation.itemdetail.model.NotificationType
 import com.example.tasky.agenda.presentation.itemdetail.model.VisitorType
 
 data class EventDetailState(
@@ -15,6 +16,7 @@ data class EventDetailState(
     val navigatePhotoViewer: String? = null,
     val dateTimeSelected: DateTimeSelector? = null,
     val canAddPhoto: Boolean = true,
+    val remindAt: Int = NotificationType.THIRTY_MINUTES.type,
     val attendeeDialogState: AttendeeDialogState = AttendeeDialogState(),
     val selectedFilter: VisitorType = VisitorType.ALL,
 ) {

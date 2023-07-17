@@ -1,6 +1,7 @@
 package com.example.tasky.agenda.presentation.itemdetail.viewmodel
 
 import com.example.tasky.agenda.domain.model.Attendee
+import com.example.tasky.agenda.presentation.itemdetail.model.NotificationType
 import com.example.tasky.agenda.presentation.itemdetail.model.VisitorType
 import java.time.LocalDate
 import java.time.LocalTime
@@ -27,4 +28,5 @@ sealed class EventDetailEvent {
     data class PhotoSelected(val url: String) : EventDetailEvent()
     data class PhotoClicked(val url: String) : EventDetailEvent()
     object PhotoClickedResolved : EventDetailEvent()
+    data class ReminderChanged(val remindAt: NotificationType) : EventDetailEvent()
 }
