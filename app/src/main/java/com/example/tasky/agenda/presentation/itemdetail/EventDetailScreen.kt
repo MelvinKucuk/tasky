@@ -31,7 +31,6 @@ import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toCurrentDate
 import com.example.tasky.agenda.domain.util.toHours
-import com.example.tasky.agenda.domain.util.toLocalDateTime
 import com.example.tasky.agenda.domain.util.toSimplifiedDate
 import com.example.tasky.agenda.presentation.itemdetail.components.AddAttendeeDialog
 import com.example.tasky.agenda.presentation.itemdetail.components.AttendeeTypeText
@@ -45,7 +44,6 @@ import com.example.tasky.agenda.presentation.itemdetail.components.DetailVisitor
 import com.example.tasky.agenda.presentation.itemdetail.components.EventActionText
 import com.example.tasky.agenda.presentation.itemdetail.components.TimeDatePicker
 import com.example.tasky.agenda.presentation.itemdetail.components.VisitorTypeList
-import com.example.tasky.agenda.presentation.itemdetail.model.NotificationType
 import com.example.tasky.agenda.presentation.itemdetail.model.VisitorType
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.DateTimeSelector
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailEvent
@@ -259,15 +257,10 @@ fun EventDetailScreen(
 
                     item {
                         DetailReminder(
-                            text = stringResource(
-                                NotificationType.from(
-                                    dateTime = state.event.from.toLocalDateTime(),
-                                    notificationTime = state.event.remindAt.toLocalDateTime()
-                                ).type
-                            ),
+                            text = stringResource(state.remindAt),
                             isEditMode = state.isEditMode
-                        ) {
-
+                        ) { reminder ->
+                            onEvent(EventDetailEvent.ReminderChanged(reminder))
                         }
                     }
 

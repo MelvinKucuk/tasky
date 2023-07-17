@@ -28,5 +28,5 @@ sealed class EventDetailEvent {
     data class PhotoSelected(val url: String) : EventDetailEvent()
     data class PhotoClicked(val url: String) : EventDetailEvent()
     object PhotoClickedResolved : EventDetailEvent()
-    data class RemainderChanged(val remindAt: NotificationType) : EventDetailEvent()
+    data class ReminderChanged(val remindAt: NotificationType) : EventDetailEvent()
 }

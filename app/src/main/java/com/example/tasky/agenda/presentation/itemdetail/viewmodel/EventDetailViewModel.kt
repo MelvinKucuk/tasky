@@ -271,7 +271,7 @@ class EventDetailViewModel @Inject constructor(
                 )
             }
 
-            is EventDetailEvent.RemainderChanged -> {
+            is EventDetailEvent.ReminderChanged -> {
                 val remindAt = NotificationType.remindAt(
                     state.event.from.toLocalDateTime(),
                     event.remindAt
@@ -279,7 +279,11 @@ class EventDetailViewModel @Inject constructor(
                 state = state.copy(
                     event = state.event.copy(
                         remindAt = remindAt,
-                    )
+                    ),
+                    remindAt = NotificationType.from(
+                        state.event.from.toLocalDateTime(),
+                        remindAt.toLocalDateTime()
+                    ).type
                 )
             }
         }
