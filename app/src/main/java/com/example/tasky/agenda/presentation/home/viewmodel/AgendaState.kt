@@ -23,5 +23,6 @@ data class AgendaState(
     val showProfileMenu: Boolean = false,
     val showCalendar: Boolean = false,
     val errorMessage: String? = null,
-    val navigateToEventDetail: String? = "12898688"
+    val navigateToEventDetail: String? = null,
+    val navigateToNewEvent: Long? = null
 )

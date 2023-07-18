@@ -95,6 +95,11 @@ class AgendaRepositoryImpl @Inject constructor(
         agendaDao.insertEvent(event.toEntity())
     }
 
+    override suspend fun createEvent(event: AgendaItem.Event) {
+        insertEvent(event)
+
+    }
+
     private fun getLocalEventsByDate(date: LocalDate): Flow<List<AgendaItem.Event>> {
         val day = date.toStartOfDayLong()
         val endOfDay = date.toEndOfDayLong()

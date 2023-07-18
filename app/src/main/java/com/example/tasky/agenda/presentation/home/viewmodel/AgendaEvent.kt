@@ -16,6 +16,7 @@ sealed class AgendaEvent {
     object FabClicked : AgendaEvent()
     object MonthClick : AgendaEvent()
     object MonthDismiss : AgendaEvent()
+    object NewItemHandled : AgendaEvent()
     data class OnAgendaItemEvent(
         val event: AgendaItemEvent,
         val agendaItem: AgendaItem

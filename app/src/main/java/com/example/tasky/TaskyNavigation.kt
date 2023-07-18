@@ -105,8 +105,11 @@ fun TaskyNavigation(
                     viewModel.onEvent(com.example.tasky.agenda.presentation.home.viewmodel.AgendaEvent.LogoutHandled)
                 }
                 Observe(navigateToEventDetail) { eventId ->
-                    navController.navigate(TaskyRoutes.EventDetailScreen.getDestination(eventId))
+                    navController.navigate(TaskyRoutes.EventDetailScreen.getDestination(eventId = eventId))
                     viewModel.onEvent(com.example.tasky.agenda.presentation.home.viewmodel.AgendaEvent.EventNavigationHandled)
+                }
+                Observe(navigateToNewEvent) { date ->
+                    navController.navigate(TaskyRoutes.EventDetailScreen.getDestination(date = date))
                 }
             }
             AgendaScreen(state = viewModel.state, onEvent = viewModel::onEvent)
@@ -117,6 +120,12 @@ fun TaskyNavigation(
             arguments = listOf(
                 navArgument(TaskyRoutes.EventDetailScreen.EVENT_ID) {
                     type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument(TaskyRoutes.EventDetailScreen.DATE) {
+                    type = NavType.LongType
+                    defaultValue = 0
                 }
             )
         ) { entry ->
