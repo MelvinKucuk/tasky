@@ -13,6 +13,7 @@ sealed class EventDetailEvent {
     object NavigateEditDescription : EventDetailEvent()
     object NavigateEditTitleResolved : EventDetailEvent()
     object NavigateEditDescriptionResolved : EventDetailEvent()
+    object OnSaveClick : EventDetailEvent()
     data class ShowTimePicker(val dateTimeSelected: DateTimeSelector) : EventDetailEvent()
     object HideTimePicker : EventDetailEvent()
     data class TimeSelected(val time: LocalTime) : EventDetailEvent()

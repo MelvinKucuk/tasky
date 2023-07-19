@@ -2,6 +2,7 @@ package com.example.tasky.agenda.data.mapper
 
 import com.example.tasky.agenda.data.local.model.EventEntity
 import com.example.tasky.agenda.data.local.model.relations.EventWithAttendees
+import com.example.tasky.agenda.data.remote.model.CreateEventDto
 import com.example.tasky.agenda.data.remote.model.EventResponse
 import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.Attendee
@@ -60,4 +61,16 @@ fun EventEntity.toDomain(attendees: List<Attendee>) =
 fun EventWithAttendees.toDomain(): AgendaItem.Event {
     val attendees = this.attendees.map { it.toDomain() }
     return event.toDomain(attendees)
+}
+
+fun AgendaItem.Event.toCreateDto(): CreateEventDto {
+    return CreateEventDto(
+        id = id,
+        title = title,
+        description = description,
+        from = from,
+        to = to,
+        remindAt = remindAt,
+        attendeeIds = attendees.map { it.userId }
+    )
 }

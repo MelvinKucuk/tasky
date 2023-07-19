@@ -2,13 +2,18 @@ package com.example.tasky.agenda.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.work.WorkManager
 import com.example.tasky.agenda.data.AgendaRepositoryImpl
-import com.example.tasky.agenda.data.EventRepositoryImpl
 import com.example.tasky.agenda.data.local.AgendaDao
 import com.example.tasky.agenda.data.local.AgendaDatabase
 import com.example.tasky.agenda.data.remote.AgendaService
+import com.example.tasky.agenda.data.remote.uploader.EventUploaderImpl
+import com.example.tasky.agenda.data.remote.uri.PhotoByteConverterImpl
+import com.example.tasky.agenda.data.remote.uri.PhotoExtensionParserImpl
 import com.example.tasky.agenda.domain.AgendaRepository
-import com.example.tasky.agenda.domain.EventRepository
+import com.example.tasky.agenda.domain.EventUploader
+import com.example.tasky.agenda.domain.uri.PhotoByteConverter
+import com.example.tasky.agenda.domain.uri.PhotoExtensionParser
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -22,6 +27,18 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class AgendaModule {
+
+    @Provides
+    @Singleton
+    fun provideWorkManager(
+        @ApplicationContext context: Context
+    ): WorkManager {
+        return WorkManager.getInstance(context)
+    }
+
+    @Provides
+    fun providesPhotoByteConverter(@ApplicationContext context: Context): PhotoByteConverter =
+        PhotoByteConverterImpl(context)
 
     @Singleton
     @Provides
@@ -50,5 +67,8 @@ sealed class AgendaBindsModule {
     abstract fun bindAgendaRepository(agendaRepositoryImpl: AgendaRepositoryImpl): AgendaRepository
 
     @Binds
-    abstract fun providesEventRepository(eventRepositoryImpl: EventRepositoryImpl): EventRepository
+    abstract fun providesPhotoExtensionParser(parserImpl: PhotoExtensionParserImpl): PhotoExtensionParser
+
+    @Binds
+    abstract fun providesEventUploader(uploaderImpl: EventUploaderImpl): EventUploader
 }

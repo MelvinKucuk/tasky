@@ -9,7 +9,9 @@ import com.example.tasky.agenda.data.mapper.toRemote
 import com.example.tasky.agenda.data.remote.AgendaService
 import com.example.tasky.agenda.data.remote.model.TaskResponse
 import com.example.tasky.agenda.domain.AgendaRepository
+import com.example.tasky.agenda.domain.EventUploader
 import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toCurrentTimeMilli
 import com.example.tasky.agenda.domain.util.toEndOfDayLong
 import com.example.tasky.agenda.domain.util.toStartOfDayLong
@@ -21,12 +23,14 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import java.time.LocalDate
+import java.util.UUID
 import javax.inject.Inject
 
 @SuppressLint("NewApi")
 class AgendaRepositoryImpl @Inject constructor(
     private val agendaService: AgendaService,
-    private val agendaDao: AgendaDao
+    private val agendaDao: AgendaDao,
+    private val eventUploader: EventUploader,
 ) : AgendaRepository {
 
     override fun getAgenda(date: LocalDate): Flow<List<AgendaItem>> {
@@ -96,8 +100,35 @@ class AgendaRepositoryImpl @Inject constructor(
     }
 
     override suspend fun createEvent(event: AgendaItem.Event) {
-        insertEvent(event)
+        val id = UUID.randomUUID().toString()
+        insertEvent(
+            event.copy(
+                id = id
+            )
+        )
+        eventUploader.uploadEvent(
+            event.copy(
+                id = id
+            )
+        )
+    }
 
+    override suspend fun getEventById(eventId: String): AgendaItem.Event {
+        return agendaDao.getEventById(eventId).toDomain()
+    }
+
+    override suspend fun getValidUser(email: String): Attendee? {
+        return when (val result = safeApiCall { agendaService.getValidUser(email) }) {
+            is Resource.Success -> {
+                if (result.data.doesUserExist) {
+                    result.data.attendee?.toDomain()
+                } else {
+                    null
+                }
+            }
+
+            is Resource.Error -> null
+        }
     }
 
     private fun getLocalEventsByDate(date: LocalDate): Flow<List<AgendaItem.Event>> {

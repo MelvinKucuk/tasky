@@ -13,6 +13,7 @@ import com.example.tasky.agenda.presentation.edit.model.EditType
 import com.example.tasky.agenda.presentation.edit.viewmodel.EditEvent
 import com.example.tasky.agenda.presentation.edit.viewmodel.EditViewModel
 import com.example.tasky.agenda.presentation.home.AgendaScreen
+import com.example.tasky.agenda.presentation.home.viewmodel.AgendaEvent
 import com.example.tasky.agenda.presentation.home.viewmodel.AgendaViewModel
 import com.example.tasky.agenda.presentation.itemdetail.EventDetailScreen
 import com.example.tasky.agenda.presentation.itemdetail.viewmodel.EventDetailEvent
@@ -93,7 +94,7 @@ fun TaskyNavigation(
 
             with(viewModel.state) {
                 ObserveError(errorMessage) {
-                    viewModel.onEvent(com.example.tasky.agenda.presentation.home.viewmodel.AgendaEvent.ErrorHandled)
+                    viewModel.onEvent(AgendaEvent.ErrorHandled)
                 }
                 ObserveBoolean(isLoggedOut) {
                     onLogout()
@@ -102,14 +103,15 @@ fun TaskyNavigation(
                             inclusive = true
                         }
                     }
-                    viewModel.onEvent(com.example.tasky.agenda.presentation.home.viewmodel.AgendaEvent.LogoutHandled)
+                    viewModel.onEvent(AgendaEvent.LogoutHandled)
                 }
                 Observe(navigateToEventDetail) { eventId ->
                     navController.navigate(TaskyRoutes.EventDetailScreen.getDestination(eventId = eventId))
-                    viewModel.onEvent(com.example.tasky.agenda.presentation.home.viewmodel.AgendaEvent.EventNavigationHandled)
+                    viewModel.onEvent(AgendaEvent.EventNavigationHandled)
                 }
                 Observe(navigateToNewEvent) { date ->
                     navController.navigate(TaskyRoutes.EventDetailScreen.getDestination(date = date))
+                    viewModel.onEvent(AgendaEvent.NewItemHandled)
                 }
             }
             AgendaScreen(state = viewModel.state, onEvent = viewModel::onEvent)

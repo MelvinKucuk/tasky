@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tasky.TaskyRoutes
-import com.example.tasky.agenda.domain.EventRepository
+import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.AgendaPhoto
 import com.example.tasky.agenda.domain.model.Attendee
@@ -25,7 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: EventRepository,
+    private val repository: AgendaRepository,
     private val validateEmail: EmailValidator
 ) : ViewModel() {
 
@@ -302,6 +302,12 @@ class EventDetailViewModel @Inject constructor(
                         remindAt.toLocalDateTime()
                     ).type
                 )
+            }
+
+            EventDetailEvent.OnSaveClick -> {
+                viewModelScope.launch {
+                    repository.createEvent(state.event)
+                }
             }
         }
     }

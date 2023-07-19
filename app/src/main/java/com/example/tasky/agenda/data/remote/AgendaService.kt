@@ -34,7 +34,10 @@ interface AgendaService {
 
     @Multipart
     @POST("/event")
-    suspend fun createEvent(@Part body: MultipartBody.Part, @Part files: List<MultipartBody.Part>)
+    suspend fun createEvent(
+        @Part body: MultipartBody.Part,
+        @Part files: List<MultipartBody.Part>
+    ): Response<ResponseBody>
 
     @Multipart
     @PUT("/event")
