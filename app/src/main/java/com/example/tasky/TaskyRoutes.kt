@@ -1,6 +1,7 @@
 package com.example.tasky
 
 import com.example.tasky.agenda.presentation.edit.model.EditType
+import java.net.URLEncoder
 
 sealed class TaskyRoutes(val route: String) {
     object LoginScreen : TaskyRoutes("login_screen")
@@ -28,7 +29,10 @@ sealed class TaskyRoutes(val route: String) {
 
     object PhotoViewerScreen : TaskyRoutes("photo_viewer_screen") {
         fun getCompleteRoute() = "$route?$IMAGE_URL={$IMAGE_URL}"
-        fun getDestination(imageUrl: String) = "$route?$IMAGE_URL=$imageUrl"
+        fun getDestination(imageUrl: String): String {
+            val encodedUrl = URLEncoder.encode(imageUrl, "UTF-8")
+            return "$route?$IMAGE_URL=$encodedUrl"
+        }
 
         const val IMAGE_URL = "image_url"
     }

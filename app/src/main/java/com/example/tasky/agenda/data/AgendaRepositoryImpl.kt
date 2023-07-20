@@ -3,6 +3,7 @@ package com.example.tasky.agenda.data
 import android.annotation.SuppressLint
 import com.example.tasky.agenda.data.local.AgendaDao
 import com.example.tasky.agenda.data.local.model.relations.EventAttendeesCrossRef
+import com.example.tasky.agenda.data.local.model.relations.EventPhotoCrossReference
 import com.example.tasky.agenda.data.mapper.toDomain
 import com.example.tasky.agenda.data.mapper.toEntity
 import com.example.tasky.agenda.data.mapper.toRemote
@@ -11,6 +12,7 @@ import com.example.tasky.agenda.data.remote.model.TaskResponse
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.EventUploader
 import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.agenda.domain.model.AgendaPhoto
 import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toCurrentTimeMilli
 import com.example.tasky.agenda.domain.util.toEndOfDayLong
@@ -90,6 +92,20 @@ class AgendaRepositoryImpl @Inject constructor(
                         EventAttendeesCrossRef(
                             id = event.id,
                             userId = it.userId
+                        )
+                    )
+                }
+            }.map { it.join() }
+        }
+
+        supervisorScope {
+            event.photos.filterIsInstance<AgendaPhoto.Remote>().map {
+                launch {
+                    agendaDao.insertPhoto(it.toEntity())
+                    agendaDao.insertEventPhotoCrossRef(
+                        EventPhotoCrossReference(
+                            id = event.id,
+                            key = it.key
                         )
                     )
                 }
