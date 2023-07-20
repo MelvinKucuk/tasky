@@ -10,12 +10,30 @@ import com.example.tasky.agenda.data.local.model.PhotoEntity
 import com.example.tasky.agenda.data.local.model.ReminderEntity
 import com.example.tasky.agenda.data.local.model.TaskEntity
 import com.example.tasky.agenda.data.local.model.relations.EventAttendeesCrossRef
-import com.example.tasky.agenda.data.local.model.relations.EventPhotoCrossReference
 import com.example.tasky.agenda.data.local.model.relations.EventWithAttendeesWithPhotos
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AgendaDao {
+
+    @Transaction
+    suspend fun insertEvent(
+        event: EventEntity,
+        photos: List<PhotoEntity>,
+        attendees: List<AttendeeEntity>
+    ) {
+        photos.forEach { insertPhoto(it) }
+        attendees.forEach {
+            insertEventAttendeeCrossRef(
+                EventAttendeesCrossRef(
+                    event.id,
+                    it.userId
+                )
+            )
+            insertAttendee(it)
+        }
+        insertEvent(event)
+    }
 
     @Upsert
     suspend fun insertEvent(event: EventEntity)
@@ -83,7 +101,4 @@ interface AgendaDao {
 
     @Upsert
     suspend fun insertPhoto(photo: PhotoEntity)
-
-    @Upsert
-    suspend fun insertEventPhotoCrossRef(ref: EventPhotoCrossReference)
 }

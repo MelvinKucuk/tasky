@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class PhotoEntity(
     @PrimaryKey
     val key: String,
+    val eventId: String,
     val url: String
 )

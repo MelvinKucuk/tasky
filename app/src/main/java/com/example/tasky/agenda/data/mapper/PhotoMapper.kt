@@ -7,8 +7,12 @@ import com.example.tasky.agenda.domain.model.AgendaPhoto
 fun PhotoResponse.toDomain() =
     AgendaPhoto.Remote(url = url, key = key)
 
-fun AgendaPhoto.toEntity() =
-    PhotoEntity(url = url, key = key)
+fun AgendaPhoto.toEntity(eventId: String) =
+    PhotoEntity(
+        url = url,
+        eventId = eventId,
+        key = key
+    )
 
 fun PhotoEntity.toDomain() =
     AgendaPhoto.Local(url = url)

@@ -17,9 +17,9 @@ data class EventWithAttendeesWithPhotos(
     val attendees: List<AttendeeEntity>,
 
     @Relation(
+        entity = PhotoEntity::class,
         parentColumn = "id",
-        entityColumn = "key",
-        associateBy = Junction(EventPhotoCrossReference::class)
+        entityColumn = "eventId",
     )
     val photos: List<PhotoEntity>
 )

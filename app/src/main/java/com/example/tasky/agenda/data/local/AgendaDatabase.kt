@@ -8,7 +8,6 @@ import com.example.tasky.agenda.data.local.model.PhotoEntity
 import com.example.tasky.agenda.data.local.model.ReminderEntity
 import com.example.tasky.agenda.data.local.model.TaskEntity
 import com.example.tasky.agenda.data.local.model.relations.EventAttendeesCrossRef
-import com.example.tasky.agenda.data.local.model.relations.EventPhotoCrossReference
 
 @Database(
     entities = [
@@ -17,8 +16,7 @@ import com.example.tasky.agenda.data.local.model.relations.EventPhotoCrossRefere
         TaskEntity::class,
         AttendeeEntity::class,
         EventAttendeesCrossRef::class,
-        PhotoEntity::class,
-        EventPhotoCrossReference::class
+        PhotoEntity::class
     ],
     version = 1
 )

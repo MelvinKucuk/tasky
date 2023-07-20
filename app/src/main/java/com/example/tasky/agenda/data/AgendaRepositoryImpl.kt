@@ -2,8 +2,6 @@ package com.example.tasky.agenda.data
 
 import android.annotation.SuppressLint
 import com.example.tasky.agenda.data.local.AgendaDao
-import com.example.tasky.agenda.data.local.model.relations.EventAttendeesCrossRef
-import com.example.tasky.agenda.data.local.model.relations.EventPhotoCrossReference
 import com.example.tasky.agenda.data.mapper.toDomain
 import com.example.tasky.agenda.data.mapper.toEntity
 import com.example.tasky.agenda.data.mapper.toRemote
@@ -22,8 +20,6 @@ import com.example.tasky.core.data.remote.safeApiCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
@@ -84,35 +80,11 @@ class AgendaRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertEvent(event: AgendaItem.Event) {
-        supervisorScope {
-            event.attendees.map {
-                launch {
-                    agendaDao.insertAttendee(it.toEntity())
-                    agendaDao.insertEventAttendeeCrossRef(
-                        EventAttendeesCrossRef(
-                            id = event.id,
-                            userId = it.userId
-                        )
-                    )
-                }
-            }.map { it.join() }
-        }
-
-        supervisorScope {
-            event.photos.filterIsInstance<AgendaPhoto.Remote>().map {
-                launch {
-                    agendaDao.insertPhoto(it.toEntity())
-                    agendaDao.insertEventPhotoCrossRef(
-                        EventPhotoCrossReference(
-                            id = event.id,
-                            key = it.key
-                        )
-                    )
-                }
-            }.map { it.join() }
-        }
-
-        agendaDao.insertEvent(event.toEntity())
+        agendaDao.insertEvent(
+            event.toEntity(),
+            event.photos.filterIsInstance<AgendaPhoto.Remote>().map { it.toEntity(event.id) },
+            event.attendees.map { it.toEntity() }
+        )
     }
 
     override suspend fun createEvent(event: AgendaItem.Event) {
