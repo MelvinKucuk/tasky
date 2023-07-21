@@ -8,8 +8,8 @@ import com.example.tasky.agenda.data.local.AgendaDao
 import com.example.tasky.agenda.data.local.AgendaDatabase
 import com.example.tasky.agenda.data.remote.AgendaService
 import com.example.tasky.agenda.data.remote.uploader.EventUploaderImpl
-import com.example.tasky.agenda.data.remote.uri.PhotoByteConverterImpl
-import com.example.tasky.agenda.data.remote.uri.PhotoExtensionParserImpl
+import com.example.tasky.agenda.data.uri.PhotoByteConverterImpl
+import com.example.tasky.agenda.data.uri.PhotoExtensionParserImpl
 import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.EventUploader
 import com.example.tasky.agenda.domain.uri.PhotoByteConverter

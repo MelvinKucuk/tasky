@@ -1,4 +1,4 @@
-package com.example.tasky.agenda.data.remote.uri
+package com.example.tasky.agenda.data.uri
 
 import android.app.Application
 import android.content.ContentResolver

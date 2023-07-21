@@ -45,7 +45,7 @@ class EventUploaderImpl @Inject constructor(
 
         workManager.beginUniqueWork(
             "event_uploader",
-            ExistingWorkPolicy.APPEND_OR_REPLACE,
+            ExistingWorkPolicy.KEEP,
             uploaderWorker
         ).enqueue()
     }

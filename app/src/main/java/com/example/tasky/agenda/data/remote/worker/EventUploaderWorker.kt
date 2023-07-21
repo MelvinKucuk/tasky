@@ -33,7 +33,13 @@ class EventUploaderWorker @AssistedInject constructor(
 
         return when (uploadEvent(eventJson, photoFiles)) {
             is Resource.Success -> Result.success()
-            is Resource.Error -> Result.failure()
+            is Resource.Error -> {
+                if (runAttemptCount > 3) {
+                    Result.failure()
+                } else {
+                    Result.retry()
+                }
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.tasky.agenda.data.remote.uri
+package com.example.tasky.agenda.data.uri
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -45,6 +45,6 @@ class PhotoByteConverterImpl @Inject constructor(
 
     companion object {
         const val COMPRESSION_THRESHOLD = 1024 * 1024L
-        const val MINIMUM_QUALITY = 5
+        const val MINIMUM_QUALITY = 70
     }
 }
