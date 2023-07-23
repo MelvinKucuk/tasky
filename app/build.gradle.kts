@@ -81,12 +81,15 @@ dependencies {
     implementation("androidx.security:security-crypto:1.0.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
     implementation("com.google.accompanist:accompanist-permissions:0.31.5-beta")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.46.1")
     kapt("com.google.dagger:hilt-compiler:2.46.1")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("androidx.hilt:hilt-work:1.0.0")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

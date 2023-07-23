@@ -158,11 +158,23 @@ fun EventDetailScreen(
                     fontSize = 16.sp
                 )
 
-                Icon(
-                    imageVector = Icons.Filled.Edit,
-                    tint = Color.White,
-                    contentDescription = stringResource(R.string.edit)
-                )
+                if (state.isEditMode) {
+                    Text(
+                        text = stringResource(id = R.string.save),
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        modifier = Modifier.clickable {
+                            onEvent(EventDetailEvent.OnSaveClick)
+                        }
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Filled.Edit,
+                        tint = Color.White,
+                        contentDescription = stringResource(R.string.edit)
+                    )
+                }
             }
 
             Scaffold(
@@ -356,7 +368,8 @@ fun EventDetailScreenPreview() {
                         isGoing = false
                     )
                 )
-            )
+            ),
+            isEditMode = false,
         )
     ) {}
 }

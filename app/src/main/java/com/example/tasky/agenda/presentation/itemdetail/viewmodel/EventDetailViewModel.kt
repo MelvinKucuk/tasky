@@ -7,7 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tasky.TaskyRoutes
-import com.example.tasky.agenda.domain.EventRepository
+import com.example.tasky.agenda.domain.AgendaRepository
+import com.example.tasky.agenda.domain.model.AgendaItem
 import com.example.tasky.agenda.domain.model.AgendaPhoto
 import com.example.tasky.agenda.domain.model.Attendee
 import com.example.tasky.agenda.domain.util.toLocalDate
@@ -24,7 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EventDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: EventRepository,
+    private val repository: AgendaRepository,
     private val validateEmail: EmailValidator
 ) : ViewModel() {
 
@@ -33,18 +34,34 @@ class EventDetailViewModel @Inject constructor(
 
     init {
         val eventId = savedStateHandle.get<String>(TaskyRoutes.EventDetailScreen.EVENT_ID)
-        if (eventId != null) {
-            state = state.copy(eventId = eventId)
-            viewModelScope.launch {
-                val event = repository.getEventById(state.eventId)
+        val date = savedStateHandle.get<Long>(TaskyRoutes.EventDetailScreen.DATE)
 
+        when {
+            !eventId.isNullOrEmpty() -> {
+                state = state.copy(eventId = eventId)
+                viewModelScope.launch {
+                    val event = repository.getEventById(state.eventId)
+
+                    state = state.copy(
+                        event = event,
+                        canAddPhoto = event.photos.size < MAX_PHOTOS
+                    )
+                }
+            }
+
+            (date != null && date != 0L) -> {
                 state = state.copy(
-                    event = event,
-                    canAddPhoto = event.photos.size < MAX_PHOTOS
+                    event = AgendaItem.Event(
+                        title = "Title",
+                        description = "Description",
+                        from = date,
+                        to = date,
+                    )
                 )
             }
         }
     }
+
 
     fun setEditedText(savedStateHandle: SavedStateHandle) {
         val editedText = savedStateHandle.get<String>(TaskyRoutes.EditScreen.TEXT)
@@ -285,6 +302,12 @@ class EventDetailViewModel @Inject constructor(
                         remindAt.toLocalDateTime()
                     ).type
                 )
+            }
+
+            EventDetailEvent.OnSaveClick -> {
+                viewModelScope.launch {
+                    repository.createEvent(state.event)
+                }
             }
         }
     }

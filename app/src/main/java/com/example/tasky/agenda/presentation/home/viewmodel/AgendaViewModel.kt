@@ -12,6 +12,7 @@ import com.example.tasky.agenda.domain.AgendaRepository
 import com.example.tasky.agenda.domain.DateGenerator
 import com.example.tasky.agenda.domain.getInitials
 import com.example.tasky.agenda.domain.model.AgendaItem
+import com.example.tasky.agenda.domain.util.toCurrentTimeMilli
 import com.example.tasky.agenda.presentation.home.AgendaItemEvent
 import com.example.tasky.agenda.presentation.home.MenuItem
 import com.example.tasky.agenda.presentation.home.util.addNeedleToAgenda
@@ -120,7 +121,11 @@ class AgendaViewModel @Inject constructor(
             }
 
             is AgendaEvent.NewItem -> {
+                state = state.copy(navigateToNewEvent = selectedDate.value.toCurrentTimeMilli())
+            }
 
+            AgendaEvent.NewItemHandled -> {
+                state = state.copy(navigateToNewEvent = null)
             }
 
             is AgendaEvent.OnAgendaItemEvent -> {

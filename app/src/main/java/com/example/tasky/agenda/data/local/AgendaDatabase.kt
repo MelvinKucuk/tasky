@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.tasky.agenda.data.local.model.AttendeeEntity
 import com.example.tasky.agenda.data.local.model.EventEntity
+import com.example.tasky.agenda.data.local.model.PhotoEntity
 import com.example.tasky.agenda.data.local.model.ReminderEntity
 import com.example.tasky.agenda.data.local.model.TaskEntity
 import com.example.tasky.agenda.data.local.model.relations.EventAttendeesCrossRef
@@ -14,7 +15,8 @@ import com.example.tasky.agenda.data.local.model.relations.EventAttendeesCrossRe
         ReminderEntity::class,
         TaskEntity::class,
         AttendeeEntity::class,
-        EventAttendeesCrossRef::class
+        EventAttendeesCrossRef::class,
+        PhotoEntity::class
     ],
     version = 1
 )
